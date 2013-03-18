@@ -1,0 +1,373 @@
+<html><head><title>AIMA Python file: text.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: text.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Statistical Language Processing tools.  (Chapter 23)
+We define Unigram and Ngram text models, use them to generate random text,
+and show the Viterbi algorithm for segmentatioon of letters into words.
+Then we show a very simple Information Retrieval system, and an example
+working on a tiny sample of Unix manual pages."</font></i><i><font color="green">""</font></i>
+
+from <a href="utils.html">utils</a> import *
+from <a href="http://www.python.org/doc/current/lib/module-math.html">math</a> import <a href="http://www.python.org/doc/current/lib/module-log.html">log</a>, <a href="http://www.python.org/doc/current/lib/module-exp.html">exp</a>
+import <a href="http://www.python.org/doc/current/lib/module-re.html">re</a>, <a href="probability.html">probability</a>, <a href="http://www.python.org/doc/current/lib/module-string.html">string</a>, <a href="search.html">search</a>
+
+<b>class </b><b style="background-color:ffff00"><a name="CountingProbDist">CountingProbDist</b>(probability.ProbDist):
+    <i><font color="green">""</font></i><i><font color="green">"A probability distribution formed by observing and counting examples.
+    If P is an instance of this class and o
+    is an observed value, then there are 3 main operations:
+    p.add(o) increments the count for observation o by 1.
+    p.sample() returns a random element from the distribution.
+    p[o] returns the probability for o (as in a regular ProbDist)."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, observations=[], default=0):
+        <i><font color="green">""</font></i><i><font color="green">"Create a distribution, and optionally add in some observations.
+        By default this is an unsmoothed distribution, but saying default=1,
+        for example, gives you add-one smoothing."</font></i><i><font color="green">""</font></i>
+        update(self, dictionary=DefaultDict(default), needs_recompute=False,
+               table=[], n_obs=0)
+        for o in observations:
+            self.add(o)
+
+    <b>def </b><b style="background-color:ffff00"><a name="add">add</b>(self, o):
+        <i><font color="green">""</font></i><i><font color="green">"Add an observation o to the distribution."</font></i><i><font color="green">""</font></i>
+        self.dictionary[o] += 1
+        self.n_obs += 1
+        self.needs_recompute = True
+
+    <b>def </b><b style="background-color:ffff00"><a name="sample">sample</b>(self):
+        <i><font color="green">""</font></i><i><font color="green">"Return a random sample from the distribution."</font></i><i><font color="green">""</font></i>
+        if self.needs_recompute: self._recompute()
+        if self.n_obs == 0:
+            return None
+        i = bisect.bisect_left(self.table, (1 + random.randrange(self.n_obs),))
+        (count, o) = self.table[i]
+        return o
+
+    <b>def </b><b style="background-color:ffff00"><a name="__getitem__">__getitem__</b>(self, item):
+        <i><font color="green">""</font></i><i><font color="green">"Return an estimate of the probability of item."</font></i><i><font color="green">""</font></i>
+        if self.needs_recompute: self._recompute()
+        return self.dictionary[item] / self.n_obs
+
+    <b>def </b><b style="background-color:ffff00"><a name="__len__">__len__</b>(self):
+        if self.needs_recompute: self._recompute()
+        return self.n_obs
+
+    <b>def </b><b style="background-color:ffff00"><a name="top">top</b>(self, n):
+        <i><font color="green">"Return (count, obs) tuples for the n most frequent observations."</font></i>
+        items = [(v, k) for (k, v) in self.dictionary.items()]
+        items.sort(); items.reverse()
+        return items[0:n]
+
+    <b>def </b><b style="background-color:ffff00"><a name="_recompute">_recompute</b>(self):
+        <i><font color="green">""</font></i><i><font color="green">"Recompute the total count n_obs and the table of entries."</font></i><i><font color="green">""</font></i>
+        n_obs = 0
+        table = []
+        for (o, count) in self.dictionary.items():
+            n_obs += count
+            table.append((n_obs, o))
+        update(self, n_obs=float(n_obs), table=table, needs_recompute=False)
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="UnigramTextModel">UnigramTextModel</b>(CountingProbDist):
+    <i><font color="green">""</font></i><i><font color="green">"This is a discrete probability distribution over words, so you
+    can add, sample, or get P[word], just like with CountingProbDist.  You can
+    also generate a random text n words long with P.samples(n)"</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="samples">samples</b>(self, n):
+        <i><font color="green">"Return a string of n words, random according to the model."</font></i>
+        return <i><font color="green">' '</font></i>.join([self.sample() for i in range(n)])
+
+<b>class </b><b style="background-color:ffff00"><a name="NgramTextModel">NgramTextModel</b>(CountingProbDist):
+    <i><font color="green">""</font></i><i><font color="green">"This is a discrete probability distribution over n-tuples of words.
+    You can add, sample or get P[(word1, ..., wordn)]. The method P.samples(n)
+    builds up an n-word sequence; P.add_text and P.add_sequence add data."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, n, observation_sequence=[]):
+        <font color="cc33cc">## In addition to the dictionary of n-tuples, cond_prob is a</font>
+        <font color="cc33cc">## mapping from (w1, ..., wn-1) to P(wn | w1, ... wn-1)</font>
+        CountingProbDist.__init__(self)
+        self.n = n
+        self.cond_prob = DefaultDict(CountingProbDist())
+        self.add_sequence(observation_sequence)
+
+    <font color="cc33cc">## sample, __len__, __getitem__ inherited from CountingProbDist</font>
+    <font color="cc33cc">## Note they deal with tuples, not strings, as inputs</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="add">add</b>(self, ngram):
+        <i><font color="green">""</font></i><i><font color="green">"Count 1 for P[(w1, ..., wn)] and for P(wn | (w1, ..., wn-1)"</font></i><i><font color="green">""</font></i>
+        CountingProbDist.add(self, ngram)
+        self.cond_prob[ngram[:-1]].add(ngram[-1])
+
+    <b>def </b><b style="background-color:ffff00"><a name="add_sequence">add_sequence</b>(self, words):
+        <i><font color="green">""</font></i><i><font color="green">"Add each of the tuple words[i:i+n], using a sliding window.
+        Prefix some copies of the empty word, '', to make the start work."</font></i><i><font color="green">""</font></i>
+        n = self.n
+        words = [<i><font color="green">''</font></i>,] * (n-1) + words
+        for i in range(len(words)-n):
+            self.add(tuple(words[i:i+n]))
+
+    <b>def </b><b style="background-color:ffff00"><a name="samples">samples</b>(self, nwords):
+        <i><font color="green">""</font></i><i><font color="green">"Build up a random sample of text n words long, using the"</font></i><i><font color="green">""</font></i>
+        n = self.n
+        nminus1gram = (<i><font color="green">''</font></i>,) * (n-1)
+        output = []
+        while len(output) &lt; nwords:
+            wn = self.cond_prob[nminus1gram].sample()
+            if wn:
+                output.append(wn)
+                nminus1gram = nminus1gram[1:] + (wn,)
+            else: <font color="cc33cc">## Cannot continue, so restart.</font>
+                nminus1gram = (<i><font color="green">''</font></i>,) * (n-1)
+        return <i><font color="green">' '</font></i>.join(output)
+
+<hr>
+
+<b>def </b><b style="background-color:ffff00"><a name="viterbi_segment">viterbi_segment</b>(text, P):
+    <i><font color="green">""</font></i><i><font color="green">"Find the best segmentation of the string of characters, given the
+    UnigramTextModel P."</font></i><i><font color="green">""</font></i>
+    <font color="cc33cc"># best[i] = best probability for text[0:i]</font>
+    <font color="cc33cc"># words[i] = best word ending at position i</font>
+    n = len(text)
+    words = [<i><font color="green">''</font></i>] + list(text)
+    best = [1.0] + [0.0] * n
+    <font color="cc33cc">## Fill in the vectors best, words via dynamic programming</font>
+    for i in range(n+1):
+        for j in range(0, i):
+            w = text[j:i]
+            if P[w] * best[i - len(w)] &gt;= best[i]:
+                best[i] = P[w] * best[i - len(w)]
+                words[i] = w
+    <font color="cc33cc">## Now recover the sequence of best words</font>
+    sequence = []; i = len(words)-1
+    while i &gt; 0:
+        sequence[0:0] = [words[i]]
+        i = i - len(words[i])
+    <font color="cc33cc">## Return sequence of best words and overall probability</font>
+    return sequence, best[-1]
+
+
+<hr>
+
+<b>class </b><b style="background-color:ffff00"><a name="IRSystem">IRSystem</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A very simple Information Retrieval System, as discussed in Sect. 23.2.
+    The constructor s = IRSystem('the a') builds an empty system with two
+    stopwords. Next, index several documents with s.index_document(text, url).
+    Then ask queries with s.query('query words', n) to retrieve the top n
+    matching documents.  Queries are literal words from the document,
+    except that stopwords are ignored, and there is one special syntax:
+    The query "</font></i>learn: man cat<i><font color="green">", for example, runs "</font></i>man cat<i><font color="green">" and indexes it."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, stopwords=<i><font color="green">'the a of'</font></i>):
+        <i><font color="green">""</font></i><i><font color="green">"Create an IR System. Optionally specify stopwords."</font></i><i><font color="green">""</font></i>
+        <font color="cc33cc">## index is a map of {word: {docid: count}}, where docid is an int,</font>
+        <font color="cc33cc">## indicating the index into the documents list.</font>
+        update(self, index=DefaultDict(DefaultDict(0)),
+               stopwords=set(words(stopwords)), documents=[])
+
+    <b>def </b><b style="background-color:ffff00"><a name="index_collection">index_collection</b>(self, filenames):
+        <i><font color="green">"Index a whole collection of files."</font></i>
+        for filename in filenames:
+            self.index_document(open(filename).read(), filename)
+
+    <b>def </b><b style="background-color:ffff00"><a name="index_document">index_document</b>(self, text, url):
+        <i><font color="green">"Index the text of a document."</font></i>
+        <font color="cc33cc">## For now, use first line for title</font>
+        title = text[:text.index(<i><font color="green">'\n'</font></i>)].strip()
+        docwords = words(text)
+        docid = len(self.documents)
+        self.documents.append(Document(title, url, len(docwords)))
+        for word in docwords:
+            if word not in self.stopwords:
+                self.index[word][docid] += 1
+
+    <b>def </b><b style="background-color:ffff00"><a name="query">query</b>(self, query_text, n=10):
+        <i><font color="green">""</font></i><i><font color="green">"Return a list of n (score, docid) pairs for the best matches.
+        Also handle the special syntax for 'learn: command'."</font></i><i><font color="green">""</font></i>
+        if query_text.startswith(<i><font color="green">"learn:"</font></i>):
+            doctext = os.popen(query_text[len(<i><font color="green">"learn:"</font></i>):], <i><font color="green">'r'</font></i>).read()
+            self.index_document(doctext, query_text)
+            return []
+        qwords = [w for w in words(query_text) if w not in self.stopwords]
+        shortest = argmin(qwords, lambda w: len(self.index[w]))
+        docs = self.index[shortest]
+        results = [(sum([self.score(w, d) for w in qwords]), d) for d in docs]
+        results.sort(); results.reverse()
+        return results[:n]
+
+    <b>def </b><b style="background-color:ffff00"><a name="score">score</b>(self, word, docid):
+        <i><font color="green">"Compute a score for this word on this docid."</font></i>
+        <font color="cc33cc">## There are many options; here we take a very simple approach</font>
+        return (math.log(1 + self.index[word][docid])
+                / math.log(1 + self.documents[docid].nwords))
+
+    <b>def </b><b style="background-color:ffff00"><a name="present">present</b>(self, results):
+        <i><font color="green">"Present the results as a list."</font></i>
+        for (score, d) in results:
+            doc = self.documents[d]
+            print <i><font color="green">"%5.2f|%25s | %s"</font></i> % (100 * score, doc.url, doc.title[:45])
+
+    <b>def </b><b style="background-color:ffff00"><a name="present_results">present_results</b>(self, query_text, n=10):
+        <i><font color="green">"Get results for the query and present them."</font></i>
+        self.present(self.query(query_text, n))
+
+<b>class </b><b style="background-color:ffff00"><a name="UnixConsultant">UnixConsultant</b>(IRSystem):
+    <i><font color="green">""</font></i><i><font color="green">"A trivial IR system over a small collection of Unix man pages."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        IRSystem.__init__(self, stopwords=<i><font color="green">"how do i the a of"</font></i>)
+        import <a href="http://www.python.org/doc/current/lib/module-os.html">os</a>
+        mandir = <i><font color="green">'../data/man/'</font></i>
+        man_files = [mandir + f for f in os.listdir(mandir)]
+        self.index_collection(man_files)
+
+<b>class </b><b style="background-color:ffff00"><a name="Document">Document</b>:
+    <i><font color="green">""</font></i><i><font color="green">"Metadata for a document: title and url; maybe add others later."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, title, url, nwords):
+        update(self, title=title, url=url, nwords=nwords)
+
+<b>def </b><b style="background-color:ffff00"><a name="words">words</b>(text, reg=re.compile(<i><font color="green">'[a-z0-9]+'</font></i>)):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of the words in text, ignoring punctuation and
+    converting everything to lowercase (to canonicalize).
+    &gt;&gt;&gt; words("</font></i>``EGAD!<i><font color="green">''</font></i> Edgar cried.<i><font color="green">")
+    ['egad', 'edgar', 'cried']
+    "</font></i><i><font color="green">""</font></i>
+    return reg.findall(text.lower())
+
+<b>def </b><b style="background-color:ffff00"><a name="canonicalize">canonicalize</b>(text):
+    <i><font color="green">""</font></i><i><font color="green">"Return a canonical text: only lowercase letters and blanks.
+    &gt;&gt;&gt; canonicalize("</font></i>``EGAD!<i><font color="green">''</font></i> Edgar cried.<i><font color="green">")
+    'egad edgar cried'
+    "</font></i><i><font color="green">""</font></i>
+    return <i><font color="green">' '</font></i>.join(words(text))
+
+
+<hr>
+<font color="cc33cc">## Example application (not in book): decode a cipher.</font>
+<font color="cc33cc">## A cipher is a code that substitutes one character for another.</font>
+<font color="cc33cc">## A shift cipher is a rotation of the letters in the alphabet,</font>
+<font color="cc33cc">## such as the famous rot13, which maps A to N, B to M, etc.</font>
+
+<font color="cc33cc">#### Encoding</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="shift_encode">shift_encode</b>(plaintext, n):
+    <i><font color="green">""</font></i><i><font color="green">"Encode text with a shift cipher that moves each letter up by n letters.
+    &gt;&gt;&gt; shift_encode('abc z', 1)
+    'bcd a'
+    "</font></i><i><font color="green">""</font></i>
+    return encode(plaintext, alphabet[n:] + alphabet[:n])
+
+<b>def </b><b style="background-color:ffff00"><a name="rot13">rot13</b>(plaintext):
+    <i><font color="green">""</font></i><i><font color="green">"Encode text by rotating letters by 13 spaces in the alphabet.
+    &gt;&gt;&gt; rot13('hello')
+    'uryyb'
+    &gt;&gt;&gt; rot13(rot13('hello'))
+    'hello'
+    "</font></i><i><font color="green">""</font></i>
+    return shift_encode(plaintext, 13)
+
+<b>def </b><b style="background-color:ffff00"><a name="encode">encode</b>(plaintext, code):
+    <i><font color="green">"Encodes text, using a code which is a permutation of the alphabet."</font></i>
+    from <a href="http://www.python.org/doc/current/lib/module-string.html">string</a> import <a href="http://www.python.org/doc/current/lib/module-maketrans.html">maketrans</a>
+    trans = maketrans(alphabet + alphabet.upper(), code + code.upper())
+    return plaintext.translate(trans)
+
+<b style="background-color:ffff00"><a name="alphabet">alphabet</b> = <i><font color="green">'abcdefghijklmnopqrstuvwxyz'</font></i>
+
+<b>def </b><b style="background-color:ffff00"><a name="bigrams">bigrams</b>(text):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of pairs in text (a sequence of letters or words).
+    &gt;&gt;&gt; bigrams('this')
+    ['th', 'hi', 'is']
+    &gt;&gt;&gt; bigrams(['this', 'is', 'a', 'test'])
+    [['this', 'is'], ['is', 'a'], ['a', 'test']]
+    "</font></i><i><font color="green">""</font></i>
+    return [text[i:i+2] for i in range(len(text) - 1)]
+
+<font color="cc33cc">#### Decoding a Shift (or Caesar) Cipher</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="ShiftDecoder">ShiftDecoder</b>:
+    <i><font color="green">""</font></i><i><font color="green">"There are only 26 possible encodings, so we can try all of them,
+    and return the one with the highest probability, according to a
+    bigram probability distribution."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, training_text):
+        training_text = canonicalize(training_text)
+        self.P2 = CountingProbDist(bigrams(training_text), default=1)
+
+    <b>def </b><b style="background-color:ffff00"><a name="score">score</b>(self, plaintext):
+        <i><font color="green">"Return a score for text based on how common letters pairs are."</font></i>
+        s = 1.0
+        for bi in bigrams(plaintext):
+            s = s * self.P2[bi]
+        return s
+
+    <b>def </b><b style="background-color:ffff00"><a name="decode">decode</b>(self, ciphertext):
+        <i><font color="green">"Return the shift decoding of text with the best score."</font></i>
+        return argmax(all_shifts(ciphertext), self.score)
+
+<b>def </b><b style="background-color:ffff00"><a name="all_shifts">all_shifts</b>(text):
+    <i><font color="green">"Return a list of all 26 possible encodings of text by a shift cipher."</font></i>
+    return [shift_encode(text, n) for n in range(len(alphabet))]
+
+<font color="cc33cc">#### Decoding a General Permutation Cipher</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="PermutationDecoder">PermutationDecoder</b>:
+    <i><font color="green">""</font></i><i><font color="green">"This is a much harder problem than the shift decoder.  There are 26!
+    permutations, so we can't try them all.  Instead we have to search.
+    We want to search well, but there are many things to consider:
+    Unigram probabilities (E is the most common letter); Bigram probabilities
+    (TH is the most common bigram); word probabilities (I and A are the most
+    common one-letter words, etc.); etc.
+      We could represent a search state as a permutation of the 26 letters,
+    and alter the solution through hill climbing.  With an initial guess
+    based on unigram probabilities, this would probably fair well. However,
+    I chose instead to have an incremental representation. A state is
+    represented as a letter-to-letter map; for example {'z': 'e'} to
+    represent that 'z' will be translated to 'e'
+    "</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, training_text, ciphertext=None):
+        self.Pwords = UnigramTextModel(words(training_text))
+        self.P1 = UnigramTextModel(training_text) <font color="cc33cc"># By letter</font>
+        self.P2 = NgramTextModel(2, training_text) <font color="cc33cc"># By letter pair</font>
+        if ciphertext:
+            return self.decode(ciphertext)
+
+    <b>def </b><b style="background-color:ffff00"><a name="decode">decode</b>(self, ciphertext):
+        <i><font color="green">"Search for a decoding of the ciphertext."</font></i>
+        self.ciphertext = ciphertext
+        problem = PermutationDecoderProblem(decoder=self)
+        return search.best_first_tree_search(problem, self.score)
+
+    <b>def </b><b style="background-color:ffff00"><a name="score">score</b>(self, ciphertext, code):
+        <i><font color="green">""</font></i><i><font color="green">"Score is product of word scores, unigram scores, and bigram scores.
+        This can get very small, so we use logs and exp."</font></i><i><font color="green">""</font></i>
+        text = decode(ciphertext, code)
+        logP = (sum([log(self.Pwords[word]) for word in words(text)]) +
+                sum([log(self.P1[c]) for c in text]) +
+                sum([log(self.P2[b]) for b in bigrams(text)]))
+        return exp(logP)
+
+<b>class </b><b style="background-color:ffff00"><a name="PermutationDecoderProblem">PermutationDecoderProblem</b>(search.Problem):
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, initial=None, goal=None, decoder=None):
+        self.initial = initial or {}
+        self.decoder = decoder
+
+    <b>def </b><b style="background-color:ffff00"><a name="successors">successors</b>(self, state):
+        <font color="cc33cc">## Find the best</font>
+        p, plainchar = max([(self.decoder.P1[c], c)
+                            for c in alphabet if c not in state])
+        succs = [extend(state, plainchar, cipherchar)] <font color="cc33cc">#????</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="goal_test">goal_test</b>(self, state):
+        <i><font color="green">"We're done when we get all 26 letters assigned."</font></i>
+        return len(state) &gt;= 26
+
+
+<hr></pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

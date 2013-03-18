@@ -1,0 +1,44 @@
+% !Mode:: "TeX:UTF-8"
+
+\def \xuewei{Master} % 定义学位 Doctor or Master
+
+\def\xueke{Engineering} % 定义学科 Engineering, Science, Management, or Arts
+
+\documentclass[12pt,openany,oneside]{book} 
+
+\input{setup/type.tex}    % 硕博类型
+\input{setup/package.tex} % 引用的宏包
+\graphicspath{{figures/}} %定义所有的eps文件在 figures 子目录下
+
+\begin{document}
+
+\input{setup/Definition} % 文本格式定义
+\input{setup/format}
+
+\frontmatter
+\input{preface/cover} % 封面
+
+%\clearpage{\pagestyle{empty}\cleardoublepage}     % 清除目录后面空页的页眉和页脚
+\mainmatter\defaultfont\sloppy\raggedbottom
+
+\include{body/chapter1}
+\include{body/chapter2}
+\include{body/chapter3}
+\include{body/chapter4}
+\include{body/chapter5}
+\include{body/conclusion}   % 结论
+
+\include{reference/refer}
+%\include{appendix/appA}    % 附录
+%\include{appendix/publications}    % 所发文章
+%\include{appendix/Authorization}   % 承诺
+%\include{appendix/acknowledgements}% 致谢
+
+%\ifxueweidoctor
+%\include{appendix/Resume}          % 博士学位论文有个人简介
+%\fi
+%\fi
+
+\clearpage
+
+\end{document} 

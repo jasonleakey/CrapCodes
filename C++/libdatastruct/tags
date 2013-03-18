@@ -1,0 +1,1086 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ADTLIST_H_	ADTList.h	33;"	d
+ADTLIST_H_	ADTList.h	33;"	d	language:C++
+ADTList	ADTList.h	/^        ADTList ();                           \/\/ constructor$/;"	p	class:ADTList	access:public	signature:()
+ADTList	ADTList.h	/^        ADTList ();                           \/\/ constructor$/;"	p	language:C++	class:ADTList	access:public	signature:()
+ADTList	ADTList.h	/^        ADTList (const ADTList &other); \/\/ copy constructor$/;"	p	class:ADTList	access:public	signature:(const ADTList &other)
+ADTList	ADTList.h	/^        ADTList (const ADTList &other); \/\/ copy constructor$/;"	p	language:C++	class:ADTList	access:public	signature:(const ADTList &other)
+ADTList	ADTList.h	/^class ADTList$/;"	c
+ADTList	ADTList.h	/^class ADTList$/;"	c	language:C++
+ADTList::ADTList	ADTList.h	/^        ADTList ();                           \/\/ constructor$/;"	p	class:ADTList	access:public	signature:()
+ADTList::ADTList	ADTList.h	/^        ADTList ();                           \/\/ constructor$/;"	p	language:C++	class:ADTList	access:public	signature:()
+ADTList::ADTList	ADTList.h	/^        ADTList (const ADTList &other); \/\/ copy constructor$/;"	p	class:ADTList	access:public	signature:(const ADTList &other)
+ADTList::ADTList	ADTList.h	/^        ADTList (const ADTList &other); \/\/ copy constructor$/;"	p	language:C++	class:ADTList	access:public	signature:(const ADTList &other)
+ADTList::clear	ADTList.h	/^        virtual void clear();$/;"	p	class:ADTList	access:public	signature:()
+ADTList::clear	ADTList.h	/^        virtual void clear();$/;"	p	language:C++	class:ADTList	access:public	signature:()
+ADTList::delete_elem	ADTList.h	/^        virtual bool delete_elem(const T& val, int idx);$/;"	p	class:ADTList	access:public	signature:(const T& val, int idx)
+ADTList::delete_elem	ADTList.h	/^        virtual bool delete_elem(int idx);$/;"	p	class:ADTList	access:public	signature:(int idx)
+ADTList::delete_elem	ADTList.h	/^        virtual bool delete_elem(int idx);$/;"	p	language:C++	class:ADTList	access:public	signature:(int idx)
+ADTList::find	ADTList.h	/^        virtual ListNode& find(const T& val) const;$/;"	p	class:ADTList	access:public	signature:(const T& val) const
+ADTList::find	ADTList.h	/^        virtual ListNode& find(const T& val) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& val) const
+ADTList::get_elem	ADTList.h	/^        virtual T& get_elem(const int idx) const;$/;"	p	class:ADTList	access:public	signature:(const int idx) const
+ADTList::get_elem	ADTList.h	/^        virtual T& get_elem(const int idx) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const int idx) const
+ADTList::getlength	ADTList.h	/^        virtual int getlength();$/;"	p	class:ADTList	access:public	signature:()
+ADTList::getlength	ADTList.h	/^        virtual int getlength();$/;"	p	language:C++	class:ADTList	access:public	signature:()
+ADTList::ins_elem	ADTList.h	/^        virtual bool ins_elem(const T& val, int idx);$/;"	p	class:ADTList	access:public	signature:(const T& val, int idx)
+ADTList::ins_elem	ADTList.h	/^        virtual bool ins_elem(const T& val, int idx);$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& val, int idx)
+ADTList::isempty	ADTList.h	/^        virtual bool isempty();$/;"	p	class:ADTList	access:public	signature:()
+ADTList::isempty	ADTList.h	/^        virtual bool isempty();$/;"	p	language:C++	class:ADTList	access:public	signature:()
+ADTList::next_elem	ADTList.h	/^        virtual T& next_elem(const T& curVal) const;$/;"	p	class:ADTList	access:public	signature:(const T& curVal) const
+ADTList::next_elem	ADTList.h	/^        virtual T& next_elem(const T& curVal) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& curVal) const
+ADTList::operator =	ADTList.h	/^        virtual ADTList& operator = (const ADTList &other); \/\/ assignment operator$/;"	p	class:ADTList	access:public	signature:(const ADTList &other)
+ADTList::operator =	ADTList.h	/^        virtual ADTList& operator = (const ADTList &other); \/\/ assignment operator$/;"	p	language:C++	class:ADTList	access:public	signature:(const ADTList &other)
+ADTList::prior_elem	ADTList.h	/^        virtual T& prior_elem(const T& curVal) const;$/;"	p	class:ADTList	access:public	signature:(const T& curVal) const
+ADTList::prior_elem	ADTList.h	/^        virtual T& prior_elem(const T& curVal) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& curVal) const
+ADTList::set_elem	ADTList.h	/^        virtual T& set_elem(const int idx) const;$/;"	p	class:ADTList	access:public	signature:(const int idx) const
+ADTList::set_elem	ADTList.h	/^        virtual T& set_elem(const int idx) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const int idx) const
+ADTList::traverse	ADTList.h	/^        virtual void traverse(void (*visit)());$/;"	p	class:ADTList	access:public	signature:(void (*visit)())
+ADTList::traverse	ADTList.h	/^        virtual void traverse(void (*visit)());$/;"	p	language:C++	class:ADTList	access:public	signature:(void (*visit)())
+ADTList::~ADTList	ADTList.h	/^        virtual ~ADTList ();                          \/\/ destructor$/;"	p	class:ADTList	access:public	signature:()
+ADTList::~ADTList	ADTList.h	/^        virtual ~ADTList ();                          \/\/ destructor$/;"	p	language:C++	class:ADTList	access:public	signature:()
+BINTREE_H_	bintree.h	34;"	d	language:C++
+BinTree	bintree.h	/^        BinTree() : root(NULL) {}                           \/\/ constructor$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree	bintree.h	/^class BinTree$/;"	c	language:C++
+BinTree::BinTree	bintree.h	/^        BinTree() : root(NULL) {}                           \/\/ constructor$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree::create_bintree	bintree.cpp	/^void BinTree<T>::create_bintree (istream& is, BinTreeNode<T>*& subtree)$/;"	f	language:C++	class:BinTree	signature:(istream& is, BinTreeNode<T>*& subtree)
+BinTree::deletechild	bintree.cpp	/^bool BinTree<T>::deletechild (const BinTreeNode<T>* current, Direct d)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, Direct d)
+BinTree::depth	bintree.cpp	/^int BinTree<T>::depth () const$/;"	f	language:C++	class:BinTree	signature:() const
+BinTree::destroy	bintree.cpp	/^void BinTree<T>::destroy (BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(BinTreeNode<T>* current)
+BinTree::get_leftsibling	bintree.cpp	/^BinTreeNode<T>* BinTree<T>::get_leftsibling (const BinTreeNode<T>* current) $/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+BinTree::get_leftsibling	bintree.cpp	/^BinTreeNode<T>* BinTree<T>::get_leftsibling (const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+BinTree::get_rightsibling	bintree.cpp	/^BinTreeNode<T>* BinTree<T>::get_rightsibling (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+BinTree::get_root	bintree.h	/^        BinTreeNode<T>* get_root() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+BinTree::inorder_traverse	bintree.cpp	/^void BinTree<T>::inorder_traverse (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+BinTree::inorder_traverse	bintree.cpp	/^void BinTree<T>::inorder_traverse (const BinTreeNode<T>* current,$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, void(*visit)(T data))
+BinTree::inorder_traverse	bintree.h	/^        void inorder_traverse()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree::inorder_traverse	bintree.h	/^        void inorder_traverse(void (*visit)(T data))$/;"	f	language:C++	class:BinTree	access:public	signature:(void (*visit)(T data))
+BinTree::inorder_traverse_nore	bintree.cpp	/^void BinTree<T>::inorder_traverse_nore ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::inorder_traverse_nore2	bintree.cpp	/^void BinTree<T>::inorder_traverse_nore2 ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::insertchild	bintree.cpp	/^bool BinTree<T>::insertchild (const BinTreeNode<T>* current, Direct d, const BinTree<T>* other)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, Direct d, const BinTree<T>* other)
+BinTree::insertchild	bintree.cpp	/^bool BinTree<T>::insertchild (const BinTreeNode<T>*)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>*)
+BinTree::isempty	bintree.h	/^        bool isempty() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+BinTree::levelorder_traverse	bintree.cpp	/^void BinTree<T>::levelorder_traverse ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::operator <<	bintree.h	/^        friend ostream& operator << (ostream& os, BinTree<T>& obj)$/;"	f	language:C++	class:BinTree	access:friend	signature:(ostream& os, BinTree<T>& obj)
+BinTree::operator <<	bintree.h	/^        friend ostream& operator << (ostream& os, const BinTree<T>& obj)$/;"	f	language:C++	class:BinTree	access:friend	signature:(ostream& os, const BinTree<T>& obj)
+BinTree::operator =	bintree.cpp	/^BinTree BinTree<T>::operator = (const BinTree& other)$/;"	f	language:C++	class:BinTree	signature:(const BinTree& other)
+BinTree::operator =	bintree.cpp	/^BinTree& BinTree<T>::operator = (const BinTree& other)$/;"	f	language:C++	class:BinTree	signature:(const BinTree& other)
+BinTree::operator >>	bintree.h	/^        friend istream& operator >> (istream& is, BinTree<T>& obj)$/;"	f	language:C++	class:BinTree	access:friend	signature:(istream& is, BinTree<T>& obj)
+BinTree::parent	bintree.cpp	/^const BinTreeNode<T>& BinTree<T>::parent (const BinTreeNode<T>& current)\\$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>& current) const
+BinTree::parent	bintree.cpp	/^const BinTreeNode<T>* BinTree<T>::parent (const BinTreeNode<T>* current)\\$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+BinTree::parent	bintree.cpp	/^const BinTreeNode<T>* BinTree<T>::parent (const BinTreeNode<T>* start, \\$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* start, \ const BinTreeNode<T>* current) const
+BinTree::parent	bintree.h	/^        const BinTreeNode<T>* parent(const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	access:public	signature:(const BinTreeNode<T>* current) const
+BinTree::postorder_traverse	bintree.cpp	/^void BinTree<T>::postorder_traverse (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+BinTree::postorder_traverse	bintree.cpp	/^void BinTree<T>::postorder_traverse (const BinTreeNode<T>* current,$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, void (*visit)(T data))
+BinTree::postorder_traverse	bintree.h	/^        void postorder_traverse()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree::preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* )$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* )
+BinTree::preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+BinTree::preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+BinTree::preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* current,$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, void (*visit)(T data))
+BinTree::preorder_traverse	bintree.h	/^        void preorder_traverse() $/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree::preorder_traverse	bintree.h	/^        void preorder_traverse() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+BinTree::preorder_traverse	bintree.h	/^        void preorder_traverse()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree::preorder_traverse	bintree.h	/^        void preorder_traverse(void (*visit)(T data))$/;"	f	language:C++	class:BinTree	access:public	signature:(void (*visit)(T data))
+BinTree::preorder_traverse_nore	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::preorder_traverse_nore	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore (<+argument list+>)$/;"	f	language:C++	class:BinTree	signature:(<+argument list+>)
+BinTree::preorder_traverse_nore	bintree.h	/^        preorder_traverse_nore()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTree::preorder_traverse_nore2	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore2 ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::preorder_traverse_nore3	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore3 ()$/;"	f	language:C++	class:BinTree	signature:()
+BinTree::printout	bintree.cpp	/^void BinTree<T>::printout () const$/;"	f	language:C++	class:BinTree	signature:() const
+BinTree::printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* curTree) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* curTree) const
+BinTree::printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* cur_tree) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* cur_tree) const
+BinTree::printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* current) const
+BinTree::printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* subtree) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* subtree) const
+BinTree::printout	bintree.cpp	/^void BinTree<T>::printout (const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+BinTree::root	bintree.h	/^        BinTreeNode<T>* root() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+BinTree::root	bintree.h	/^        BinTreeNode<T>* root;$/;"	m	language:C++	class:BinTree	access:private
+BinTree::root	bintree.h	/^        const BinTreeNode<T>* root() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+BinTree::~BinTree	bintree.h	/^        ~BinTree() \/\/ destructor$/;"	f	language:C++	class:BinTree	access:public	signature:()
+BinTreeNode	bintree.cpp	/^BinTreeNode<T>::BinTreeNode (<+argument list+>)$/;"	f	language:C++	class:BinTreeNode	signature:(<+argument list+>)
+BinTreeNode	bintree.cpp	/^BinTreeNode<T>::BinTreeNode (const BinTreeNode<T>& other)$/;"	f	language:C++	class:BinTreeNode	signature:(const BinTreeNode<T>& other)
+BinTreeNode	bintree.h	/^        BinTreeNode(const T& val = NULL, BinTreeNode<T>* lptr = NULL,$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val = NULL, BinTreeNode<T>* lptr = NULL, BinTreeNode<T>* rptr = NULL)
+BinTreeNode	bintree.h	/^class BinTreeNode$/;"	c	language:C++
+BinTreeNode::BinTreeNode	bintree.cpp	/^BinTreeNode<T>::BinTreeNode (<+argument list+>)$/;"	f	language:C++	class:BinTreeNode	signature:(<+argument list+>)
+BinTreeNode::BinTreeNode	bintree.cpp	/^BinTreeNode<T>::BinTreeNode (const BinTreeNode<T>& other)$/;"	f	language:C++	class:BinTreeNode	signature:(const BinTreeNode<T>& other)
+BinTreeNode::BinTreeNode	bintree.h	/^        BinTreeNode(const T& val = NULL, BinTreeNode<T>* lptr = NULL,$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val = NULL, BinTreeNode<T>* lptr = NULL, BinTreeNode<T>* rptr = NULL)
+BinTreeNode::data	bintree.h	/^        T data;$/;"	m	language:C++	class:BinTreeNode	access:private
+BinTreeNode::get_data	bintree.cpp	/^inline T& BinTreeNode<T>::get_data() const$/;"	f	language:C++	class:BinTreeNode	signature:() const
+BinTreeNode::get_data	bintree.h	/^        T get_data() const { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+BinTreeNode::get_data	bintree.h	/^        T& get_data() const { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+BinTreeNode::get_data	bintree.h	/^        T& get_data() { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:()
+BinTreeNode::get_data	bintree.h	/^        const T& get_data() const { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+BinTreeNode::get_lchild	bintree.h	/^        BinTreeNode<T>* get_lchild() const { return lchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+BinTreeNode::get_lchild	bintree.h	/^        BinTreeNode<T>* get_lchild() { return lchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:()
+BinTreeNode::get_rchild	bintree.h	/^        BinTreeNode<T>* get_rchild() const { return rchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+BinTreeNode::get_rchild	bintree.h	/^        BinTreeNode<T>* get_rchild() { return rchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:()
+BinTreeNode::lchild	bintree.h	/^        BinTreeNode<T>* lchild;$/;"	m	language:C++	class:BinTreeNode	access:private
+BinTreeNode::operator =	bintree.cpp	/^BinTreeNode<T>& BinTreeNode<T>::operator = (const BinTreeNode<T>& other)$/;"	f	language:C++	class:BinTreeNode	signature:(const BinTreeNode<T>& other)
+BinTreeNode::rchild	bintree.h	/^        BinTreeNode<T>* rchild;$/;"	m	language:C++	class:BinTreeNode	access:private
+BinTreeNode::set_data	bintree.cpp	/^inline void BinTreeNode<T>::set_data (T value)$/;"	f	language:C++	class:BinTreeNode	signature:(T value)
+BinTreeNode::set_data	bintree.cpp	/^inline void BinTreeNode<T>::set_data (T& value)$/;"	f	language:C++	class:BinTreeNode	signature:(T& value)
+BinTreeNode::set_data	bintree.cpp	/^inline void BinTreeNode<T>::set_data (const T& value)$/;"	f	language:C++	class:BinTreeNode	signature:(const T& value)
+BinTreeNode::set_data	bintree.h	/^        void set_data(const T& val) const { data = val; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val) const
+BinTreeNode::set_data	bintree.h	/^        void set_data(const T& val) const { data = }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val) const
+BinTreeNode::set_data	bintree.h	/^        void set_data(const T& val) { data = val; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val)
+BinTreeNode::set_lchild	bintree.h	/^        void set_lchild(BinTreeNode<T>* lval) { }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* lval)
+BinTreeNode::set_lchild	bintree.h	/^        void set_lchild(BinTreeNode<T>* ptr) { lchild = ptr; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* ptr)
+BinTreeNode::set_lchild	bintree.h	/^        void set_lchild(BinTreeNode<T>* ptr) { }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* ptr)
+BinTreeNode::set_rchild	bintree.h	/^        void set_rchild(BinTreeNode<T>* ptr) { rchild = ptr; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* ptr)
+CIRCLELIST_H_	circlelist.h	34;"	d
+CIRCLELIST_H_	circlelist.h	34;"	d	language:C++
+CircleList	circlelist.cpp	/^CircleList<T>::CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList	circlelist.cpp	/^CircleList<T>::CircleList (const T* vals, int size)$/;"	f	language:C++	class:CircleList	signature:(const T* vals, int size)
+CircleList	circlelist.h	/^        CircleList ();                           \/\/ constructor$/;"	p	class:CircleList	access:public	signature:()
+CircleList	circlelist.h	/^        CircleList ();                           \/\/ constructor$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList	circlelist.h	/^        CircleList (const CircleList &other); \/\/ copy constructor$/;"	p	class:CircleList	access:public	signature:(const CircleList &other)
+CircleList	circlelist.h	/^        CircleList (const T vals[], int size);  \/\/ constructor$/;"	p	class:CircleList	access:public	signature:(const T vals[], int size)
+CircleList	circlelist.h	/^        CircleList (const T* vals, int size);  \/\/ constructor$/;"	p	class:CircleList	access:public	signature:(const T* vals, int size)
+CircleList	circlelist.h	/^        CircleList (const T* vals, int size);  \/\/ constructor$/;"	p	language:C++	class:CircleList	access:public	signature:(const T* vals, int size)
+CircleList	circlelist.h	/^        CircleList (const T* vals[], int size);  \/\/ constructor$/;"	p	class:CircleList	access:public	signature:(const T* vals[], int size)
+CircleList	circlelist.h	/^CircleList<T>::CircleList ()$/;"	f	class:CircleList	signature:()
+CircleList	circlelist.h	/^CircleList<T>::CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList	circlelist.h	/^CircleList<T>::CircleList (const T vals[], int size)$/;"	f	class:CircleList	signature:(const T vals[], int size)
+CircleList	circlelist.h	/^CircleList<T>::CircleList (const T* vals, int size)$/;"	f	class:CircleList	signature:(const T* vals, int size)
+CircleList	circlelist.h	/^CircleList<T>::CircleList (const T* vals, int size)$/;"	f	language:C++	class:CircleList	signature:(const T* vals, int size)
+CircleList	circlelist.h	/^CircleList<T>::CircleList (const T* vals[], int size)$/;"	f	class:CircleList	signature:(const T* vals[], int size)
+CircleList	circlelist.h	/^class CircleList : public ADTList<T>$/;"	c	inherits:ADTList
+CircleList	circlelist.h	/^class CircleList$/;"	c
+CircleList	circlelist.h	/^class CircleList$/;"	c	language:C++
+CircleList	circlelist.h	/^void CircleList<T>::CircleList ()$/;"	f	class:CircleList	signature:()
+CircleList	circlelist.h	/^void CircleList<T>::CircleList (const T* vals[], int size)$/;"	f	class:CircleList	signature:(const T* vals[], int size)
+CircleList::CircleList	circlelist.cpp	/^CircleList<T>::CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::CircleList	circlelist.cpp	/^CircleList<T>::CircleList (const T* vals, int size)$/;"	f	language:C++	class:CircleList	signature:(const T* vals, int size)
+CircleList::CircleList	circlelist.h	/^        CircleList ();                           \/\/ constructor$/;"	p	class:CircleList	access:public	signature:()
+CircleList::CircleList	circlelist.h	/^        CircleList ();                           \/\/ constructor$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::CircleList	circlelist.h	/^        CircleList (const CircleList &other); \/\/ copy constructor$/;"	p	class:CircleList	access:public	signature:(const CircleList &other)
+CircleList::CircleList	circlelist.h	/^        CircleList (const T vals[], int size);  \/\/ constructor$/;"	p	class:CircleList	access:public	signature:(const T vals[], int size)
+CircleList::CircleList	circlelist.h	/^        CircleList (const T* vals, int size);  \/\/ constructor$/;"	p	class:CircleList	access:public	signature:(const T* vals, int size)
+CircleList::CircleList	circlelist.h	/^        CircleList (const T* vals, int size);  \/\/ constructor$/;"	p	language:C++	class:CircleList	access:public	signature:(const T* vals, int size)
+CircleList::CircleList	circlelist.h	/^        CircleList (const T* vals[], int size);  \/\/ constructor$/;"	p	class:CircleList	access:public	signature:(const T* vals[], int size)
+CircleList::CircleList	circlelist.h	/^CircleList<T>::CircleList ()$/;"	f	class:CircleList	signature:()
+CircleList::CircleList	circlelist.h	/^CircleList<T>::CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::CircleList	circlelist.h	/^CircleList<T>::CircleList (const T vals[], int size)$/;"	f	class:CircleList	signature:(const T vals[], int size)
+CircleList::CircleList	circlelist.h	/^CircleList<T>::CircleList (const T* vals, int size)$/;"	f	class:CircleList	signature:(const T* vals, int size)
+CircleList::CircleList	circlelist.h	/^CircleList<T>::CircleList (const T* vals, int size)$/;"	f	language:C++	class:CircleList	signature:(const T* vals, int size)
+CircleList::CircleList	circlelist.h	/^CircleList<T>::CircleList (const T* vals[], int size)$/;"	f	class:CircleList	signature:(const T* vals[], int size)
+CircleList::CircleList	circlelist.h	/^void CircleList<T>::CircleList ()$/;"	f	class:CircleList	signature:()
+CircleList::CircleList	circlelist.h	/^void CircleList<T>::CircleList (const T* vals[], int size)$/;"	f	class:CircleList	signature:(const T* vals[], int size)
+CircleList::CircleList::clear	circlelist.h	/^void CircleList<T>::clear ()$/;"	f	class:CircleList::CircleList	access:public	signature:()
+CircleList::CircleList::delete_elem	circlelist.h	/^bool CircleList<T>::delete_elem (int idx)$/;"	f	class:CircleList::CircleList	access:public	signature:(int idx)
+CircleList::CircleList::get_elem	circlelist.h	/^inline T& CircleList<T>::get_elem (const int idx) const$/;"	f	class:CircleList::CircleList	access:public	signature:(const int idx) const
+CircleList::CircleList::getlength	circlelist.h	/^int CircleList<T>::getlength ()$/;"	f	class:CircleList::CircleList	access:public	signature:()
+CircleList::CircleList::ins_elem	circlelist.h	/^bool CircleList<T>::ins_elem (const T& val, int idx)$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& val, int idx)
+CircleList::CircleList::isempty	circlelist.h	/^bool CircleList<T>::isempty()$/;"	f	class:CircleList::CircleList	access:public	signature:()
+CircleList::CircleList::locate_elem	circlelist.h	/^CircleListNode* CircleList<T>::locate_elem(const T& val) const$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& val) const
+CircleList::CircleList::next_elem	circlelist.h	/^T& CircleList<T>::next_elem(const T& curVal) const$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& curVal) const
+CircleList::CircleList::prior_elem	circlelist.h	/^T& CircleList<T>::prior_elem() const$/;"	f	class:CircleList::CircleList	access:public	signature:() const
+CircleList::CircleList::set_elem	circlelist.h	/^inline bool CircleList<T>::set_elem (const T& val, const int idx)$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& val, const int idx)
+CircleList::CircleList::traverse	circlelist.h	/^void CircleList<T>::traverse(void (*visit)())$/;"	f	class:CircleList::CircleList	access:public	signature:(void (*visit)())
+CircleList::CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (T val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	class:CircleList::CircleListNode	access:public	signature:(T val, CircleListNode<T>* next)
+CircleList::clear	circlelist.cpp	/^void CircleList<T>::clear ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::clear	circlelist.h	/^        void clear();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::clear	circlelist.h	/^        void clear();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::clear	circlelist.h	/^        void clear();$/;"	p	signature:()
+CircleList::clear	circlelist.h	/^void CircleList<T>::clear ()$/;"	f	class:CircleList	signature:()
+CircleList::clear	circlelist.h	/^void CircleList<T>::clear ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::curr	circlelist.h	/^        CircleListNode<T>* curr;$/;"	l
+CircleList::curr	circlelist.h	/^        CircleListNode<T>* curr;$/;"	m	class:CircleList	access:private
+CircleList::curr	circlelist.h	/^        CircleListNode<T>* curr;$/;"	m	language:C++	class:CircleList	access:private
+CircleList::curr2head	circlelist.h	/^        void curr2head()$/;"	f	class:CircleList	access:public	signature:()
+CircleList::curr2head	circlelist.h	/^        void curr2head()$/;"	f	language:C++	class:CircleList	access:public	signature:()
+CircleList::del_curr	circlelist.h	/^        bool del_curr();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::delete_elem	circlelist.h	/^        bool delete_elem(const T& val, int idx);$/;"	p	class:CircleList	access:public	signature:(const T& val, int idx)
+CircleList::delete_elem	circlelist.h	/^        bool delete_elem(int idx);$/;"	p	class:CircleList	access:public	signature:(int idx)
+CircleList::delete_elem	circlelist.h	/^        bool delete_elem(int idx);$/;"	p	signature:(int idx)
+CircleList::delete_elem	circlelist.h	/^bool CircleList<T>::delete_elem (const T& val, int idx)$/;"	f	class:CircleList	signature:(const T& val, int idx)
+CircleList::delete_elem	circlelist.h	/^bool CircleList<T>::delete_elem (int idx)$/;"	f	class:CircleList	signature:(int idx)
+CircleList::find	circlelist.cpp	/^CircleListNode<T>* CircleList<T>::find (const T& val) const$/;"	f	language:C++	class:CircleList	signature:(const T& val) const
+CircleList::find	circlelist.h	/^        CircleListNode<T>* find(const T& val) const;$/;"	p	class:CircleList	access:public	signature:(const T& val) const
+CircleList::find	circlelist.h	/^        CircleListNode<T>* find(const T& val) const;$/;"	p	language:C++	class:CircleList	access:public	signature:(const T& val) const
+CircleList::find	circlelist.h	/^        bool find(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+CircleList::find	circlelist.h	/^CircleListNode<T>* CircleList<T>::find (const T& val) const$/;"	f	class:CircleList	signature:(const T& val) const
+CircleList::find	circlelist.h	/^CircleListNode<T>* CircleList<T>::find (const T& val) const$/;"	f	language:C++	class:CircleList	signature:(const T& val) const
+CircleList::firster	circlelist.h	/^        void firster()$/;"	f	class:CircleList	access:public	signature:()
+CircleList::get_elem	circlelist.h	/^        T& get_elem(const int idx) const;$/;"	p	class:CircleList	access:public	signature:(const int idx) const
+CircleList::get_elem	circlelist.h	/^inline T& CircleList<T>::get_elem (const int idx) const$/;"	f	class:CircleList	signature:(const int idx) const
+CircleList::getdata	circlelist.cpp	/^T& CircleList<T>::getdata () const$/;"	f	language:C++	class:CircleList	signature:() const
+CircleList::getdata	circlelist.h	/^        T& getdata() const;$/;"	p	class:CircleList	access:public	signature:() const
+CircleList::getdata	circlelist.h	/^        T& getdata() const;$/;"	p	language:C++	class:CircleList	access:public	signature:() const
+CircleList::getdata	circlelist.h	/^T& CircleList<T>::getdata () const$/;"	f	class:CircleList	signature:() const
+CircleList::getdata	circlelist.h	/^T& CircleList<T>::getdata () const$/;"	f	language:C++	class:CircleList	signature:() const
+CircleList::getlength	circlelist.h	/^        int getlength() const;$/;"	p	class:CircleList	access:public	signature:() const
+CircleList::getlength	circlelist.h	/^        int getlength() const;$/;"	p	signature:() const
+CircleList::getlength	circlelist.h	/^        int getlength();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::getlength	circlelist.h	/^int CircleList<T>::getlength ()$/;"	f	class:CircleList	signature:()
+CircleList::header	circlelist.h	/^        CircleListNode* header;$/;"	m	class:CircleList	access:private
+CircleList::header	circlelist.h	/^        CircleListNode<T>* header;$/;"	l
+CircleList::header	circlelist.h	/^        CircleListNode<T>* header;$/;"	m	class:CircleList	access:private
+CircleList::header	circlelist.h	/^        CircleListNode<T>* header;$/;"	m	language:C++	class:CircleList	access:private
+CircleList::ins_elem	circlelist.h	/^        bool ins_elem(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+CircleList::ins_elem	circlelist.h	/^        bool ins_elem(const T& val, int idx);$/;"	p	class:CircleList	access:public	signature:(const T& val, int idx)
+CircleList::ins_elem	circlelist.h	/^        bool ins_elem(const T& val, int idx);$/;"	p	signature:(const T& val, int idx)
+CircleList::ins_elem	circlelist.h	/^bool CircleList<T>::ins_elem (const T& val, int idx)$/;"	f	class:CircleList	signature:(const T& val, int idx)
+CircleList::ins_elem	circlelist.h	/^bool CircleList<T>::ins_elem(const T& val, int idx)$/;"	f	class:CircleList	signature:(const T& val, int idx)
+CircleList::insert	circlelist.h	/^        bool insert(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+CircleList::insertafter	circlelist.cpp	/^bool CircleList<T>::insertafter (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+CircleList::insertafter	circlelist.h	/^        bool insertafter(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+CircleList::insertafter	circlelist.h	/^        bool insertafter(const T& val);$/;"	p	language:C++	class:CircleList	access:public	signature:(const T& val)
+CircleList::insertafter	circlelist.h	/^bool CircleList<T>::insertafter (const T& val)$/;"	f	class:CircleList	signature:(const T& val)
+CircleList::insertafter	circlelist.h	/^bool CircleList<T>::insertafter (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+CircleList::insertbefore	circlelist.cpp	/^bool CircleList<T>::insertbefore (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+CircleList::insertbefore	circlelist.h	/^        bool insertbefore(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+CircleList::insertbefore	circlelist.h	/^        bool insertbefore(const T& val);$/;"	p	language:C++	class:CircleList	access:public	signature:(const T& val)
+CircleList::insertbefore	circlelist.h	/^bool CircleList<T>::insertbefore (const T& val)$/;"	f	class:CircleList	signature:(const T& val)
+CircleList::insertbefore	circlelist.h	/^bool CircleList<T>::insertbefore (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+CircleList::isempty	circlelist.h	/^        bool isempty()$/;"	f	class:CircleList	access:public	signature:()
+CircleList::isempty	circlelist.h	/^        bool isempty()$/;"	f	language:C++	class:CircleList	access:public	signature:()
+CircleList::isempty	circlelist.h	/^        bool isempty();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::isempty	circlelist.h	/^bool CircleList<T>::isempty()$/;"	f	class:CircleList	signature:()
+CircleList::josephus	circlelist.cpp	/^bool CircleList<T>::josephus (int round, int count, void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(int round, int count, void (*visit)(const T&))
+CircleList::josephus	circlelist.h	/^        bool josephus(int n, int m);$/;"	p	class:CircleList	access:public	signature:(int n, int m)
+CircleList::josephus	circlelist.h	/^        bool josephus(int n, int m, void (*visit)());$/;"	p	class:CircleList	access:public	signature:(int n, int m, void (*visit)())
+CircleList::josephus	circlelist.h	/^        bool josephus(int n, int m, void (*visit)(const T&));$/;"	p	class:CircleList	access:public	signature:(int n, int m, void (*visit)(const T&))
+CircleList::josephus	circlelist.h	/^        bool josephus(int round, int count, void (*visit)(const T&));$/;"	p	class:CircleList	access:public	signature:(int round, int count, void (*visit)(const T&))
+CircleList::josephus	circlelist.h	/^        bool josephus(int round, int count, void (*visit)(const T&));$/;"	p	language:C++	class:CircleList	access:public	signature:(int round, int count, void (*visit)(const T&))
+CircleList::josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count)$/;"	f	class:CircleList	signature:(int round, int count)
+CircleList::josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count, void (*visit)())$/;"	f	class:CircleList	signature:(int round, int count, void (*visit)())
+CircleList::josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count, void (*visit)(const T&))$/;"	f	class:CircleList	signature:(int round, int count, void (*visit)(const T&))
+CircleList::josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count, void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(int round, int count, void (*visit)(const T&))
+CircleList::length	circlelist.cpp	/^int CircleList<T>::length () $/;"	f	language:C++	class:CircleList	signature:()
+CircleList::length	circlelist.h	/^        int length() const;$/;"	p	class:CircleList	access:public	signature:() const
+CircleList::length	circlelist.h	/^        int length();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::length	circlelist.h	/^        int length();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::length	circlelist.h	/^int CircleList<T>::length () $/;"	f	class:CircleList	signature:()
+CircleList::length	circlelist.h	/^int CircleList<T>::length () $/;"	f	language:C++	class:CircleList	signature:()
+CircleList::locate_elem	circlelist.h	/^        node* locate_elem(const T& val) const;$/;"	p	class:CircleList	access:public	signature:(const T& val) const
+CircleList::locate_elem	circlelist.h	/^CircleListNode* CircleList<T>::locate_elem(const T& val) const$/;"	f	class:CircleList	signature:(const T& val) const
+CircleList::next	circlelist.cpp	/^bool CircleList<T>::next ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::next	circlelist.h	/^        bool next() const;$/;"	p	class:CircleList	access:public	signature:() const
+CircleList::next	circlelist.h	/^        bool next();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::next	circlelist.h	/^        bool next();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::next	circlelist.h	/^bool CircleList<T>::next ()$/;"	f	class:CircleList	signature:()
+CircleList::next	circlelist.h	/^bool CircleList<T>::next ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::next_elem	circlelist.h	/^        T& next_elem(const T& curVal) const;$/;"	p	class:CircleList	access:public	signature:(const T& curVal) const
+CircleList::next_elem	circlelist.h	/^        T& next_elem(const T& curVal) const;$/;"	p	signature:(const T& curVal) const
+CircleList::next_elem	circlelist.h	/^T& CircleList<T>::next_elem(const T& curVal) const$/;"	f	class:CircleList	signature:(const T& curVal) const
+CircleList::operator =	circlelist.cpp	/^CircleList<T>& CircleList<T>::operator = (const CircleList<T>& other)$/;"	f	language:C++	class:CircleList	signature:(const CircleList<T>& other)
+CircleList::operator =	circlelist.h	/^        CircleList& operator = (const CircleList &other); \/\/ assignment operator$/;"	p	class:CircleList	access:public	signature:(const CircleList &other)
+CircleList::operator =	circlelist.h	/^        CircleList& operator = (const CircleList &other); \/\/ assignment operator$/;"	p	signature:(const CircleList &other)
+CircleList::operator =	circlelist.h	/^        CircleList<T>& operator = (const CircleList<T>& other); \/\/ assignment operator$/;"	p	class:CircleList	access:public	signature:(const CircleList<T>& other)
+CircleList::operator =	circlelist.h	/^        CircleList<T>& operator = (const CircleList<T>& other); \/\/ assignment operator$/;"	p	language:C++	class:CircleList	access:public	signature:(const CircleList<T>& other)
+CircleList::operator =	circlelist.h	/^CircleList<T>& CircleList<T>::operator = (const CircleList<T>& other)$/;"	f	class:CircleList	signature:(const CircleList<T>& other)
+CircleList::operator =	circlelist.h	/^CircleList<T>& CircleList<T>::operator = (const CircleList<T>& other)$/;"	f	language:C++	class:CircleList	signature:(const CircleList<T>& other)
+CircleList::p	circlelist.h	/^        CircleListNode<T> p = new CircleListNode<T>(val, q->link);$/;"	l
+CircleList::prior	circlelist.cpp	/^bool CircleList<T>::prior ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::prior	circlelist.h	/^        bool prior() const;$/;"	p	class:CircleList	access:public	signature:() const
+CircleList::prior	circlelist.h	/^        bool prior();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::prior	circlelist.h	/^        bool prior();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::prior	circlelist.h	/^CircleList<T>::prior (<+argument list+>)$/;"	f	class:CircleList	signature:(<+argument list+>)
+CircleList::prior	circlelist.h	/^bool CircleList<T>::prior ()$/;"	f	class:CircleList	signature:()
+CircleList::prior	circlelist.h	/^bool CircleList<T>::prior ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::prior_elem	circlelist.h	/^        T& prior_elem(const T& curVal) const;$/;"	p	class:CircleList	access:public	signature:(const T& curVal) const
+CircleList::prior_elem	circlelist.h	/^        bool prior_elem(const T& curVal) const;$/;"	p	class:CircleList	access:public	signature:(const T& curVal) const
+CircleList::prior_elem	circlelist.h	/^T& CircleList<T>::prior_elem() const$/;"	f	class:CircleList	signature:() const
+CircleList::prior_elem	circlelist.h	/^T& CircleList<T>::prior_elem(const T& curVal) const$/;"	f	class:CircleList	signature:(const T& curVal) const
+CircleList::q	circlelist.h	/^        CircleList<T> q = header;$/;"	l
+CircleList::q	circlelist.h	/^    CircleListNode* q = header->link;$/;"	l
+CircleList::q	circlelist.h	/^    struct node* q = header;$/;"	l
+CircleList::remove	circlelist.cpp	/^bool CircleList<T>::remove ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::remove	circlelist.h	/^        bool remove();$/;"	p	class:CircleList	access:public	signature:()
+CircleList::remove	circlelist.h	/^        bool remove();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::remove	circlelist.h	/^bool CircleList<T>::remove ()$/;"	f	class:CircleList	signature:()
+CircleList::remove	circlelist.h	/^bool CircleList<T>::remove ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::set_elem	circlelist.h	/^        bool set_elem(const T& val, const int idx);$/;"	p	class:CircleList	access:public	signature:(const T& val, const int idx)
+CircleList::set_elem	circlelist.h	/^inline bool CircleList<T>::set_elem (const T& val, const int idx)$/;"	f	class:CircleList	signature:(const T& val, const int idx)
+CircleList::sethead	circlelist.h	/^        void sethead()$/;"	f	class:CircleList	access:public	signature:()
+CircleList::traverse	circlelist.cpp	/^void CircleList<T>::traverse (void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(void (*visit)(const T&))
+CircleList::traverse	circlelist.h	/^        void traverse(void (*visit)());$/;"	p	class:CircleList	access:public	signature:(void (*visit)())
+CircleList::traverse	circlelist.h	/^        void traverse(void (*visit)());$/;"	p	signature:(void (*visit)())
+CircleList::traverse	circlelist.h	/^        void traverse(void (*visit)(const T&));$/;"	p	class:CircleList	access:public	signature:(void (*visit)(const T&))
+CircleList::traverse	circlelist.h	/^        void traverse(void (*visit)(const T&));$/;"	p	language:C++	class:CircleList	access:public	signature:(void (*visit)(const T&))
+CircleList::traverse	circlelist.h	/^void CircleList<T>::traverse (void (*visit)())$/;"	f	class:CircleList	signature:(void (*visit)())
+CircleList::traverse	circlelist.h	/^void CircleList<T>::traverse (void (*visit)(const T&))$/;"	f	class:CircleList	signature:(void (*visit)(const T&))
+CircleList::traverse	circlelist.h	/^void CircleList<T>::traverse (void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(void (*visit)(const T&))
+CircleList::traverse	circlelist.h	/^void CircleList<T>::traverse(void (*visit)())$/;"	f	class:CircleList	signature:(void (*visit)())
+CircleList::~CircleList	circlelist.cpp	/^CircleList<T>::~CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::~CircleList	circlelist.h	/^        ~CircleList ();                          \/\/ destructor$/;"	p	class:CircleList	access:public	signature:()
+CircleList::~CircleList	circlelist.h	/^        ~CircleList ();                          \/\/ destructor$/;"	p	language:C++	class:CircleList	access:public	signature:()
+CircleList::~CircleList	circlelist.h	/^CircleList<T>::~CircleList ()$/;"	f	class:CircleList	signature:()
+CircleList::~CircleList	circlelist.h	/^CircleList<T>::~CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+CircleList::~CircleList	circlelist.h	/^void CircleList<T>::~CircleList ()$/;"	f	class:CircleList	signature:()
+CircleListNode	circlelist.cpp	/^CircleListNode<T>::CircleListNode () : link(NULL)$/;"	f	language:C++	class:CircleListNode	signature:()
+CircleListNode	circlelist.cpp	/^CircleListNode<T>::CircleListNode (const T& val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	language:C++	class:CircleListNode	signature:(const T& val, CircleListNode<T>* next)
+CircleListNode	circlelist.h	/^        CircleListNode ();                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:()
+CircleListNode	circlelist.h	/^        CircleListNode (); \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:()
+CircleListNode	circlelist.h	/^        CircleListNode (); \/\/ constructor$/;"	p	language:C++	class:CircleListNode	access:public	signature:()
+CircleListNode	circlelist.h	/^        CircleListNode (CircleListNode<T>* next = NULL); \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(CircleListNode<T>* next = NULL)
+CircleListNode	circlelist.h	/^        CircleListNode (T val = NULL);                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(T val = NULL)
+CircleListNode	circlelist.h	/^        CircleListNode (T val = NULL, CircleListNode<T>* next = NULL);                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(T val = NULL, CircleListNode<T>* next = NULL)
+CircleListNode	circlelist.h	/^        CircleListNode (const CircleListNode &other); \/\/ copy constructor$/;"	p	class:CircleListNode	access:public	signature:(const CircleListNode &other)
+CircleListNode	circlelist.h	/^        CircleListNode (const T& val, CircleListNode<T>* next = NULL);                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(const T& val, CircleListNode<T>* next = NULL)
+CircleListNode	circlelist.h	/^        CircleListNode (const T& val, CircleListNode<T>* next = NULL);                           \/\/ constructor$/;"	p	language:C++	class:CircleListNode	access:public	signature:(const T& val, CircleListNode<T>* next = NULL)
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode () : data(NULL), link(NULL)$/;"	f	class:CircleListNode	signature:()
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode () : link(NULL)$/;"	f	class:CircleListNode	signature:()
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode () : link(NULL)$/;"	f	language:C++	class:CircleListNode	signature:()
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (T val) : data(val), link(NULL)$/;"	f	class:CircleListNode	signature:(T val)
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (T val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	class:CircleList::CircleListNode	access:public	signature:(T val, CircleListNode<T>* next)
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (T val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	class:CircleListNode	signature:(T val, CircleListNode<T>* next)
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (const T& val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	class:CircleListNode	signature:(const T& val, CircleListNode<T>* next)
+CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (const T& val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	language:C++	class:CircleListNode	signature:(const T& val, CircleListNode<T>* next)
+CircleListNode	circlelist.h	/^class CircleListNode $/;"	c
+CircleListNode	circlelist.h	/^class CircleListNode $/;"	c	language:C++
+CircleListNode	circlelist.h	/^class CircleListNode : public ListNode$/;"	c	inherits:ListNode
+CircleListNode::CircleListNode	circlelist.cpp	/^CircleListNode<T>::CircleListNode () : link(NULL)$/;"	f	language:C++	class:CircleListNode	signature:()
+CircleListNode::CircleListNode	circlelist.cpp	/^CircleListNode<T>::CircleListNode (const T& val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	language:C++	class:CircleListNode	signature:(const T& val, CircleListNode<T>* next)
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode ();                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:()
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (); \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:()
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (); \/\/ constructor$/;"	p	language:C++	class:CircleListNode	access:public	signature:()
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (CircleListNode<T>* next = NULL); \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(CircleListNode<T>* next = NULL)
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (T val = NULL);                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(T val = NULL)
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (T val = NULL, CircleListNode<T>* next = NULL);                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(T val = NULL, CircleListNode<T>* next = NULL)
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (const CircleListNode &other); \/\/ copy constructor$/;"	p	class:CircleListNode	access:public	signature:(const CircleListNode &other)
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (const T& val, CircleListNode<T>* next = NULL);                           \/\/ constructor$/;"	p	class:CircleListNode	access:public	signature:(const T& val, CircleListNode<T>* next = NULL)
+CircleListNode::CircleListNode	circlelist.h	/^        CircleListNode (const T& val, CircleListNode<T>* next = NULL);                           \/\/ constructor$/;"	p	language:C++	class:CircleListNode	access:public	signature:(const T& val, CircleListNode<T>* next = NULL)
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode () : data(NULL), link(NULL)$/;"	f	class:CircleListNode	signature:()
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode () : link(NULL)$/;"	f	class:CircleListNode	signature:()
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode () : link(NULL)$/;"	f	language:C++	class:CircleListNode	signature:()
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (T val) : data(val), link(NULL)$/;"	f	class:CircleListNode	signature:(T val)
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (T val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	class:CircleListNode	signature:(T val, CircleListNode<T>* next)
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (const T& val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	class:CircleListNode	signature:(const T& val, CircleListNode<T>* next)
+CircleListNode::CircleListNode	circlelist.h	/^CircleListNode<T>::CircleListNode (const T& val, CircleListNode<T>* next) : data(val), link(next)$/;"	f	language:C++	class:CircleListNode	signature:(const T& val, CircleListNode<T>* next)
+CircleListNode::data	circlelist.h	/^        T data;$/;"	m	class:CircleListNode	access:private
+CircleListNode::data	circlelist.h	/^        T data;$/;"	m	language:C++	class:CircleListNode	access:private
+CircleListNode::link	circlelist.h	/^        CircleListNode<T>* link;$/;"	m	class:CircleListNode	access:private
+CircleListNode::link	circlelist.h	/^        CircleListNode<T>* link;$/;"	m	language:C++	class:CircleListNode	access:private
+CircleListNode::operator =	circlelist.h	/^        CircleListNode& operator = (const CircleListNode &other); \/\/ assignment operator$/;"	p	class:CircleListNode	access:public	signature:(const CircleListNode &other)
+CircleListNode::~CircleListNode	circlelist.cpp	/^CircleListNode<T>::~CircleListNode ()$/;"	f	language:C++	class:CircleListNode	signature:()
+CircleListNode::~CircleListNode	circlelist.h	/^        ~CircleListNode ();                          \/\/ destructor$/;"	p	class:CircleListNode	access:public	signature:()
+CircleListNode::~CircleListNode	circlelist.h	/^        ~CircleListNode ();                          \/\/ destructor$/;"	p	language:C++	class:CircleListNode	access:public	signature:()
+CircleListNode::~CircleListNode	circlelist.h	/^CircleListNode<T>::~CircleListNode ()$/;"	f	class:CircleListNode	signature:()
+CircleListNode::~CircleListNode	circlelist.h	/^CircleListNode<T>::~CircleListNode ()$/;"	f	language:C++	class:CircleListNode	signature:()
+DEBUG_H_	debug.h	33;"	d
+DEBUG_H_	debug.h	33;"	d	language:C++
+Direct	bintree.h	/^enum Direct {$/;"	g	language:C++
+Direct	bintree.h	/^} Direct;				\/\/ ----------  end of enum Direct  ----------$/;"	t	language:C++	typeref:enum:__anon1
+Func	zero_sort.cpp	/^int Func(int* A, int nSize)$/;"	f	signature:(int* A, int nSize)
+HUAWEI_LIST_H_	linklist.h	30;"	d
+HUAWEI_LIST_H_	linklist.h	30;"	d	language:C++
+InsertAfter	linklist.cpp	/^void ListNode<T>::InsertAfter(ListNode<T>* p)$/;"	f	language:C++	class:ListNode	signature:(ListNode<T>* p)
+InsertAfter	linklist.h	/^    void InsertAfter(ListNode<T>* p);$/;"	p	class:ListNode	access:public	signature:(ListNode<T>* p)
+InsertAfter	linklist.h	/^    void InsertAfter(ListNode<T>* p);$/;"	p	language:C++	class:ListNode	access:public	signature:(ListNode<T>* p)
+InsertAfter	linklist.h	/^void ListNode<T>::InsertAfter(ListNode<T>* p)$/;"	f	class:ListNode	signature:(ListNode<T>* p)
+InsertAfter	linklist.h	/^void ListNode<T>::InsertAfter(ListNode<T>* p)$/;"	f	language:C++	class:ListNode	signature:(ListNode<T>* p)
+LEFT	bintree.h	/^    LEFT$/;"	e	language:C++	enum:Direct
+LEFT	bintree.h	/^    LEFT,$/;"	e	language:C++	enum:Direct
+LEFT	bintree.h	/^    LEFT,$/;"	e	language:C++	enum:__anon1
+List	linklist.cpp	/^List<T>::List(const T* values, int size)$/;"	f	language:C++	class:List	signature:(const T* values, int size)
+List	linklist.h	/^    List() {last = first = new ListNode<T>; }$/;"	f	class:List	access:public	signature:()
+List	linklist.h	/^    List() {last = first = new ListNode<T>; }$/;"	f	language:C++	class:List	access:public	signature:()
+List	linklist.h	/^    List(const T*, int);$/;"	p	class:List	access:public	signature:(const T*, int)
+List	linklist.h	/^    List(const T*, int);$/;"	p	language:C++	class:List	access:public	signature:(const T*, int)
+List	linklist.h	/^List<T>::List(const T* values, int size)$/;"	f	class:List	signature:(const T* values, int size)
+List	linklist.h	/^List<T>::List(const T* values, int size)$/;"	f	language:C++	class:List	signature:(const T* values, int size)
+List	linklist.h	/^class List {$/;"	c
+List	linklist.h	/^class List {$/;"	c	language:C++
+List::List	linklist.cpp	/^List<T>::List(const T* values, int size)$/;"	f	language:C++	class:List	signature:(const T* values, int size)
+List::List	linklist.h	/^    List() {last = first = new ListNode<T>; }$/;"	f	class:List	access:public	signature:()
+List::List	linklist.h	/^    List() {last = first = new ListNode<T>; }$/;"	f	language:C++	class:List	access:public	signature:()
+List::List	linklist.h	/^    List(const T*, int);$/;"	p	class:List	access:public	signature:(const T*, int)
+List::List	linklist.h	/^    List(const T*, int);$/;"	p	language:C++	class:List	access:public	signature:(const T*, int)
+List::List	linklist.h	/^List<T>::List(const T* values, int size)$/;"	f	class:List	signature:(const T* values, int size)
+List::List	linklist.h	/^List<T>::List(const T* values, int size)$/;"	f	language:C++	class:List	signature:(const T* values, int size)
+List::clear	linklist.cpp	/^void List<T>::clear()$/;"	f	language:C++	class:List	signature:()
+List::clear	linklist.h	/^    void clear();$/;"	p	class:List	access:public	signature:()
+List::clear	linklist.h	/^    void clear();$/;"	p	language:C++	class:List	access:public	signature:()
+List::clear	linklist.h	/^void List<T>::clear()$/;"	f	class:List	signature:()
+List::clear	linklist.h	/^void List<T>::clear()$/;"	f	language:C++	class:List	signature:()
+List::find	linklist.cpp	/^ListNode<T>* List<T>::find(const T& value)$/;"	f	language:C++	class:List	signature:(const T& value)
+List::find	linklist.cpp	/^ListNode<T>* List<T>::find(int index)$/;"	f	language:C++	class:List	signature:(int index)
+List::find	linklist.h	/^    ListNode<T>* find(const T&);$/;"	p	class:List	access:public	signature:(const T&)
+List::find	linklist.h	/^    ListNode<T>* find(const T&);$/;"	p	language:C++	class:List	access:public	signature:(const T&)
+List::find	linklist.h	/^    ListNode<T>* find(int);$/;"	p	class:List	access:public	signature:(int)
+List::find	linklist.h	/^    ListNode<T>* find(int);$/;"	p	language:C++	class:List	access:public	signature:(int)
+List::find	linklist.h	/^ListNode<T>* List<T>::find(const T& value)$/;"	f	class:List	signature:(const T& value)
+List::find	linklist.h	/^ListNode<T>* List<T>::find(const T& value)$/;"	f	language:C++	class:List	signature:(const T& value)
+List::find	linklist.h	/^ListNode<T>* List<T>::find(int index)$/;"	f	class:List	signature:(int index)
+List::find	linklist.h	/^ListNode<T>* List<T>::find(int index)$/;"	f	language:C++	class:List	signature:(int index)
+List::first	linklist.h	/^    ListNode<T>* first;$/;"	m	class:List	access:private
+List::first	linklist.h	/^    ListNode<T>* first;$/;"	m	language:C++	class:List	access:private
+List::get	linklist.cpp	/^const T* List<T>::get(int index) $/;"	f	language:C++	class:List	signature:(int index)
+List::get	linklist.h	/^    T* get(int) const;$/;"	p	class:List	access:public	signature:(int) const
+List::get	linklist.h	/^    const T* get(int index);$/;"	p	class:List	access:public	signature:(int index)
+List::get	linklist.h	/^    const T* get(int index);$/;"	p	language:C++	class:List	access:public	signature:(int index)
+List::get	linklist.h	/^T* List<T>::get(int index) const$/;"	f	class:List	signature:(int index) const
+List::get	linklist.h	/^const T* List<T>::get(int index) $/;"	f	class:List	signature:(int index)
+List::get	linklist.h	/^const T* List<T>::get(int index) $/;"	f	language:C++	class:List	signature:(int index)
+List::getlength	linklist.cpp	/^int List<T>::getlength() const$/;"	f	language:C++	class:List	signature:() const
+List::getlength	linklist.h	/^    int getlength() const;$/;"	p	class:List	access:public	signature:() const
+List::getlength	linklist.h	/^    int getlength() const;$/;"	p	language:C++	class:List	access:public	signature:() const
+List::getlength	linklist.h	/^int List<T>::getlength() const$/;"	f	class:List	signature:() const
+List::getlength	linklist.h	/^int List<T>::getlength() const$/;"	f	language:C++	class:List	signature:() const
+List::insert	linklist.cpp	/^bool List<T>::insert(const T& value, int index)$/;"	f	language:C++	class:List	signature:(const T& value, int index)
+List::insert	linklist.h	/^    bool insert(const T&, int);$/;"	p	class:List	access:public	signature:(const T&, int)
+List::insert	linklist.h	/^    bool insert(const T&, int);$/;"	p	language:C++	class:List	access:public	signature:(const T&, int)
+List::insert	linklist.h	/^bool List<T>::insert(const T& value, int index)$/;"	f	class:List	signature:(const T& value, int index)
+List::insert	linklist.h	/^bool List<T>::insert(const T& value, int index)$/;"	f	language:C++	class:List	signature:(const T& value, int index)
+List::last	linklist.h	/^    ListNode<T>* last;$/;"	m	class:List	access:private
+List::last	linklist.h	/^    ListNode<T>* last;$/;"	m	language:C++	class:List	access:private
+List::remove	linklist.cpp	/^T List<T>::remove (ListNode<T>* p)$/;"	f	language:C++	class:List	signature:(ListNode<T>* p)
+List::remove	linklist.cpp	/^T List<T>::remove(int index)$/;"	f	language:C++	class:List	signature:(int index)
+List::remove	linklist.h	/^    T remove(ListNode<T>*);$/;"	p	class:List	access:public	signature:(ListNode<T>*)
+List::remove	linklist.h	/^    T remove(ListNode<T>*);$/;"	p	language:C++	class:List	access:public	signature:(ListNode<T>*)
+List::remove	linklist.h	/^    T remove(int);$/;"	p	class:List	access:public	signature:(int)
+List::remove	linklist.h	/^    T remove(int);$/;"	p	language:C++	class:List	access:public	signature:(int)
+List::remove	linklist.h	/^    T* remove(int);$/;"	p	class:List	access:public	signature:(int)
+List::remove	linklist.h	/^T List<T>::remove (ListNode<T>* p)$/;"	f	class:List	signature:(ListNode<T>* p)
+List::remove	linklist.h	/^T List<T>::remove (ListNode<T>* p)$/;"	f	language:C++	class:List	signature:(ListNode<T>* p)
+List::remove	linklist.h	/^T List<T>::remove(int index)$/;"	f	class:List	signature:(int index)
+List::remove	linklist.h	/^T List<T>::remove(int index)$/;"	f	language:C++	class:List	signature:(int index)
+List::remove	linklist.h	/^T* List<T>::remove(int index)$/;"	f	class:List	signature:(int index)
+List::reverse	linklist.cpp	/^void List<T>::reverse ()$/;"	f	language:C++	class:List	signature:()
+List::reverse	linklist.h	/^    void reverse();$/;"	p	language:C++	class:List	access:public	signature:()
+List::reverse	linklist.h	/^void List<T>::reverse ()$/;"	f	language:C++	class:List	signature:()
+List::traverse	linklist.cpp	/^void List<T>::traverse ()$/;"	f	language:C++	class:List	signature:()
+List::traverse	linklist.h	/^    void traverse();$/;"	p	class:List	access:public	signature:()
+List::traverse	linklist.h	/^    void traverse();$/;"	p	language:C++	class:List	access:public	signature:()
+List::traverse	linklist.h	/^void List<T>::traverse ()$/;"	f	class:List	signature:()
+List::traverse	linklist.h	/^void List<T>::traverse ()$/;"	f	language:C++	class:List	signature:()
+List::~List	linklist.h	/^    ~List() {$/;"	f	class:List	access:public	signature:()
+List::~List	linklist.h	/^    ~List() {$/;"	f	language:C++	class:List	access:public	signature:()
+ListNode	ADTList.h	/^        ListNode ();                           \/\/ constructor$/;"	p	class:ListNode	access:public	signature:()
+ListNode	ADTList.h	/^        ListNode ();                           \/\/ constructor$/;"	p	language:C++	class:ListNode	access:public	signature:()
+ListNode	ADTList.h	/^        ListNode (const ListNode &other); \/\/ copy constructor$/;"	p	class:ListNode	access:public	signature:(const ListNode &other)
+ListNode	ADTList.h	/^class ListNode$/;"	c
+ListNode	ADTList.h	/^class ListNode$/;"	c	language:C++
+ListNode	linklist.cpp	/^ListNode<T>::ListNode():link(NULL)$/;"	f	language:C++	class:ListNode	signature:()
+ListNode	linklist.cpp	/^ListNode<T>::ListNode(const T& item):data(item),link(NULL)$/;"	f	language:C++	class:ListNode	signature:(const T& item)
+ListNode	linklist.h	/^    ListNode();$/;"	p	class:ListNode	access:public	signature:()
+ListNode	linklist.h	/^    ListNode();$/;"	p	language:C++	class:ListNode	access:public	signature:()
+ListNode	linklist.h	/^    ListNode(const T& item);$/;"	p	class:ListNode	access:public	signature:(const T& item)
+ListNode	linklist.h	/^    ListNode(const T& item);$/;"	p	language:C++	class:ListNode	access:public	signature:(const T& item)
+ListNode	linklist.h	/^ListNode<T>::ListNode():link(NULL)$/;"	f	class:ListNode	signature:()
+ListNode	linklist.h	/^ListNode<T>::ListNode():link(NULL)$/;"	f	language:C++	class:ListNode	signature:()
+ListNode	linklist.h	/^ListNode<T>::ListNode(const T& item):data(item),link(NULL)$/;"	f	class:ListNode	signature:(const T& item)
+ListNode	linklist.h	/^ListNode<T>::ListNode(const T& item):data(item),link(NULL)$/;"	f	language:C++	class:ListNode	signature:(const T& item)
+ListNode	linklist.h	/^class ListNode {$/;"	c
+ListNode	linklist.h	/^class ListNode {$/;"	c	language:C++
+ListNode::InsertAfter	linklist.cpp	/^void ListNode<T>::InsertAfter(ListNode<T>* p)$/;"	f	language:C++	class:ListNode	signature:(ListNode<T>* p)
+ListNode::InsertAfter	linklist.h	/^    void InsertAfter(ListNode<T>* p);$/;"	p	class:ListNode	access:public	signature:(ListNode<T>* p)
+ListNode::InsertAfter	linklist.h	/^    void InsertAfter(ListNode<T>* p);$/;"	p	language:C++	class:ListNode	access:public	signature:(ListNode<T>* p)
+ListNode::InsertAfter	linklist.h	/^void ListNode<T>::InsertAfter(ListNode<T>* p)$/;"	f	class:ListNode	signature:(ListNode<T>* p)
+ListNode::InsertAfter	linklist.h	/^void ListNode<T>::InsertAfter(ListNode<T>* p)$/;"	f	language:C++	class:ListNode	signature:(ListNode<T>* p)
+ListNode::ListNode	ADTList.h	/^        ListNode ();                           \/\/ constructor$/;"	p	class:ListNode	access:public	signature:()
+ListNode::ListNode	ADTList.h	/^        ListNode ();                           \/\/ constructor$/;"	p	language:C++	class:ListNode	access:public	signature:()
+ListNode::ListNode	ADTList.h	/^        ListNode (const ListNode &other); \/\/ copy constructor$/;"	p	class:ListNode	access:public	signature:(const ListNode &other)
+ListNode::ListNode	linklist.cpp	/^ListNode<T>::ListNode():link(NULL)$/;"	f	language:C++	class:ListNode	signature:()
+ListNode::ListNode	linklist.cpp	/^ListNode<T>::ListNode(const T& item):data(item),link(NULL)$/;"	f	language:C++	class:ListNode	signature:(const T& item)
+ListNode::ListNode	linklist.h	/^    ListNode();$/;"	p	class:ListNode	access:public	signature:()
+ListNode::ListNode	linklist.h	/^    ListNode();$/;"	p	language:C++	class:ListNode	access:public	signature:()
+ListNode::ListNode	linklist.h	/^    ListNode(const T& item);$/;"	p	class:ListNode	access:public	signature:(const T& item)
+ListNode::ListNode	linklist.h	/^    ListNode(const T& item);$/;"	p	language:C++	class:ListNode	access:public	signature:(const T& item)
+ListNode::ListNode	linklist.h	/^ListNode<T>::ListNode():link(NULL)$/;"	f	class:ListNode	signature:()
+ListNode::ListNode	linklist.h	/^ListNode<T>::ListNode():link(NULL)$/;"	f	language:C++	class:ListNode	signature:()
+ListNode::ListNode	linklist.h	/^ListNode<T>::ListNode(const T& item):data(item),link(NULL)$/;"	f	class:ListNode	signature:(const T& item)
+ListNode::ListNode	linklist.h	/^ListNode<T>::ListNode(const T& item):data(item),link(NULL)$/;"	f	language:C++	class:ListNode	signature:(const T& item)
+ListNode::NextNode	linklist.h	/^    ListNode<T>* NextNode() { return link; }$/;"	f	class:ListNode	access:public	signature:()
+ListNode::NextNode	linklist.h	/^    ListNode<T>* NextNode() { return link; }$/;"	f	language:C++	class:ListNode	access:public	signature:()
+ListNode::RemoveAfter	linklist.cpp	/^ListNode<T>* ListNode<T>::RemoveAfter()$/;"	f	language:C++	class:ListNode	signature:()
+ListNode::RemoveAfter	linklist.h	/^    ListNode<T>* RemoveAfter();$/;"	p	class:ListNode	access:public	signature:()
+ListNode::RemoveAfter	linklist.h	/^    ListNode<T>* RemoveAfter();$/;"	p	language:C++	class:ListNode	access:public	signature:()
+ListNode::RemoveAfter	linklist.h	/^ListNode<T>* ListNode<T>::RemoveAfter()$/;"	f	class:ListNode	signature:()
+ListNode::RemoveAfter	linklist.h	/^ListNode<T>* ListNode<T>::RemoveAfter()$/;"	f	language:C++	class:ListNode	signature:()
+ListNode::data	ADTList.h	/^        T data;$/;"	m	class:ListNode	access:private
+ListNode::data	ADTList.h	/^        T data;$/;"	m	language:C++	class:ListNode	access:private
+ListNode::data	linklist.h	/^    T data;$/;"	m	class:ListNode	access:private
+ListNode::data	linklist.h	/^    T data;$/;"	m	language:C++	class:ListNode	access:private
+ListNode::link	ADTList.h	/^        ListNode* link;$/;"	m	class:ListNode	access:private
+ListNode::link	ADTList.h	/^        ListNode<T>* link;$/;"	m	class:ListNode	access:private
+ListNode::link	ADTList.h	/^        ListNode<T>* link;$/;"	m	language:C++	class:ListNode	access:private
+ListNode::link	linklist.h	/^    ListNode* link;$/;"	m	class:ListNode	access:private
+ListNode::link	linklist.h	/^    ListNode* link;$/;"	m	language:C++	class:ListNode	access:private
+ListNode::link	linklist.h	/^    ListNode<T>* link;$/;"	m	language:C++	class:ListNode	access:private
+ListNode::operator =	ADTList.h	/^        virtual ListNode& operator = (const ListNode &other); \/\/ assignment operator$/;"	p	class:ListNode	access:public	signature:(const ListNode &other)
+ListNode::~ListNode	ADTList.h	/^        virtual ~ListNode ();                          \/\/ destructor$/;"	p	class:ListNode	access:public	signature:()
+ListNode::~ListNode	ADTList.h	/^        virtual ~ListNode ();                          \/\/ destructor$/;"	p	language:C++	class:ListNode	access:public	signature:()
+NextNode	linklist.h	/^    ListNode<T>* NextNode() { return link; }$/;"	f	class:ListNode	access:public	signature:()
+NextNode	linklist.h	/^    ListNode<T>* NextNode() { return link; }$/;"	f	language:C++	class:ListNode	access:public	signature:()
+PRINT	debug.h	38;"	d
+PRINT	debug.h	38;"	d	language:C++
+QUENE_H_	quene.h	34;"	d	language:C++
+QUENE_H_	queue.h	34;"	d	language:C++
+Queue	quene.h	/^        Queue() : head(NULL), tail(NULL) {}                             \/\/ constructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue	quene.h	/^        Queue() : head(NULL), tail(NULL) {}     \/\/ constructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue	quene.h	/^Queue<T>::Queue ()$/;"	f	language:C++	class:Queue	signature:()
+Queue	quene.h	/^Queue<T>::Queue (const T* vals)$/;"	f	language:C++	class:Queue	signature:(const T* vals)
+Queue	quene.h	/^Queue<T>::Queue (const T* vals, int n)$/;"	f	language:C++	class:Queue	signature:(const T* vals, int n)
+Queue	quene.h	/^Queue<T>::Queue (const T* vals, int size)$/;"	f	language:C++	class:Queue	signature:(const T* vals, int size)
+Queue	quene.h	/^class Queue$/;"	c	language:C++
+Queue	queue.cpp	/^Queue<T>::Queue (const T* vals, int size)$/;"	f	language:C++	class:Queue	signature:(const T* vals, int size)
+Queue	queue.h	/^        Queue() : head(NULL), tail(NULL) {}     \/\/ constructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue	queue.h	/^class Queue$/;"	c	language:C++
+Queue::Queue	quene.h	/^        Queue() : head(NULL), tail(NULL) {}                             \/\/ constructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue::Queue	quene.h	/^        Queue() : head(NULL), tail(NULL) {}     \/\/ constructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue::Queue	quene.h	/^Queue<T>::Queue ()$/;"	f	language:C++	class:Queue	signature:()
+Queue::Queue	quene.h	/^Queue<T>::Queue (const T* vals)$/;"	f	language:C++	class:Queue	signature:(const T* vals)
+Queue::Queue	quene.h	/^Queue<T>::Queue (const T* vals, int n)$/;"	f	language:C++	class:Queue	signature:(const T* vals, int n)
+Queue::Queue	quene.h	/^Queue<T>::Queue (const T* vals, int size)$/;"	f	language:C++	class:Queue	signature:(const T* vals, int size)
+Queue::Queue	queue.cpp	/^Queue<T>::Queue (const T* vals, int size)$/;"	f	language:C++	class:Queue	signature:(const T* vals, int size)
+Queue::Queue	queue.h	/^        Queue() : head(NULL), tail(NULL) {}     \/\/ constructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue::clear	quene.h	/^void Queue<T>::clear ()$/;"	f	language:C++	class:Queue	signature:()
+Queue::clear	queue.cpp	/^void Queue<T>::clear ()$/;"	f	language:C++	class:Queue	signature:()
+Queue::dequeue	quene.h	/^T Queue<T>::dequeue ()$/;"	f	language:C++	class:Queue	signature:()
+Queue::dequeue	queue.cpp	/^T Queue<T>::dequeue ()$/;"	f	language:C++	class:Queue	signature:()
+Queue::enqueue	quene.h	/^void Queue<T>::enqueue (const T& val)$/;"	f	language:C++	class:Queue	signature:(const T& val)
+Queue::enqueue	queue.cpp	/^void Queue<T>::enqueue (const T& val)$/;"	f	language:C++	class:Queue	signature:(const T& val)
+Queue::get_front	quene.h	/^inline const T& Queue<T>::get_front () const$/;"	f	language:C++	class:Queue	signature:() const
+Queue::get_front	queue.cpp	/^inline const T& Queue<T>::get_front () const$/;"	f	language:C++	class:Queue	signature:() const
+Queue::head	quene.h	/^        QueueNode<T>* head, *tail;$/;"	m	language:C++	class:Queue	access:private
+Queue::head	quene.h	/^        QueueNode<T>* head, tail;$/;"	m	language:C++	class:Queue	access:private
+Queue::head	quene.h	/^        QueueNode<T>* head;$/;"	m	language:C++	class:Queue	access:private
+Queue::head	queue.h	/^        QueueNode<T>* head;$/;"	m	language:C++	class:Queue	access:private
+Queue::isempty	quene.h	/^        bool isempty() const$/;"	f	language:C++	class:Queue	access:public	signature:() const
+Queue::isempty	queue.h	/^        bool isempty() const$/;"	f	language:C++	class:Queue	access:public	signature:() const
+Queue::tail	quene.h	/^        QueueNode<T>* head, *tail;$/;"	m	language:C++	class:Queue	access:private
+Queue::tail	quene.h	/^        QueueNode<T>* head, tail;$/;"	m	language:C++	class:Queue	access:private
+Queue::tail	quene.h	/^        QueueNode<T>* tail;$/;"	m	language:C++	class:Queue	access:private
+Queue::tail	queue.h	/^        QueueNode<T>* tail;$/;"	m	language:C++	class:Queue	access:private
+Queue::~Queue	quene.h	/^        ~Queue()                                \/\/ destructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue::~Queue	quene.h	/^        ~Queue()$/;"	f	language:C++	class:Queue	access:public	signature:()
+Queue::~Queue	queue.h	/^        ~Queue()                                \/\/ destructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+QueueNode	quene.h	/^        QueueNode(const T& val, QueueNode<T>* next = NULL) : data(val), link(next)$/;"	f	language:C++	class:QueueNode	access:public	signature:(const T& val, QueueNode<T>* next = NULL)
+QueueNode	quene.h	/^class QueueNode$/;"	c	language:C++
+QueueNode	queue.h	/^        QueueNode(const T& val, QueueNode<T>* next = NULL) : data(val), link(next)$/;"	f	language:C++	class:QueueNode	access:public	signature:(const T& val, QueueNode<T>* next = NULL)
+QueueNode	queue.h	/^class QueueNode$/;"	c	language:C++
+QueueNode::QueueNode	quene.h	/^        QueueNode(const T& val, QueueNode<T>* next = NULL) : data(val), link(next)$/;"	f	language:C++	class:QueueNode	access:public	signature:(const T& val, QueueNode<T>* next = NULL)
+QueueNode::QueueNode	queue.h	/^        QueueNode(const T& val, QueueNode<T>* next = NULL) : data(val), link(next)$/;"	f	language:C++	class:QueueNode	access:public	signature:(const T& val, QueueNode<T>* next = NULL)
+QueueNode::data	quene.h	/^        T data;$/;"	m	language:C++	class:QueueNode	access:private
+QueueNode::data	queue.h	/^        T data;$/;"	m	language:C++	class:QueueNode	access:private
+QueueNode::link	quene.h	/^        QueueNode<T>* link;$/;"	m	language:C++	class:QueueNode	access:private
+QueueNode::link	queue.h	/^        QueueNode<T>* link;$/;"	m	language:C++	class:QueueNode	access:private
+RIGHT	bintree.h	/^    RIGHT$/;"	e	language:C++	enum:Direct
+RIGHT	bintree.h	/^    RIGHT,$/;"	e	language:C++	enum:Direct
+RIGHT	bintree.h	/^    RIGHT,$/;"	e	language:C++	enum:__anon1
+RemoveAfter	linklist.cpp	/^ListNode<T>* ListNode<T>::RemoveAfter()$/;"	f	language:C++	class:ListNode	signature:()
+RemoveAfter	linklist.h	/^    ListNode<T>* RemoveAfter();$/;"	p	class:ListNode	access:public	signature:()
+RemoveAfter	linklist.h	/^    ListNode<T>* RemoveAfter();$/;"	p	language:C++	class:ListNode	access:public	signature:()
+RemoveAfter	linklist.h	/^ListNode<T>* ListNode<T>::RemoveAfter()$/;"	f	class:ListNode	signature:()
+RemoveAfter	linklist.h	/^ListNode<T>* ListNode<T>::RemoveAfter()$/;"	f	language:C++	class:ListNode	signature:()
+SIZE	main.cpp	/^    int SIZE = 12;$/;"	l
+SIZE	main.cpp	/^    int SIZE = 12;$/;"	l	language:C++
+STACK_H_	stack.h	34;"	d	language:C++
+SWAP	zero_sort.cpp	37;"	d	file:
+SWAP	zero_sort.cpp	38;"	d	file:
+SWAP	zero_sort.cpp	39;"	d	file:
+Stack	stack.cpp	/^Stack<T>::Stack (const Stack& other)$/;"	f	language:C++	class:Stack	signature:(const Stack& other)
+Stack	stack.h	/^        Stack() : top(NULL) {}                  \/\/ constructor$/;"	f	language:C++	class:Stack	access:public	signature:()
+Stack	stack.h	/^        Stack() : top(NULL) {}   \/\/ constructor$/;"	f	language:C++	class:Stack	access:public	signature:()
+Stack	stack.h	/^Stack<T>::Stack (const Stack& other)$/;"	f	language:C++	class:Stack	signature:(const Stack& other)
+Stack	stack.h	/^class Stack$/;"	c	language:C++
+Stack	stack.h	/^void Stack<T>::Stack (<+argument list+>)$/;"	f	language:C++	class:Stack	signature:(<+argument list+>)
+Stack::Stack	stack.cpp	/^Stack<T>::Stack (const Stack& other)$/;"	f	language:C++	class:Stack	signature:(const Stack& other)
+Stack::Stack	stack.h	/^        Stack() : top(NULL) {}                  \/\/ constructor$/;"	f	language:C++	class:Stack	access:public	signature:()
+Stack::Stack	stack.h	/^        Stack() : top(NULL) {}   \/\/ constructor$/;"	f	language:C++	class:Stack	access:public	signature:()
+Stack::Stack	stack.h	/^Stack<T>::Stack (const Stack& other)$/;"	f	language:C++	class:Stack	signature:(const Stack& other)
+Stack::Stack	stack.h	/^void Stack<T>::Stack (<+argument list+>)$/;"	f	language:C++	class:Stack	signature:(<+argument list+>)
+Stack::clear	stack.cpp	/^void Stack<T>::clear ()$/;"	f	language:C++	class:Stack	signature:()
+Stack::clear	stack.h	/^void Stack<T>::clear ()$/;"	f	language:C++	class:Stack	signature:()
+Stack::getTop	stack.cpp	/^const T& Stack<T>::getTop () const$/;"	f	language:C++	class:Stack	signature:() const
+Stack::getTop	stack.h	/^const T& Stack<T>::getTop () const$/;"	f	language:C++	class:Stack	signature:() const
+Stack::isempty	stack.h	/^        int isempty() const$/;"	f	language:C++	class:Stack	access:public	signature:() const
+Stack::pop	stack.cpp	/^const T& Stack<T>::pop ()$/;"	f	language:C++	class:Stack	signature:()
+Stack::pop	stack.h	/^const T& Stack<T>::pop ()$/;"	f	language:C++	class:Stack	signature:()
+Stack::push	stack.cpp	/^bool Stack<T>::push (const T& val)$/;"	f	language:C++	class:Stack	signature:(const T& val)
+Stack::push	stack.h	/^bool Stack<T>::push (const T& val)$/;"	f	language:C++	class:Stack	signature:(const T& val)
+Stack::top	stack.h	/^        StackNode<T>* top = NULL;$/;"	m	language:C++	class:Stack	access:private
+Stack::top	stack.h	/^        StackNode<T>* top;$/;"	m	language:C++	class:Stack	access:private
+Stack::~Stack	stack.h	/^        ~Stack()$/;"	f	language:C++	class:Stack	access:public	signature:()
+StackNode	stack.cpp	/^StackNode<T>::StackNode (const T& val, StackNode<T>* next) : $/;"	f	language:C++	class:StackNode	signature:(const T& val, StackNode<T>* next)
+StackNode	stack.cpp	/^inline StackNode<T>::StackNode (const T& val, StackNode<T>* next) : $/;"	f	language:C++	class:StackNode	signature:(const T& val, StackNode<T>* next)
+StackNode	stack.h	/^        StackNode(const T& val, StackNode<T>* next = NULL) : data(val), link(next) $/;"	f	language:C++	class:StackNode	access:public	signature:(const T& val, StackNode<T>* next = NULL)
+StackNode	stack.h	/^        StackNode(const T& val, StackNode<T>* next = NULL) : data(val), next(link) $/;"	f	language:C++	class:StackNode	access:public	signature:(const T& val, StackNode<T>* next = NULL)
+StackNode	stack.h	/^StackNode<T>::StackNode (const T& val, StackNode<T>* next) : $/;"	f	language:C++	class:StackNode	signature:(const T& val, StackNode<T>* next)
+StackNode	stack.h	/^class StackNode$/;"	c	language:C++
+StackNode::StackNode	stack.cpp	/^StackNode<T>::StackNode (const T& val, StackNode<T>* next) : $/;"	f	language:C++	class:StackNode	signature:(const T& val, StackNode<T>* next)
+StackNode::StackNode	stack.cpp	/^inline StackNode<T>::StackNode (const T& val, StackNode<T>* next) : $/;"	f	language:C++	class:StackNode	signature:(const T& val, StackNode<T>* next)
+StackNode::StackNode	stack.h	/^        StackNode(const T& val, StackNode<T>* next = NULL) : data(val), link(next) $/;"	f	language:C++	class:StackNode	access:public	signature:(const T& val, StackNode<T>* next = NULL)
+StackNode::StackNode	stack.h	/^        StackNode(const T& val, StackNode<T>* next = NULL) : data(val), next(link) $/;"	f	language:C++	class:StackNode	access:public	signature:(const T& val, StackNode<T>* next = NULL)
+StackNode::StackNode	stack.h	/^StackNode<T>::StackNode (const T& val, StackNode<T>* next) : $/;"	f	language:C++	class:StackNode	signature:(const T& val, StackNode<T>* next)
+StackNode::data	stack.h	/^        T data;$/;"	m	language:C++	class:StackNode	access:private
+StackNode::link	stack.h	/^        StackNode<T>* link;$/;"	m	language:C++	class:StackNode	access:private
+StackNode::~StackNode	stack.cpp	/^StackNode<T>::~StackNode ()$/;"	f	language:C++	class:StackNode	signature:()
+StackNode::~StackNode	stack.cpp	/^inline StackNode<T>::~StackNode ()$/;"	f	language:C++	class:StackNode	signature:()
+StackNode::~StackNode	stack.h	/^        ~StackNode()$/;"	f	language:C++	class:StackNode	access:public	signature:()
+StackNode::~StackNode	stack.h	/^StackNode<T>::~StackNode ()$/;"	f	language:C++	class:StackNode	signature:()
+arr	zero_sort.cpp	/^        cout << arr[i] << '';$/;"	l
+arr	zero_sort.cpp	/^        cout << arr[i] << '\\t';$/;"	l
+arr	zero_sort.cpp	/^        cout << right << arr[i] << '';$/;"	l
+arr	zero_sort.cpp	/^        cout << setw(4) << right << arr[i] << '';$/;"	l
+arr	zero_sort.cpp	/^        cout << std::setw(4) << right << arr[i] << '';$/;"	l
+arr	zero_sort.cpp	/^    int arr[] = {$/;"	l
+circ	main.cpp	/^    CircleList<string> circ(strs, SIZE);$/;"	p	file:	signature:(strs, SIZE)
+circ	main.cpp	/^    CircleList<string> circ(strs, SIZE);$/;"	p	language:C++	file:	signature:(strs, SIZE)
+circle	main.cpp	/^    List<string> circle(strs, SIZE);$/;"	p	file:	signature:(strs, SIZE)
+clear	ADTList.h	/^        virtual void clear();$/;"	p	class:ADTList	access:public	signature:()
+clear	ADTList.h	/^        virtual void clear();$/;"	p	language:C++	class:ADTList	access:public	signature:()
+clear	circlelist.cpp	/^void CircleList<T>::clear ()$/;"	f	language:C++	class:CircleList	signature:()
+clear	circlelist.h	/^        void clear();$/;"	p	class:CircleList	access:public	signature:()
+clear	circlelist.h	/^        void clear();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+clear	circlelist.h	/^        void clear();$/;"	p	signature:()
+clear	circlelist.h	/^void CircleList<T>::clear ()$/;"	f	class:CircleList	signature:()
+clear	circlelist.h	/^void CircleList<T>::clear ()$/;"	f	class:CircleList::CircleList	access:public	signature:()
+clear	circlelist.h	/^void CircleList<T>::clear ()$/;"	f	language:C++	class:CircleList	signature:()
+clear	linklist.cpp	/^void List<T>::clear()$/;"	f	language:C++	class:List	signature:()
+clear	linklist.h	/^    void clear();$/;"	p	class:List	access:public	signature:()
+clear	linklist.h	/^    void clear();$/;"	p	language:C++	class:List	access:public	signature:()
+clear	linklist.h	/^void List<T>::clear()$/;"	f	class:List	signature:()
+clear	linklist.h	/^void List<T>::clear()$/;"	f	language:C++	class:List	signature:()
+clear	main.cpp	/^    circ.clear();$/;"	p	file:	signature:()
+clear	main.cpp	/^    circ.clear();$/;"	p	language:C++	file:	signature:()
+clear	main.cpp	/^    circle.clear();$/;"	p	file:	signature:()
+clear	main.cpp	/^    copycirc.clear();$/;"	p	file:	signature:()
+clear	main.cpp	/^    copycirc.clear();$/;"	p	language:C++	file:	signature:()
+clear	quene.h	/^void Queue<T>::clear ()$/;"	f	language:C++	class:Queue	signature:()
+clear	queue.cpp	/^void Queue<T>::clear ()$/;"	f	language:C++	class:Queue	signature:()
+clear	stack.cpp	/^void Stack<T>::clear ()$/;"	f	language:C++	class:Stack	signature:()
+clear	stack.h	/^void Stack<T>::clear ()$/;"	f	language:C++	class:Stack	signature:()
+copycirc	main.cpp	/^    CircleList<string> copycirc = circ;$/;"	l
+copycirc	main.cpp	/^    CircleList<string> copycirc;$/;"	l
+copycirc	main.cpp	/^    CircleList<string> copycirc;$/;"	l	language:C++
+create_bintree	bintree.cpp	/^void BinTree<T>::create_bintree (istream& is, BinTreeNode<T>*& subtree)$/;"	f	language:C++	class:BinTree	signature:(istream& is, BinTreeNode<T>*& subtree)
+curr	circlelist.h	/^        CircleListNode<T>* curr;$/;"	l
+curr	circlelist.h	/^        CircleListNode<T>* curr;$/;"	m	class:CircleList	access:private
+curr	circlelist.h	/^        CircleListNode<T>* curr;$/;"	m	language:C++	class:CircleList	access:private
+curr2head	circlelist.h	/^        void curr2head()$/;"	f	class:CircleList	access:public	signature:()
+curr2head	circlelist.h	/^        void curr2head()$/;"	f	language:C++	class:CircleList	access:public	signature:()
+dat	linklist.h	/^    T dat = p->data;$/;"	l
+dat	linklist.h	/^    T dat = p->data;$/;"	l	language:C++
+data	ADTList.h	/^        T data;$/;"	m	class:ListNode	access:private
+data	ADTList.h	/^        T data;$/;"	m	language:C++	class:ListNode	access:private
+data	bintree.h	/^        T data;$/;"	m	language:C++	class:BinTreeNode	access:private
+data	circlelist.h	/^        T data;$/;"	m	class:CircleListNode	access:private
+data	circlelist.h	/^        T data;$/;"	m	language:C++	class:CircleListNode	access:private
+data	linklist.h	/^    T data;$/;"	m	class:ListNode	access:private
+data	linklist.h	/^    T data;$/;"	m	language:C++	class:ListNode	access:private
+data	quene.h	/^        T data;$/;"	m	language:C++	class:QueueNode	access:private
+data	queue.h	/^        T data;$/;"	m	language:C++	class:QueueNode	access:private
+data	stack.h	/^        T data;$/;"	m	language:C++	class:StackNode	access:private
+del_curr	circlelist.h	/^        bool del_curr();$/;"	p	class:CircleList	access:public	signature:()
+delete_elem	ADTList.h	/^        virtual bool delete_elem(const T& val, int idx);$/;"	p	class:ADTList	access:public	signature:(const T& val, int idx)
+delete_elem	ADTList.h	/^        virtual bool delete_elem(int idx);$/;"	p	class:ADTList	access:public	signature:(int idx)
+delete_elem	ADTList.h	/^        virtual bool delete_elem(int idx);$/;"	p	language:C++	class:ADTList	access:public	signature:(int idx)
+delete_elem	circlelist.h	/^        bool delete_elem(const T& val, int idx);$/;"	p	class:CircleList	access:public	signature:(const T& val, int idx)
+delete_elem	circlelist.h	/^        bool delete_elem(int idx);$/;"	p	class:CircleList	access:public	signature:(int idx)
+delete_elem	circlelist.h	/^        bool delete_elem(int idx);$/;"	p	signature:(int idx)
+delete_elem	circlelist.h	/^bool CircleList<T>::delete_elem (const T& val, int idx)$/;"	f	class:CircleList	signature:(const T& val, int idx)
+delete_elem	circlelist.h	/^bool CircleList<T>::delete_elem (int idx)$/;"	f	class:CircleList	signature:(int idx)
+delete_elem	circlelist.h	/^bool CircleList<T>::delete_elem (int idx)$/;"	f	class:CircleList::CircleList	access:public	signature:(int idx)
+deletechild	bintree.cpp	/^bool BinTree<T>::deletechild (const BinTreeNode<T>* current, Direct d)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, Direct d)
+depth	bintree.cpp	/^int BinTree<T>::depth () const$/;"	f	language:C++	class:BinTree	signature:() const
+dequeue	quene.h	/^T Queue<T>::dequeue ()$/;"	f	language:C++	class:Queue	signature:()
+dequeue	queue.cpp	/^T Queue<T>::dequeue ()$/;"	f	language:C++	class:Queue	signature:()
+destroy	bintree.cpp	/^void BinTree<T>::destroy (BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(BinTreeNode<T>* current)
+eDirect	bintree.h	/^enum eDirect {$/;"	g	language:C++
+endl	main.cpp	/^    cout << "Deleted: " << val << endl;$/;"	l
+endl	main.cpp	/^    cout << "Deleted: " << val << endl;$/;"	l	language:C++
+endl	main.cpp	/^    cout << "copyed list:" << endl;$/;"	l
+endl	main.cpp	/^    cout << "copyed list:" << endl;$/;"	l	language:C++
+endl	main.cpp	/^    cout << "googogooog" << endl;$/;"	l
+endl	main.cpp	/^    cout << "the hell googogooog" << endl;$/;"	l
+endl	main.cpp	/^    cout << "what's the hell googogooog" << endl;$/;"	l
+endl	main.cpp	/^    cout << val << endl;$/;"	l
+endl	main.cpp	/^    cout << val << endl;$/;"	l	language:C++
+endl	zero_sort.cpp	/^            cout << endl;$/;"	l
+endl	zero_sort.cpp	/^    cout << "index = " << idx + 1 << endl;$/;"	l
+endl	zero_sort.cpp	/^    cout << "index = " << idx << endl;$/;"	l
+enqueue	quene.h	/^void Queue<T>::enqueue (const T& val)$/;"	f	language:C++	class:Queue	signature:(const T& val)
+enqueue	queue.cpp	/^void Queue<T>::enqueue (const T& val)$/;"	f	language:C++	class:Queue	signature:(const T& val)
+find	ADTList.h	/^        virtual ListNode& find(const T& val) const;$/;"	p	class:ADTList	access:public	signature:(const T& val) const
+find	ADTList.h	/^        virtual ListNode& find(const T& val) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& val) const
+find	circlelist.cpp	/^CircleListNode<T>* CircleList<T>::find (const T& val) const$/;"	f	language:C++	class:CircleList	signature:(const T& val) const
+find	circlelist.h	/^        CircleListNode<T>* find(const T& val) const;$/;"	p	class:CircleList	access:public	signature:(const T& val) const
+find	circlelist.h	/^        CircleListNode<T>* find(const T& val) const;$/;"	p	language:C++	class:CircleList	access:public	signature:(const T& val) const
+find	circlelist.h	/^        bool find(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+find	circlelist.h	/^CircleListNode<T>* CircleList<T>::find (const T& val) const$/;"	f	class:CircleList	signature:(const T& val) const
+find	circlelist.h	/^CircleListNode<T>* CircleList<T>::find (const T& val) const$/;"	f	language:C++	class:CircleList	signature:(const T& val) const
+find	linklist.cpp	/^ListNode<T>* List<T>::find(const T& value)$/;"	f	language:C++	class:List	signature:(const T& value)
+find	linklist.cpp	/^ListNode<T>* List<T>::find(int index)$/;"	f	language:C++	class:List	signature:(int index)
+find	linklist.h	/^    ListNode<T>* find(const T&);$/;"	p	class:List	access:public	signature:(const T&)
+find	linklist.h	/^    ListNode<T>* find(const T&);$/;"	p	language:C++	class:List	access:public	signature:(const T&)
+find	linklist.h	/^    ListNode<T>* find(int);$/;"	p	class:List	access:public	signature:(int)
+find	linklist.h	/^    ListNode<T>* find(int);$/;"	p	language:C++	class:List	access:public	signature:(int)
+find	linklist.h	/^ListNode<T>* List<T>::find(const T& value)$/;"	f	class:List	signature:(const T& value)
+find	linklist.h	/^ListNode<T>* List<T>::find(const T& value)$/;"	f	language:C++	class:List	signature:(const T& value)
+find	linklist.h	/^ListNode<T>* List<T>::find(int index)$/;"	f	class:List	signature:(int index)
+find	linklist.h	/^ListNode<T>* List<T>::find(int index)$/;"	f	language:C++	class:List	signature:(int index)
+first	linklist.h	/^    ListNode<T>* first;$/;"	m	class:List	access:private
+first	linklist.h	/^    ListNode<T>* first;$/;"	m	language:C++	class:List	access:private
+firster	circlelist.h	/^        void firster()$/;"	f	class:CircleList	access:public	signature:()
+get	linklist.cpp	/^const T* List<T>::get(int index) $/;"	f	language:C++	class:List	signature:(int index)
+get	linklist.h	/^    T* get(int) const;$/;"	p	class:List	access:public	signature:(int) const
+get	linklist.h	/^    const T* get(int index);$/;"	p	class:List	access:public	signature:(int index)
+get	linklist.h	/^    const T* get(int index);$/;"	p	language:C++	class:List	access:public	signature:(int index)
+get	linklist.h	/^T* List<T>::get(int index) const$/;"	f	class:List	signature:(int index) const
+get	linklist.h	/^const T* List<T>::get(int index) $/;"	f	class:List	signature:(int index)
+get	linklist.h	/^const T* List<T>::get(int index) $/;"	f	language:C++	class:List	signature:(int index)
+getTop	stack.cpp	/^const T& Stack<T>::getTop () const$/;"	f	language:C++	class:Stack	signature:() const
+getTop	stack.h	/^const T& Stack<T>::getTop () const$/;"	f	language:C++	class:Stack	signature:() const
+get_data	bintree.cpp	/^inline T& BinTreeNode<T>::get_data() const$/;"	f	language:C++	class:BinTreeNode	signature:() const
+get_data	bintree.h	/^        T get_data() const { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+get_data	bintree.h	/^        T& get_data() const { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+get_data	bintree.h	/^        T& get_data() { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:()
+get_data	bintree.h	/^        const T& get_data() const { return data; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+get_elem	ADTList.h	/^        virtual T& get_elem(const int idx) const;$/;"	p	class:ADTList	access:public	signature:(const int idx) const
+get_elem	ADTList.h	/^        virtual T& get_elem(const int idx) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const int idx) const
+get_elem	circlelist.h	/^        T& get_elem(const int idx) const;$/;"	p	class:CircleList	access:public	signature:(const int idx) const
+get_elem	circlelist.h	/^inline T& CircleList<T>::get_elem (const int idx) const$/;"	f	class:CircleList	signature:(const int idx) const
+get_elem	circlelist.h	/^inline T& CircleList<T>::get_elem (const int idx) const$/;"	f	class:CircleList::CircleList	access:public	signature:(const int idx) const
+get_front	quene.h	/^inline const T& Queue<T>::get_front () const$/;"	f	language:C++	class:Queue	signature:() const
+get_front	queue.cpp	/^inline const T& Queue<T>::get_front () const$/;"	f	language:C++	class:Queue	signature:() const
+get_lchild	bintree.h	/^        BinTreeNode<T>* get_lchild() const { return lchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+get_lchild	bintree.h	/^        BinTreeNode<T>* get_lchild() { return lchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:()
+get_leftsibling	bintree.cpp	/^BinTreeNode<T>* BinTree<T>::get_leftsibling (const BinTreeNode<T>* current) $/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+get_leftsibling	bintree.cpp	/^BinTreeNode<T>* BinTree<T>::get_leftsibling (const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+get_rchild	bintree.h	/^        BinTreeNode<T>* get_rchild() const { return rchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:() const
+get_rchild	bintree.h	/^        BinTreeNode<T>* get_rchild() { return rchild; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:()
+get_rightsibling	bintree.cpp	/^BinTreeNode<T>* BinTree<T>::get_rightsibling (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+get_root	bintree.h	/^        BinTreeNode<T>* get_root() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+getdata	circlelist.cpp	/^T& CircleList<T>::getdata () const$/;"	f	language:C++	class:CircleList	signature:() const
+getdata	circlelist.h	/^        T& getdata() const;$/;"	p	class:CircleList	access:public	signature:() const
+getdata	circlelist.h	/^        T& getdata() const;$/;"	p	language:C++	class:CircleList	access:public	signature:() const
+getdata	circlelist.h	/^        visit(getdata());$/;"	p	language:C++	signature:()
+getdata	circlelist.h	/^        visit(getdata());$/;"	p	signature:()
+getdata	circlelist.h	/^T& CircleList<T>::getdata () const$/;"	f	class:CircleList	signature:() const
+getdata	circlelist.h	/^T& CircleList<T>::getdata () const$/;"	f	language:C++	class:CircleList	signature:() const
+getlength	ADTList.h	/^        virtual int getlength();$/;"	p	class:ADTList	access:public	signature:()
+getlength	ADTList.h	/^        virtual int getlength();$/;"	p	language:C++	class:ADTList	access:public	signature:()
+getlength	circlelist.h	/^        int getlength() const;$/;"	p	class:CircleList	access:public	signature:() const
+getlength	circlelist.h	/^        int getlength() const;$/;"	p	signature:() const
+getlength	circlelist.h	/^        int getlength();$/;"	p	class:CircleList	access:public	signature:()
+getlength	circlelist.h	/^int CircleList<T>::getlength ()$/;"	f	class:CircleList	signature:()
+getlength	circlelist.h	/^int CircleList<T>::getlength ()$/;"	f	class:CircleList::CircleList	access:public	signature:()
+getlength	linklist.cpp	/^int List<T>::getlength() const$/;"	f	language:C++	class:List	signature:() const
+getlength	linklist.h	/^    int getlength() const;$/;"	p	class:List	access:public	signature:() const
+getlength	linklist.h	/^    int getlength() const;$/;"	p	language:C++	class:List	access:public	signature:() const
+getlength	linklist.h	/^int List<T>::getlength() const$/;"	f	class:List	signature:() const
+getlength	linklist.h	/^int List<T>::getlength() const$/;"	f	language:C++	class:List	signature:() const
+head	quene.h	/^        QueueNode<T>* head, *tail;$/;"	m	language:C++	class:Queue	access:private
+head	quene.h	/^        QueueNode<T>* head, tail;$/;"	m	language:C++	class:Queue	access:private
+head	quene.h	/^        QueueNode<T>* head;$/;"	m	language:C++	class:Queue	access:private
+head	queue.h	/^        QueueNode<T>* head;$/;"	m	language:C++	class:Queue	access:private
+header	circlelist.h	/^        CircleListNode* header;$/;"	m	class:CircleList	access:private
+header	circlelist.h	/^        CircleListNode<T>* header;$/;"	l
+header	circlelist.h	/^        CircleListNode<T>* header;$/;"	m	class:CircleList	access:private
+header	circlelist.h	/^        CircleListNode<T>* header;$/;"	m	language:C++	class:CircleList	access:private
+i	zero_sort.cpp	/^    int i = 0;$/;"	l
+idx	zero_sort.cpp	/^    int idx = Func(arr, size);$/;"	l
+inorder_traverse	bintree.cpp	/^void BinTree<T>::inorder_traverse (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+inorder_traverse	bintree.cpp	/^void BinTree<T>::inorder_traverse (const BinTreeNode<T>* current,$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, void(*visit)(T data))
+inorder_traverse	bintree.h	/^        void inorder_traverse()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+inorder_traverse	bintree.h	/^        void inorder_traverse(void (*visit)(T data))$/;"	f	language:C++	class:BinTree	access:public	signature:(void (*visit)(T data))
+inorder_traverse_nore	bintree.cpp	/^void BinTree<T>::inorder_traverse_nore ()$/;"	f	language:C++	class:BinTree	signature:()
+inorder_traverse_nore2	bintree.cpp	/^void BinTree<T>::inorder_traverse_nore2 ()$/;"	f	language:C++	class:BinTree	signature:()
+ins_elem	ADTList.h	/^        virtual bool ins_elem(const T& val, int idx);$/;"	p	class:ADTList	access:public	signature:(const T& val, int idx)
+ins_elem	ADTList.h	/^        virtual bool ins_elem(const T& val, int idx);$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& val, int idx)
+ins_elem	circlelist.h	/^        bool ins_elem(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+ins_elem	circlelist.h	/^        bool ins_elem(const T& val, int idx);$/;"	p	class:CircleList	access:public	signature:(const T& val, int idx)
+ins_elem	circlelist.h	/^        bool ins_elem(const T& val, int idx);$/;"	p	signature:(const T& val, int idx)
+ins_elem	circlelist.h	/^bool CircleList<T>::ins_elem (const T& val, int idx)$/;"	f	class:CircleList	signature:(const T& val, int idx)
+ins_elem	circlelist.h	/^bool CircleList<T>::ins_elem (const T& val, int idx)$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& val, int idx)
+ins_elem	circlelist.h	/^bool CircleList<T>::ins_elem(const T& val, int idx)$/;"	f	class:CircleList	signature:(const T& val, int idx)
+insert	circlelist.h	/^        bool insert(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+insert	linklist.cpp	/^bool List<T>::insert(const T& value, int index)$/;"	f	language:C++	class:List	signature:(const T& value, int index)
+insert	linklist.h	/^    bool insert(const T&, int);$/;"	p	class:List	access:public	signature:(const T&, int)
+insert	linklist.h	/^    bool insert(const T&, int);$/;"	p	language:C++	class:List	access:public	signature:(const T&, int)
+insert	linklist.h	/^bool List<T>::insert(const T& value, int index)$/;"	f	class:List	signature:(const T& value, int index)
+insert	linklist.h	/^bool List<T>::insert(const T& value, int index)$/;"	f	language:C++	class:List	signature:(const T& value, int index)
+insertafter	circlelist.cpp	/^bool CircleList<T>::insertafter (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+insertafter	circlelist.h	/^        bool insertafter(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+insertafter	circlelist.h	/^        bool insertafter(const T& val);$/;"	p	language:C++	class:CircleList	access:public	signature:(const T& val)
+insertafter	circlelist.h	/^bool CircleList<T>::insertafter (const T& val)$/;"	f	class:CircleList	signature:(const T& val)
+insertafter	circlelist.h	/^bool CircleList<T>::insertafter (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+insertbefore	circlelist.cpp	/^bool CircleList<T>::insertbefore (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+insertbefore	circlelist.h	/^        bool insertbefore(const T& val);$/;"	p	class:CircleList	access:public	signature:(const T& val)
+insertbefore	circlelist.h	/^        bool insertbefore(const T& val);$/;"	p	language:C++	class:CircleList	access:public	signature:(const T& val)
+insertbefore	circlelist.h	/^bool CircleList<T>::insertbefore (const T& val)$/;"	f	class:CircleList	signature:(const T& val)
+insertbefore	circlelist.h	/^bool CircleList<T>::insertbefore (const T& val)$/;"	f	language:C++	class:CircleList	signature:(const T& val)
+insertchild	bintree.cpp	/^bool BinTree<T>::insertchild (const BinTreeNode<T>* current, Direct d, const BinTree<T>* other)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, Direct d, const BinTree<T>* other)
+insertchild	bintree.cpp	/^bool BinTree<T>::insertchild (const BinTreeNode<T>*)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>*)
+isempty	ADTList.h	/^        virtual bool isempty();$/;"	p	class:ADTList	access:public	signature:()
+isempty	ADTList.h	/^        virtual bool isempty();$/;"	p	language:C++	class:ADTList	access:public	signature:()
+isempty	bintree.h	/^        bool isempty() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+isempty	circlelist.h	/^        bool isempty()$/;"	f	class:CircleList	access:public	signature:()
+isempty	circlelist.h	/^        bool isempty()$/;"	f	language:C++	class:CircleList	access:public	signature:()
+isempty	circlelist.h	/^        bool isempty();$/;"	p	class:CircleList	access:public	signature:()
+isempty	circlelist.h	/^bool CircleList<T>::isempty()$/;"	f	class:CircleList	signature:()
+isempty	circlelist.h	/^bool CircleList<T>::isempty()$/;"	f	class:CircleList::CircleList	access:public	signature:()
+isempty	quene.h	/^        bool isempty() const$/;"	f	language:C++	class:Queue	access:public	signature:() const
+isempty	queue.h	/^        bool isempty() const$/;"	f	language:C++	class:Queue	access:public	signature:() const
+isempty	stack.h	/^        int isempty() const$/;"	f	language:C++	class:Stack	access:public	signature:() const
+j	linklist.h	/^    int j = 0;$/;"	l
+j	linklist.h	/^    int j = 1;$/;"	l
+j	linklist.h	/^    int j = 1;$/;"	l	language:C++
+j	zero_sort.cpp	/^    int j = nSize - 1;$/;"	l
+josephus	circlelist.cpp	/^bool CircleList<T>::josephus (int round, int count, void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(int round, int count, void (*visit)(const T&))
+josephus	circlelist.h	/^        bool josephus(int n, int m);$/;"	p	class:CircleList	access:public	signature:(int n, int m)
+josephus	circlelist.h	/^        bool josephus(int n, int m, void (*visit)());$/;"	p	class:CircleList	access:public	signature:(int n, int m, void (*visit)())
+josephus	circlelist.h	/^        bool josephus(int n, int m, void (*visit)(const T&));$/;"	p	class:CircleList	access:public	signature:(int n, int m, void (*visit)(const T&))
+josephus	circlelist.h	/^        bool josephus(int round, int count, void (*visit)(const T&));$/;"	p	class:CircleList	access:public	signature:(int round, int count, void (*visit)(const T&))
+josephus	circlelist.h	/^        bool josephus(int round, int count, void (*visit)(const T&));$/;"	p	language:C++	class:CircleList	access:public	signature:(int round, int count, void (*visit)(const T&))
+josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count)$/;"	f	class:CircleList	signature:(int round, int count)
+josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count, void (*visit)())$/;"	f	class:CircleList	signature:(int round, int count, void (*visit)())
+josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count, void (*visit)(const T&))$/;"	f	class:CircleList	signature:(int round, int count, void (*visit)(const T&))
+josephus	circlelist.h	/^bool CircleList<T>::josephus (int round, int count, void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(int round, int count, void (*visit)(const T&))
+last	linklist.h	/^    ListNode<T>* last;$/;"	m	class:List	access:private
+last	linklist.h	/^    ListNode<T>* last;$/;"	m	language:C++	class:List	access:private
+lchild	bintree.h	/^        BinTreeNode<T>* lchild;$/;"	m	language:C++	class:BinTreeNode	access:private
+len	circlelist.h	/^    int len = 0;$/;"	l
+len	circlelist.h	/^    int len = 0;$/;"	l	language:C++
+len	linklist.h	/^    int len = 0;$/;"	l
+len	linklist.h	/^    int len = 0;$/;"	l	language:C++
+len	linklist.h	/^    int len = getlength();$/;"	l
+len	linklist.h	/^    int len = getlength();$/;"	l	language:C++
+length	circlelist.cpp	/^int CircleList<T>::length () $/;"	f	language:C++	class:CircleList	signature:()
+length	circlelist.h	/^        int length() const;$/;"	p	class:CircleList	access:public	signature:() const
+length	circlelist.h	/^        int length();$/;"	p	class:CircleList	access:public	signature:()
+length	circlelist.h	/^        int length();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+length	circlelist.h	/^int CircleList<T>::length () $/;"	f	class:CircleList	signature:()
+length	circlelist.h	/^int CircleList<T>::length () $/;"	f	language:C++	class:CircleList	signature:()
+levelorder_traverse	bintree.cpp	/^void BinTree<T>::levelorder_traverse ()$/;"	f	language:C++	class:BinTree	signature:()
+link	ADTList.h	/^        ListNode* link;$/;"	m	class:ListNode	access:private
+link	ADTList.h	/^        ListNode<T>* link;$/;"	m	class:ListNode	access:private
+link	ADTList.h	/^        ListNode<T>* link;$/;"	m	language:C++	class:ListNode	access:private
+link	circlelist.h	/^        CircleListNode<T>* link;$/;"	m	class:CircleListNode	access:private
+link	circlelist.h	/^        CircleListNode<T>* link;$/;"	m	language:C++	class:CircleListNode	access:private
+link	linklist.h	/^    ListNode* link;$/;"	m	class:ListNode	access:private
+link	linklist.h	/^    ListNode* link;$/;"	m	language:C++	class:ListNode	access:private
+link	linklist.h	/^    ListNode<T>* link;$/;"	m	language:C++	class:ListNode	access:private
+link	quene.h	/^        QueueNode<T>* link;$/;"	m	language:C++	class:QueueNode	access:private
+link	queue.h	/^        QueueNode<T>* link;$/;"	m	language:C++	class:QueueNode	access:private
+link	stack.h	/^        StackNode<T>* link;$/;"	m	language:C++	class:StackNode	access:private
+locate_elem	circlelist.h	/^        node* locate_elem(const T& val) const;$/;"	p	class:CircleList	access:public	signature:(const T& val) const
+locate_elem	circlelist.h	/^CircleListNode* CircleList<T>::locate_elem(const T& val) const$/;"	f	class:CircleList	signature:(const T& val) const
+locate_elem	circlelist.h	/^CircleListNode* CircleList<T>::locate_elem(const T& val) const$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& val) const
+main	capitalize.cpp	/^int main (int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
+main	main.cpp	/^int main(int argc, char** argv)$/;"	f	language:C++	signature:(int argc, char** argv)
+main	main.cpp	/^int main(int argc, char** argv)$/;"	f	signature:(int argc, char** argv)
+main	testbintree.cpp	/^int main (int argc, char *argv[])$/;"	f	language:C++	signature:(int argc, char *argv[])
+main	testcirclelist.cpp	/^int main(int argc, char** argv)$/;"	f	language:C++	signature:(int argc, char** argv)
+main	testlinklist.cpp	/^int main (int argc, char *argv[])$/;"	f	language:C++	signature:(int argc, char *argv[])
+main	testqueue.cpp	/^int main (int argc, char *argv[])$/;"	f	language:C++	signature:(int argc, char *argv[])
+main	teststack.cpp	/^int main (int argc, char *argv[])$/;"	f	language:C++	signature:(int argc, char *argv[])
+main	zero_sort.cpp	/^int main (int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
+newnode	linklist.h	/^    ListNode<T>* newnode = new ListNode<T>(value);\/\/CreateNode(value, q->link);$/;"	l
+newnode	linklist.h	/^    ListNode<T>* newnode = new ListNode<T>(value);\/\/CreateNode(value, q->link);$/;"	l	language:C++
+next	circlelist.cpp	/^bool CircleList<T>::next ()$/;"	f	language:C++	class:CircleList	signature:()
+next	circlelist.h	/^        bool next() const;$/;"	p	class:CircleList	access:public	signature:() const
+next	circlelist.h	/^        bool next();$/;"	p	class:CircleList	access:public	signature:()
+next	circlelist.h	/^        bool next();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+next	circlelist.h	/^bool CircleList<T>::next ()$/;"	f	class:CircleList	signature:()
+next	circlelist.h	/^bool CircleList<T>::next ()$/;"	f	language:C++	class:CircleList	signature:()
+next_elem	ADTList.h	/^        virtual T& next_elem(const T& curVal) const;$/;"	p	class:ADTList	access:public	signature:(const T& curVal) const
+next_elem	ADTList.h	/^        virtual T& next_elem(const T& curVal) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& curVal) const
+next_elem	circlelist.h	/^        T& next_elem(const T& curVal) const;$/;"	p	class:CircleList	access:public	signature:(const T& curVal) const
+next_elem	circlelist.h	/^        T& next_elem(const T& curVal) const;$/;"	p	signature:(const T& curVal) const
+next_elem	circlelist.h	/^T& CircleList<T>::next_elem(const T& curVal) const$/;"	f	class:CircleList	signature:(const T& curVal) const
+next_elem	circlelist.h	/^T& CircleList<T>::next_elem(const T& curVal) const$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& curVal) const
+operator <<	bintree.cpp	/^ostream& operator << (ostream& os, const BinTree<T>& obj)$/;"	f	language:C++	signature:(ostream& os, const BinTree<T>& obj)
+operator <<	bintree.h	/^        friend ostream& operator << (ostream& os, BinTree<T>& obj)$/;"	f	language:C++	class:BinTree	access:friend	signature:(ostream& os, BinTree<T>& obj)
+operator <<	bintree.h	/^        friend ostream& operator << (ostream& os, const BinTree<T>& obj)$/;"	f	language:C++	class:BinTree	access:friend	signature:(ostream& os, const BinTree<T>& obj)
+operator =	ADTList.h	/^        virtual ADTList& operator = (const ADTList &other); \/\/ assignment operator$/;"	p	class:ADTList	access:public	signature:(const ADTList &other)
+operator =	ADTList.h	/^        virtual ADTList& operator = (const ADTList &other); \/\/ assignment operator$/;"	p	language:C++	class:ADTList	access:public	signature:(const ADTList &other)
+operator =	ADTList.h	/^        virtual ListNode& operator = (const ListNode &other); \/\/ assignment operator$/;"	p	class:ListNode	access:public	signature:(const ListNode &other)
+operator =	bintree.cpp	/^BinTree BinTree<T>::operator = (const BinTree& other)$/;"	f	language:C++	class:BinTree	signature:(const BinTree& other)
+operator =	bintree.cpp	/^BinTree& BinTree<T>::operator = (const BinTree& other)$/;"	f	language:C++	class:BinTree	signature:(const BinTree& other)
+operator =	bintree.cpp	/^BinTreeNode<T>& BinTreeNode<T>::operator = (const BinTreeNode<T>& other)$/;"	f	language:C++	class:BinTreeNode	signature:(const BinTreeNode<T>& other)
+operator =	circlelist.cpp	/^CircleList<T>& CircleList<T>::operator = (const CircleList<T>& other)$/;"	f	language:C++	class:CircleList	signature:(const CircleList<T>& other)
+operator =	circlelist.h	/^        CircleList& operator = (const CircleList &other); \/\/ assignment operator$/;"	p	class:CircleList	access:public	signature:(const CircleList &other)
+operator =	circlelist.h	/^        CircleList& operator = (const CircleList &other); \/\/ assignment operator$/;"	p	signature:(const CircleList &other)
+operator =	circlelist.h	/^        CircleList<T>& operator = (const CircleList<T>& other); \/\/ assignment operator$/;"	p	class:CircleList	access:public	signature:(const CircleList<T>& other)
+operator =	circlelist.h	/^        CircleList<T>& operator = (const CircleList<T>& other); \/\/ assignment operator$/;"	p	language:C++	class:CircleList	access:public	signature:(const CircleList<T>& other)
+operator =	circlelist.h	/^        CircleListNode& operator = (const CircleListNode &other); \/\/ assignment operator$/;"	p	class:CircleListNode	access:public	signature:(const CircleListNode &other)
+operator =	circlelist.h	/^CircleList<T>& CircleList<T>::operator = (const CircleList<T>& other)$/;"	f	class:CircleList	signature:(const CircleList<T>& other)
+operator =	circlelist.h	/^CircleList<T>& CircleList<T>::operator = (const CircleList<T>& other)$/;"	f	language:C++	class:CircleList	signature:(const CircleList<T>& other)
+operator >>	bintree.cpp	/^istream& operator >> (istream& is, BinTree<T>& obj)$/;"	f	language:C++	signature:(istream& is, BinTree<T>& obj)
+operator >>	bintree.h	/^        friend istream& operator >> (istream& is, BinTree<T>& obj)$/;"	f	language:C++	class:BinTree	access:friend	signature:(istream& is, BinTree<T>& obj)
+p	circlelist.h	/^        CircleListNode<T> p = new CircleListNode<T>(val, q->link);$/;"	l
+p	linklist.h	/^        List<T>* p = first;$/;"	l	language:C++
+p	linklist.h	/^    ListNode<T>* p = q->link;$/;"	l
+p	linklist.h	/^    ListNode<T>* p = q->link;$/;"	l	language:C++
+parent	bintree.cpp	/^const BinTreeNode<T>& BinTree<T>::parent (const BinTreeNode<T>& current)\\$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>& current) const
+parent	bintree.cpp	/^const BinTreeNode<T>* BinTree<T>::parent (const BinTreeNode<T>* current)\\$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+parent	bintree.cpp	/^const BinTreeNode<T>* BinTree<T>::parent (const BinTreeNode<T>* start, \\$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* start, \ const BinTreeNode<T>* current) const
+parent	bintree.h	/^        const BinTreeNode<T>* parent(const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	access:public	signature:(const BinTreeNode<T>* current) const
+pop	stack.cpp	/^const T& Stack<T>::pop ()$/;"	f	language:C++	class:Stack	signature:()
+pop	stack.h	/^const T& Stack<T>::pop ()$/;"	f	language:C++	class:Stack	signature:()
+postorder_traverse	bintree.cpp	/^void BinTree<T>::postorder_traverse (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+postorder_traverse	bintree.cpp	/^void BinTree<T>::postorder_traverse (const BinTreeNode<T>* current,$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, void (*visit)(T data))
+postorder_traverse	bintree.h	/^        void postorder_traverse()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse ()$/;"	f	language:C++	class:BinTree	signature:()
+preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* )$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* )
+preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* current)$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current)
+preorder_traverse	bintree.cpp	/^void BinTree<T>::preorder_traverse (const BinTreeNode<T>* current,$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current, void (*visit)(T data))
+preorder_traverse	bintree.h	/^        void preorder_traverse() $/;"	f	language:C++	class:BinTree	access:public	signature:()
+preorder_traverse	bintree.h	/^        void preorder_traverse() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+preorder_traverse	bintree.h	/^        void preorder_traverse()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+preorder_traverse	bintree.h	/^        void preorder_traverse(void (*visit)(T data))$/;"	f	language:C++	class:BinTree	access:public	signature:(void (*visit)(T data))
+preorder_traverse_nore	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore ()$/;"	f	language:C++	class:BinTree	signature:()
+preorder_traverse_nore	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore (<+argument list+>)$/;"	f	language:C++	class:BinTree	signature:(<+argument list+>)
+preorder_traverse_nore	bintree.h	/^        preorder_traverse_nore()$/;"	f	language:C++	class:BinTree	access:public	signature:()
+preorder_traverse_nore2	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore2 ()$/;"	f	language:C++	class:BinTree	signature:()
+preorder_traverse_nore3	bintree.cpp	/^void BinTree<T>::preorder_traverse_nore3 ()$/;"	f	language:C++	class:BinTree	signature:()
+printdata	main.cpp	/^    circ.traverse(&(printdata<string>)());$/;"	p	file:	signature:()
+printdata	main.cpp	/^    traverse(&printdata());$/;"	p	file:	signature:()
+printdata	main.cpp	/^void printdata(const T& val)$/;"	f	language:C++	signature:(const T& val)
+printdata	main.cpp	/^void printdata(const T& val)$/;"	f	signature:(const T& val)
+printdata	main.cpp	/^void printdata(const string& val)$/;"	f	signature:(const string& val)
+printdata	testcirclelist.cpp	/^void printdata(const T& val)$/;"	f	language:C++	signature:(const T& val)
+printjosephus	main.cpp	/^void printjosephus (const T& val)$/;"	f	language:C++	signature:(const T& val)
+printjosephus	main.cpp	/^void printjosephus (const T& val)$/;"	f	signature:(const T& val)
+printjosephus	testcirclelist.cpp	/^void printjosephus (const T& val)$/;"	f	language:C++	signature:(const T& val)
+printout	bintree.cpp	/^void BinTree<T>::printout () const$/;"	f	language:C++	class:BinTree	signature:() const
+printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* curTree) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* curTree) const
+printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* cur_tree) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* cur_tree) const
+printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* current) const
+printout	bintree.cpp	/^void BinTree<T>::printout (const BinTree<T>* subtree) const$/;"	f	language:C++	class:BinTree	signature:(const BinTree<T>* subtree) const
+printout	bintree.cpp	/^void BinTree<T>::printout (const BinTreeNode<T>* current) const$/;"	f	language:C++	class:BinTree	signature:(const BinTreeNode<T>* current) const
+prior	circlelist.cpp	/^bool CircleList<T>::prior ()$/;"	f	language:C++	class:CircleList	signature:()
+prior	circlelist.h	/^        bool prior() const;$/;"	p	class:CircleList	access:public	signature:() const
+prior	circlelist.h	/^        bool prior();$/;"	p	class:CircleList	access:public	signature:()
+prior	circlelist.h	/^        bool prior();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+prior	circlelist.h	/^CircleList<T>::prior (<+argument list+>)$/;"	f	class:CircleList	signature:(<+argument list+>)
+prior	circlelist.h	/^bool CircleList<T>::prior ()$/;"	f	class:CircleList	signature:()
+prior	circlelist.h	/^bool CircleList<T>::prior ()$/;"	f	language:C++	class:CircleList	signature:()
+prior_elem	ADTList.h	/^        virtual T& prior_elem(const T& curVal) const;$/;"	p	class:ADTList	access:public	signature:(const T& curVal) const
+prior_elem	ADTList.h	/^        virtual T& prior_elem(const T& curVal) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const T& curVal) const
+prior_elem	circlelist.h	/^        T& prior_elem(const T& curVal) const;$/;"	p	class:CircleList	access:public	signature:(const T& curVal) const
+prior_elem	circlelist.h	/^        bool prior_elem(const T& curVal) const;$/;"	p	class:CircleList	access:public	signature:(const T& curVal) const
+prior_elem	circlelist.h	/^T& CircleList<T>::prior_elem() const$/;"	f	class:CircleList	signature:() const
+prior_elem	circlelist.h	/^T& CircleList<T>::prior_elem() const$/;"	f	class:CircleList::CircleList	access:public	signature:() const
+prior_elem	circlelist.h	/^T& CircleList<T>::prior_elem(const T& curVal) const$/;"	f	class:CircleList	signature:(const T& curVal) const
+push	stack.cpp	/^bool Stack<T>::push (const T& val)$/;"	f	language:C++	class:Stack	signature:(const T& val)
+push	stack.h	/^bool Stack<T>::push (const T& val)$/;"	f	language:C++	class:Stack	signature:(const T& val)
+q	circlelist.h	/^        CircleList<T> q = header;$/;"	l
+q	circlelist.h	/^        CircleListNode<T>* q = curr;$/;"	l
+q	circlelist.h	/^        CircleListNode<T>* q = curr;$/;"	l	language:C++
+q	circlelist.h	/^        CircleListNode<T>* q = header->link;$/;"	l
+q	circlelist.h	/^    CircleListNode* q = header->link;$/;"	l
+q	circlelist.h	/^    CircleListNode<T>* q = curr;$/;"	l
+q	circlelist.h	/^    CircleListNode<T>* q = header;$/;"	l
+q	circlelist.h	/^    CircleListNode<T>* q = header;$/;"	l	language:C++
+q	circlelist.h	/^    CircleListNode<T>* q = new CircleListNode<T>(val, curr->link);$/;"	l
+q	circlelist.h	/^    CircleListNode<T>* q = new CircleListNode<T>(val, curr->link);$/;"	l	language:C++
+q	circlelist.h	/^    CircleListNode<T>* q = other.header->link;$/;"	l
+q	circlelist.h	/^    CircleListNode<T>* q = other.header->link;$/;"	l	language:C++
+q	circlelist.h	/^    struct node* q = header;$/;"	l
+q	linklist.h	/^    ListNode<T>* q = find(index - 1);$/;"	l
+q	linklist.h	/^    ListNode<T>* q = find(index - 1);$/;"	l	language:C++
+q	linklist.h	/^    ListNode<T>* q = find(index);$/;"	l
+q	linklist.h	/^    ListNode<T>* q = find(index);$/;"	l	language:C++
+q	linklist.h	/^    ListNode<T>* q = first->link;$/;"	l
+q	linklist.h	/^    ListNode<T>* q = first->link;$/;"	l	language:C++
+q	linklist.h	/^    ListNode<T>* q = first;$/;"	l
+q	linklist.h	/^    ListNode<T>* q = first;$/;"	l	language:C++
+q	linklist.h	/^    ListNode<T>* q;$/;"	l
+q	linklist.h	/^    ListNode<T>* q;$/;"	l	language:C++
+rchild	bintree.h	/^        BinTreeNode<T>* rchild;$/;"	m	language:C++	class:BinTreeNode	access:private
+remove	circlelist.cpp	/^bool CircleList<T>::remove ()$/;"	f	language:C++	class:CircleList	signature:()
+remove	circlelist.h	/^        bool remove();$/;"	p	class:CircleList	access:public	signature:()
+remove	circlelist.h	/^        bool remove();$/;"	p	language:C++	class:CircleList	access:public	signature:()
+remove	circlelist.h	/^bool CircleList<T>::remove ()$/;"	f	class:CircleList	signature:()
+remove	circlelist.h	/^bool CircleList<T>::remove ()$/;"	f	language:C++	class:CircleList	signature:()
+remove	linklist.cpp	/^T List<T>::remove (ListNode<T>* p)$/;"	f	language:C++	class:List	signature:(ListNode<T>* p)
+remove	linklist.cpp	/^T List<T>::remove(int index)$/;"	f	language:C++	class:List	signature:(int index)
+remove	linklist.h	/^    T remove(ListNode<T>*);$/;"	p	class:List	access:public	signature:(ListNode<T>*)
+remove	linklist.h	/^    T remove(ListNode<T>*);$/;"	p	language:C++	class:List	access:public	signature:(ListNode<T>*)
+remove	linklist.h	/^    T remove(int);$/;"	p	class:List	access:public	signature:(int)
+remove	linklist.h	/^    T remove(int);$/;"	p	language:C++	class:List	access:public	signature:(int)
+remove	linklist.h	/^    T* remove(int);$/;"	p	class:List	access:public	signature:(int)
+remove	linklist.h	/^T List<T>::remove (ListNode<T>* p)$/;"	f	class:List	signature:(ListNode<T>* p)
+remove	linklist.h	/^T List<T>::remove (ListNode<T>* p)$/;"	f	language:C++	class:List	signature:(ListNode<T>* p)
+remove	linklist.h	/^T List<T>::remove(int index)$/;"	f	class:List	signature:(int index)
+remove	linklist.h	/^T List<T>::remove(int index)$/;"	f	language:C++	class:List	signature:(int index)
+remove	linklist.h	/^T* List<T>::remove(int index)$/;"	f	class:List	signature:(int index)
+reverse	linklist.cpp	/^void List<T>::reverse ()$/;"	f	language:C++	class:List	signature:()
+reverse	linklist.h	/^    void reverse();$/;"	p	language:C++	class:List	access:public	signature:()
+reverse	linklist.h	/^void List<T>::reverse ()$/;"	f	language:C++	class:List	signature:()
+root	bintree.h	/^        BinTreeNode<T>* root() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+root	bintree.h	/^        BinTreeNode<T>* root;$/;"	m	language:C++	class:BinTree	access:private
+root	bintree.h	/^        const BinTreeNode<T>* root() const$/;"	f	language:C++	class:BinTree	access:public	signature:() const
+set_data	bintree.cpp	/^inline void BinTreeNode<T>::set_data (T value)$/;"	f	language:C++	class:BinTreeNode	signature:(T value)
+set_data	bintree.cpp	/^inline void BinTreeNode<T>::set_data (T& value)$/;"	f	language:C++	class:BinTreeNode	signature:(T& value)
+set_data	bintree.cpp	/^inline void BinTreeNode<T>::set_data (const T& value)$/;"	f	language:C++	class:BinTreeNode	signature:(const T& value)
+set_data	bintree.h	/^        void set_data(const T& val) const { data = val; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val) const
+set_data	bintree.h	/^        void set_data(const T& val) const { data = }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val) const
+set_data	bintree.h	/^        void set_data(const T& val) { data = val; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(const T& val)
+set_elem	ADTList.h	/^        virtual T& set_elem(const int idx) const;$/;"	p	class:ADTList	access:public	signature:(const int idx) const
+set_elem	ADTList.h	/^        virtual T& set_elem(const int idx) const;$/;"	p	language:C++	class:ADTList	access:public	signature:(const int idx) const
+set_elem	circlelist.h	/^        bool set_elem(const T& val, const int idx);$/;"	p	class:CircleList	access:public	signature:(const T& val, const int idx)
+set_elem	circlelist.h	/^inline bool CircleList<T>::set_elem (const T& val, const int idx)$/;"	f	class:CircleList	signature:(const T& val, const int idx)
+set_elem	circlelist.h	/^inline bool CircleList<T>::set_elem (const T& val, const int idx)$/;"	f	class:CircleList::CircleList	access:public	signature:(const T& val, const int idx)
+set_lchild	bintree.h	/^        void set_lchild(BinTreeNode<T>* lval) { }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* lval)
+set_lchild	bintree.h	/^        void set_lchild(BinTreeNode<T>* ptr) { lchild = ptr; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* ptr)
+set_lchild	bintree.h	/^        void set_lchild(BinTreeNode<T>* ptr) { }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* ptr)
+set_rchild	bintree.h	/^        void set_rchild(BinTreeNode<T>* ptr) { rchild = ptr; }$/;"	f	language:C++	class:BinTreeNode	access:public	signature:(BinTreeNode<T>* ptr)
+sethead	circlelist.h	/^        void sethead()$/;"	f	class:CircleList	access:public	signature:()
+size	zero_sort.cpp	/^    int size = 20;$/;"	l
+size	zero_sort.cpp	/^    int size = 30;$/;"	l
+strs	main.cpp	/^    const string strs[] = {"one",  "two", "three", "four", "five", "six",$/;"	l
+strs	main.cpp	/^    const string strs[] = {"one",  "two", "three", "four", "five", "six",$/;"	l	language:C++
+t	circlelist.h	/^    CircleListNode<T>* t = header;$/;"	l
+tail	quene.h	/^        QueueNode<T>* head, *tail;$/;"	m	language:C++	class:Queue	access:private
+tail	quene.h	/^        QueueNode<T>* head, tail;$/;"	m	language:C++	class:Queue	access:private
+tail	quene.h	/^        QueueNode<T>* tail;$/;"	m	language:C++	class:Queue	access:private
+tail	queue.h	/^        QueueNode<T>* tail;$/;"	m	language:C++	class:Queue	access:private
+tempptr	linklist.h	/^    ListNode<T>* tempptr = link;$/;"	l
+tempptr	linklist.h	/^    ListNode<T>* tempptr = link;$/;"	l	language:C++
+top	stack.h	/^        StackNode<T>* top = NULL;$/;"	m	language:C++	class:Stack	access:private
+top	stack.h	/^        StackNode<T>* top;$/;"	m	language:C++	class:Stack	access:private
+traverse	ADTList.h	/^        virtual void traverse(void (*visit)());$/;"	p	class:ADTList	access:public	signature:(void (*visit)())
+traverse	ADTList.h	/^        virtual void traverse(void (*visit)());$/;"	p	language:C++	class:ADTList	access:public	signature:(void (*visit)())
+traverse	circlelist.cpp	/^void CircleList<T>::traverse (void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(void (*visit)(const T&))
+traverse	circlelist.h	/^        void traverse(void (*visit)());$/;"	p	class:CircleList	access:public	signature:(void (*visit)())
+traverse	circlelist.h	/^        void traverse(void (*visit)());$/;"	p	signature:(void (*visit)())
+traverse	circlelist.h	/^        void traverse(void (*visit)(const T&));$/;"	p	class:CircleList	access:public	signature:(void (*visit)(const T&))
+traverse	circlelist.h	/^        void traverse(void (*visit)(const T&));$/;"	p	language:C++	class:CircleList	access:public	signature:(void (*visit)(const T&))
+traverse	circlelist.h	/^void CircleList<T>::traverse (void (*visit)())$/;"	f	class:CircleList	signature:(void (*visit)())
+traverse	circlelist.h	/^void CircleList<T>::traverse (void (*visit)(const T&))$/;"	f	class:CircleList	signature:(void (*visit)(const T&))
+traverse	circlelist.h	/^void CircleList<T>::traverse (void (*visit)(const T&))$/;"	f	language:C++	class:CircleList	signature:(void (*visit)(const T&))
+traverse	circlelist.h	/^void CircleList<T>::traverse(void (*visit)())$/;"	f	class:CircleList	signature:(void (*visit)())
+traverse	circlelist.h	/^void CircleList<T>::traverse(void (*visit)())$/;"	f	class:CircleList::CircleList	access:public	signature:(void (*visit)())
+traverse	linklist.cpp	/^void List<T>::traverse ()$/;"	f	language:C++	class:List	signature:()
+traverse	linklist.h	/^    void traverse();$/;"	p	class:List	access:public	signature:()
+traverse	linklist.h	/^    void traverse();$/;"	p	language:C++	class:List	access:public	signature:()
+traverse	linklist.h	/^void List<T>::traverse ()$/;"	f	class:List	signature:()
+traverse	linklist.h	/^void List<T>::traverse ()$/;"	f	language:C++	class:List	signature:()
+~ADTList	ADTList.h	/^        virtual ~ADTList ();                          \/\/ destructor$/;"	p	class:ADTList	access:public	signature:()
+~ADTList	ADTList.h	/^        virtual ~ADTList ();                          \/\/ destructor$/;"	p	language:C++	class:ADTList	access:public	signature:()
+~BinTree	bintree.h	/^        ~BinTree() \/\/ destructor$/;"	f	language:C++	class:BinTree	access:public	signature:()
+~CircleList	circlelist.cpp	/^CircleList<T>::~CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+~CircleList	circlelist.h	/^        ~CircleList ();                          \/\/ destructor$/;"	p	class:CircleList	access:public	signature:()
+~CircleList	circlelist.h	/^        ~CircleList ();                          \/\/ destructor$/;"	p	language:C++	class:CircleList	access:public	signature:()
+~CircleList	circlelist.h	/^CircleList<T>::~CircleList ()$/;"	f	class:CircleList	signature:()
+~CircleList	circlelist.h	/^CircleList<T>::~CircleList ()$/;"	f	language:C++	class:CircleList	signature:()
+~CircleList	circlelist.h	/^void CircleList<T>::~CircleList ()$/;"	f	class:CircleList	signature:()
+~CircleListNode	circlelist.cpp	/^CircleListNode<T>::~CircleListNode ()$/;"	f	language:C++	class:CircleListNode	signature:()
+~CircleListNode	circlelist.h	/^        ~CircleListNode ();                          \/\/ destructor$/;"	p	class:CircleListNode	access:public	signature:()
+~CircleListNode	circlelist.h	/^        ~CircleListNode ();                          \/\/ destructor$/;"	p	language:C++	class:CircleListNode	access:public	signature:()
+~CircleListNode	circlelist.h	/^CircleListNode<T>::~CircleListNode ()$/;"	f	class:CircleListNode	signature:()
+~CircleListNode	circlelist.h	/^CircleListNode<T>::~CircleListNode ()$/;"	f	language:C++	class:CircleListNode	signature:()
+~List	linklist.h	/^    ~List() {$/;"	f	class:List	access:public	signature:()
+~List	linklist.h	/^    ~List() {$/;"	f	language:C++	class:List	access:public	signature:()
+~ListNode	ADTList.h	/^        virtual ~ListNode ();                          \/\/ destructor$/;"	p	class:ListNode	access:public	signature:()
+~ListNode	ADTList.h	/^        virtual ~ListNode ();                          \/\/ destructor$/;"	p	language:C++	class:ListNode	access:public	signature:()
+~Queue	quene.h	/^        ~Queue()                                \/\/ destructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+~Queue	quene.h	/^        ~Queue()$/;"	f	language:C++	class:Queue	access:public	signature:()
+~Queue	queue.h	/^        ~Queue()                                \/\/ destructor$/;"	f	language:C++	class:Queue	access:public	signature:()
+~Stack	stack.h	/^        ~Stack()$/;"	f	language:C++	class:Stack	access:public	signature:()
+~StackNode	stack.cpp	/^StackNode<T>::~StackNode ()$/;"	f	language:C++	class:StackNode	signature:()
+~StackNode	stack.cpp	/^inline StackNode<T>::~StackNode ()$/;"	f	language:C++	class:StackNode	signature:()
+~StackNode	stack.h	/^        ~StackNode()$/;"	f	language:C++	class:StackNode	access:public	signature:()
+~StackNode	stack.h	/^StackNode<T>::~StackNode ()$/;"	f	language:C++	class:StackNode	signature:()

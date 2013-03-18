@@ -1,0 +1,152 @@
+<html><head><title>AIMA Python file: mdp.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: mdp.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Markov Decision Processes (Chapter 17)
+
+First we define an MDP, and the special case of a GridMDP, in which
+states are laid out in a 2-dimensional grid.  We also represent a policy
+as a dictionary of {state:action} pairs, and a Utility function as a
+dictionary of {state:number} pairs.  We then define the value_iteration
+and policy_iteration algorithms."</font></i><i><font color="green">""</font></i>
+
+from <a href="utils.html">utils</a> import *
+
+<b>class </b><b style="background-color:ffff00"><a name="MDP">MDP</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A Markov Decision Process, defined by an initial state, transition model,
+    and reward function. We also keep track of a gamma value, for use by
+    algorithms. The transition model is represented somewhat differently from
+    the text.  Instead of T(s, a, s') being  probability number for each
+    state/action/state triplet, we instead have T(s, a) return a list of (p, s')
+    pairs.  We also keep track of the possible states, terminal states, and
+    actions for each state. [page 615]"</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, init, actlist, terminals, gamma=.9):
+        update(self, init=init, actlist=actlist, terminals=terminals,
+               gamma=gamma, states=set(), reward={})
+
+    <b>def </b><b style="background-color:ffff00"><a name="R">R</b>(self, state):
+        <i><font color="green">"Return a numeric reward for this state."</font></i>
+        return self.reward[state]
+
+    <b>def </b><b style="background-color:ffff00"><a name="T">T</b>(state, action):
+        <i><font color="green">""</font></i><i><font color="green">"Transition model.  From a state and an action, return a list
+        of (result-state, probability) pairs."</font></i><i><font color="green">""</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="actions">actions</b>(self, state):
+        <i><font color="green">""</font></i><i><font color="green">"Set of actions that can be performed in this state.  By default, a
+        fixed list of actions, except for terminal states. Override this
+        method if you need to specialize by state."</font></i><i><font color="green">""</font></i>
+        if state in self.terminals:
+            return [None]
+        else:
+            return self.actlist
+
+<b>class </b><b style="background-color:ffff00"><a name="GridMDP">GridMDP</b>(MDP):
+    <i><font color="green">""</font></i><i><font color="green">"A two-dimensional grid MDP, as in [Figure 17.1].  All you have to do is
+    specify the grid as a list of lists of rewards; use None for an obstacle
+    (unreachable state).  Also, you should specify the terminal states.
+    An action is an (x, y) unit vector; e.g. (1, 0) means move east."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, grid, terminals, init=(0, 0), gamma=.9):
+        grid.reverse() <font color="cc33cc">## because we want row 0 on bottom, not on top</font>
+        MDP.__init__(self, init, actlist=orientations,
+                     terminals=terminals, gamma=gamma)
+        update(self, grid=grid, rows=len(grid), cols=len(grid[0]))
+        for x in range(self.cols):
+            for y in range(self.rows):
+                self.reward[x, y] = grid[y][x]
+                if grid[y][x] is not None:
+                    self.states.add((x, y))
+
+    <b>def </b><b style="background-color:ffff00"><a name="T">T</b>(self, state, action):
+        if action == None:
+            return [(0.0, state)]
+        else:
+            return [(0.8, self.go(state, action)),
+                    (0.1, self.go(state, turn_right(action))),
+                    (0.1, self.go(state, turn_left(action)))]
+
+    <b>def </b><b style="background-color:ffff00"><a name="go">go</b>(self, state, direction):
+        <i><font color="green">"Return the state that results from going in this direction."</font></i>
+        state1 = vector_add(state, direction)
+        return if_(state1 in self.states, state1, state)
+
+    <b>def </b><b style="background-color:ffff00"><a name="to_grid">to_grid</b>(self, mapping):
+        <i><font color="green">""</font></i><i><font color="green">"Convert a mapping from (x, y) to v into a [[..., v, ...]] grid."</font></i><i><font color="green">""</font></i>
+        return list(reversed([[mapping.get((x,y), None)
+                               for x in range(self.cols)]
+                              for y in range(self.rows)]))
+
+    <b>def </b><b style="background-color:ffff00"><a name="to_arrows">to_arrows</b>(self, policy):
+        chars = {(1, 0):<i><font color="green">'&gt;'</font></i>, (0, 1):<i><font color="green">'^'</font></i>, (-1, 0):<i><font color="green">'&lt;'</font></i>, (0, -1):<i><font color="green">'v'</font></i>, None: <i><font color="green">'.'</font></i>}
+        return self.to_grid(dict([(s, chars[a]) for (s, a) in policy.items()]))
+
+<hr>
+Fig[17,1] = GridMDP([[-0.04, -0.04, -0.04, +1],
+                     [-0.04, None,  -0.04, -1],
+                     [-0.04, -0.04, -0.04, -0.04]],
+                    terminals=[(3, 2), (3, 1)])
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="value_iteration">value_iteration</b>(mdp, epsilon=0.001):
+    <i><font color="green">"Solving an MDP by value iteration. [Fig. 17.4]"</font></i>
+    U1 = dict([(s, 0) for s in mdp.states])
+    R, T, gamma = mdp.R, mdp.T, mdp.gamma
+    while True:
+        U = U1.copy()
+        delta = 0
+        for s in mdp.states:
+            U1[s] = R(s) + gamma * max([sum([p * U[s1] for (p, s1) in T(s, a)])
+                                        for a in mdp.actions(s)])
+            delta = max(delta, abs(U1[s] - U[s]))
+        if delta &lt; epsilon * (1 - gamma) / gamma:
+             return U
+
+<b>def </b><b style="background-color:ffff00"><a name="best_policy">best_policy</b>(mdp, U):
+    <i><font color="green">""</font></i><i><font color="green">"Given an MDP and a utility function U, determine the best policy,
+    as a mapping from state to action. (Equation 17.4)"</font></i><i><font color="green">""</font></i>
+    pi = {}
+    for s in mdp.states:
+        pi[s] = argmax(mdp.actions(s), lambda a:expected_utility(a, s, U, mdp))
+    return pi
+
+<b>def </b><b style="background-color:ffff00"><a name="expected_utility">expected_utility</b>(a, s, U, mdp):
+    <i><font color="green">"The expected utility of doing a in state s, according to the MDP and U."</font></i>
+    return sum([p * U[s1] for (p, s1) in mdp.T(s, a)])
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="policy_iteration">policy_iteration</b>(mdp):
+    <i><font color="green">"Solve an MDP by policy iteration [Fig. 17.7]"</font></i>
+    U = dict([(s, 0) for s in mdp.states])
+    pi = dict([(s, random.choice(mdp.actions(s))) for s in mdp.states])
+    while True:
+        U = policy_evaluation(pi, U, mdp)
+        unchanged = True
+        for s in mdp.states:
+            a = argmax(mdp.actions(s), lambda a: expected_utility(a,s,U,mdp))
+            if a != pi[s]:
+                pi[s] = a
+                unchanged = False
+        if unchanged:
+            return pi
+
+<b>def </b><b style="background-color:ffff00"><a name="policy_evaluation">policy_evaluation</b>(pi, U, mdp, k=20):
+    <i><font color="green">""</font></i><i><font color="green">"Return an updated utility mapping U from each state in the MDP to its
+    utility, using an approximation (modified policy iteration)."</font></i><i><font color="green">""</font></i>
+    R, T, gamma = mdp.R, mdp.T, mdp.gamma
+    for i in range(k):
+        for s in mdp.states:
+            U[s] = R(s) + gamma * sum([p * U[s] for (p, s1) in T(s, pi[s])])
+    return U
+
+</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

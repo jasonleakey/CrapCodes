@@ -1,0 +1,177 @@
+<html><head><title>AIMA Python file: probability.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: probability.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Probability models. (Chapter 13-15)
+"</font></i><i><font color="green">""</font></i>
+
+from <a href="utils.html">utils</a> import *
+from <a href="logic.html">logic</a> import <a href="http://www.python.org/doc/current/lib/module-extend.html">extend</a>
+import <a href="agents.html">agents</a>
+import <a href="http://www.python.org/doc/current/lib/module-bisect.html">bisect</a>, <a href="http://www.python.org/doc/current/lib/module-random.html">random</a>
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="DTAgent">DTAgent</b>(agents.Agent):
+    <i><font color="green">"A decision-theoretic agent. [Fig. 13.1]"</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, belief_state):
+        agents.Agent.__init__(self)
+
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            belief_state.observe(action, percept)
+            program.action = argmax(belief_state.actions(),
+                                    belief_state.expected_outcome_utility)
+            return program.action
+
+        program.action = None
+        self.program = program
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="ProbDist">ProbDist</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A discrete probability distribution.  You name the random variable
+    in the constructor, then assign and query probability of values.
+    &gt;&gt;&gt; P = ProbDist('Flip'); P['H'], P['T'] = 0.5, 0.5; P['H']
+    0.5
+    "</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, varname=<i><font color="green">'?'</font></i>):
+        update(self, prob={}, varname=varname, values=[])
+
+    <b>def </b><b style="background-color:ffff00"><a name="__getitem__">__getitem__</b>(self, val):
+        <i><font color="green">"Given a value, return P(value)."</font></i>
+        return self.prob[val]
+
+    <b>def </b><b style="background-color:ffff00"><a name="__setitem__">__setitem__</b>(self, val, p):
+        <i><font color="green">"Set P(val) = p"</font></i>
+        if val not in self.values:
+            self.values.append(val)
+        self.prob[val] = p
+
+    <b>def </b><b style="background-color:ffff00"><a name="normalize">normalize</b>(self):
+        <i><font color="green">"Make sure the probabilities of all values sum to 1."</font></i>
+        total = sum(self.prob.values())
+        if not (1.0-epsilon &lt; total &lt; 1.0+epsilon):
+            for val in self.prob:
+                self.prob[val] /= total
+        return self
+
+<b style="background-color:ffff00"><a name="epsilon">epsilon</b> = 0.001
+
+<b>class </b><b style="background-color:ffff00"><a name="JointProbDist">JointProbDist</b>(ProbDist):
+    <i><font color="green">""</font></i><i><font color="green">"A discrete probability distribute over a set of variables.
+    &gt;&gt;&gt; P = JointProbDist(['X', 'Y']); P[1, 1] = 0.25
+    &gt;&gt;&gt; P[1, 1]
+    0.25
+    "</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, variables):
+        update(self, prob={}, variables=variables, vals=DefaultDict([]))
+
+    <b>def </b><b style="background-color:ffff00"><a name="__getitem__">__getitem__</b>(self, values):
+        <i><font color="green">"Given a tuple or dict of values, return P(values)."</font></i>
+        if isinstance(values, dict):
+            values = tuple([values[var] for var in self.variables])
+        return self.prob[values]
+
+    <b>def </b><b style="background-color:ffff00"><a name="__setitem__">__setitem__</b>(self, values, p):
+        <i><font color="green">""</font></i><i><font color="green">"Set P(values) = p.  Values can be a tuple or a dict; it must
+        have a value for each of the variables in the joint. Also keep track
+        of the values we have seen so far for each variable."</font></i><i><font color="green">""</font></i>
+        if isinstance(values, dict):
+            values = [values[var] for var in self.variables]
+        self.prob[values] = p
+        for var,val in zip(self.variables, values):
+            if val not in self.vals[var]:
+                self.vals[var].append(val)
+
+    <b>def </b><b style="background-color:ffff00"><a name="values">values</b>(self, var):
+        <i><font color="green">"Return the set of possible values for a variable."</font></i>
+        return self.vals[var]
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        return <i><font color="green">"P(%s)"</font></i> % self.variables
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="enumerate_joint_ask">enumerate_joint_ask</b>(X, e, P):
+    <i><font color="green">""</font></i><i><font color="green">"Return a probability distribution over the values of the variable X,
+    given the {var:val} observations e, in the JointProbDist P.
+    Works for Boolean variables only. [Fig. 13.4]"</font></i><i><font color="green">""</font></i>
+    Q = ProbDist(X) <font color="cc33cc">## A probability distribution for X, initially empty</font>
+    Y = [v for v in P.variables if v != X and v not in e]
+    for xi in P.values(X):
+        Q[xi] = enumerate_joint(Y, extend(e, X, xi), P)
+    return Q.normalize()
+
+<b>def </b><b style="background-color:ffff00"><a name="enumerate_joint">enumerate_joint</b>(vars, values, P):
+    <i><font color="green">"As in Fig 13.4, except x and e are already incorporated in values."</font></i>
+    if not vars:
+        return P[values]
+    Y = vars[0]; rest = vars[1:]
+    return sum([enumerate_joint(rest, extend(values, Y, y), P)
+                for y in P.values(Y)])
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="BayesNet">BayesNet</b>:
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, nodes=[]):
+        update(self, nodes=[], vars=[])
+        for node in nodes:
+            self.add(node)
+
+    <b>def </b><b style="background-color:ffff00"><a name="add">add</b>(self, node):
+        self.nodes.append(node)
+        self.vars.append(node.variable)
+
+    <b>def </b><b style="background-color:ffff00"><a name="observe">observe</b>(self, var, val):
+        self.evidence[var] = val
+
+<b>class </b><b style="background-color:ffff00"><a name="BayesNode">BayesNode</b>:
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, variable, parents, cpt):
+        if isinstance(parents, str): parents = parents.split()
+        update(self, variable=variable, parents=parents, cpt=cpt)
+
+<b style="background-color:ffff00"><a name="node">node</b> = BayesNode
+
+
+<b style="background-color:ffff00"><a name="T, F">T, F</b> = True, False
+
+<b style="background-color:ffff00"><a name="burglary">burglary</b> = BayesNet([
+  node(<i><font color="green">'Burglary'</font></i>, <i><font color="green">''</font></i>, .001),
+  node(<i><font color="green">'Earthquake'</font></i>, <i><font color="green">''</font></i>, .002),
+  node(<i><font color="green">'Alarm'</font></i>, <i><font color="green">'Burglary Earthquake'</font></i>, {
+                    (T, T):.95,
+                    (T, F):.94,
+                    (F, T):.29,
+                    (F, F):.001}),
+  node(<i><font color="green">'JohnCalls'</font></i>, <i><font color="green">'Alarm'</font></i>, {T:.90, F:.05}),
+  node(<i><font color="green">'MaryCalls'</font></i>, <i><font color="green">'Alarm'</font></i>, {T:.70, F:.01})
+  ])
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="elimination_ask">elimination_ask</b>(X, e, bn):
+    <i><font color="green">"[Fig. 14.10]"</font></i>
+    factors = []
+    for var in reverse(bn.vars):
+        factors.append(Factor(var, e))
+        if is_hidden(var, X, e):
+            factors = sum_out(var, factors)
+    return pointwise_product(factors).normalize()
+
+<b>def </b><b style="background-color:ffff00"><a name="pointwise_product">pointwise_product</b>(factors):
+    pass
+
+<b>def </b><b style="background-color:ffff00"><a name="sum_out">sum_out</b>(var, factors):
+    pass
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="prior_sample">prior_sample</b>(bn):
+    x = {}
+    for xi in bn.vars:
+        x[xi.var] = xi.sample([x])
+
+<hr></pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

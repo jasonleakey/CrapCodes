@@ -1,0 +1,9 @@
+#Mon Oct 05 13:17:32 CST 2009
+eclipse.preferences.version=1
+encoding//src/SocketServer_TCP_client.py=UTF-8
+encoding//src/SocketServer_TCP_server.py=utf-8
+encoding//src/pyGTK_ftp_client.py=UTF-8
+encoding//src/text_transmit_TCP_client.py=utf-8
+encoding//src/text_transmit_TCP_server.py=utf-8
+encoding//src/text_transmit_UDP_client.py=utf-8
+encoding//src/text_transmit_UDP_server.py=utf-8

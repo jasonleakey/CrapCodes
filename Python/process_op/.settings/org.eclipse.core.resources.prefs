@@ -1,0 +1,6 @@
+#Wed Apr 27 20:49:18 CST 2011
+eclipse.preferences.version=1
+encoding//src/daemon_process.py=utf-8
+encoding//src/process_manage.py=UTF-8
+encoding//src/process_parameter.py=UTF-8
+encoding//src/test_syslog.py=utf-8

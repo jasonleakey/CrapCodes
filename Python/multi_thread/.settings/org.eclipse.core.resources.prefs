@@ -1,0 +1,13 @@
+#Mon Aug 24 00:17:57 CST 2009
+eclipse.preferences.version=1
+encoding//src/MP_MC_by_semaphore.py=UTF-8
+encoding//src/MP_MC_stackless.py=UTF-8
+encoding//src/Queue_MP_MC.py=utf-8
+encoding//src/create_pthread.py=UTF-8
+encoding//src/event_object.py=UTF-8
+encoding//src/synchronous_by_condition_variable.py=UTF-8
+encoding//src/thread_basic_op.py=UTF-8
+encoding//src/thread_module.py=UTF-8
+encoding//src/threading_module_1.py=utf-8
+encoding//src/threading_module_2.py=utf-8
+encoding//src/threading_module_3.py=UTF-8

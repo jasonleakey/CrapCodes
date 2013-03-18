@@ -1,0 +1,49 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Pulse signal collection using ultrasonic blood analyzer\relax }}{6}{figure.caption.15}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Outline of this thesis\relax }}{8}{figure.caption.16}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Pulse collecting system\relax }}{12}{figure.caption.17}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Probe head: fusion of photoelectric sensors and pressure sensors\relax }}{12}{figure.caption.18}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces The first generation of pulse detecting system developed by Harbin Institution of Technology\relax }}{14}{figure.caption.19}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Person management interface\relax }}{15}{figure.caption.20}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Main interface for pulse collection\relax }}{16}{figure.caption.21}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Pulse signals under three different pressures\relax }}{17}{figure.caption.22}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Pulse signal when the pressure is 130}}}{17}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Pulse signal when the pressure is 200g}}}{17}{subfigure.b}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Pulse signal when the pressure is 250g}}}{17}{subfigure.c}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Preprocessing procedures\relax }}{20}{figure.caption.24}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Pulse signal with burr noise\relax }}{20}{figure.caption.25}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces The comparison of denoising effect with different thresholds\relax }}{25}{figure.caption.26}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {The denoised signal using hard threshold}}}{25}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The denoised signal using soft threshold}}}{25}{subfigure.b}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {The denoised signal using adaptive threshold}}}{25}{subfigure.c}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Magnitude response of FIR filter\relax }}{27}{figure.caption.28}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces The pulse waveform before power noise removal\relax }}{27}{figure.caption.29}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Pulse wave with power electric noise}}}{27}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The frequency spectrum}}}{27}{subfigure.b}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces The pulse waveform after power noise removal\relax }}{28}{figure.caption.30}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Pulse wave after power electric noise removal}}}{28}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The frequency spectrum}}}{28}{subfigure.b}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces The pulse wave with baseline drift\relax }}{28}{figure.caption.31}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces The sliding window for peak detecting\relax }}{29}{figure.caption.32}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Starting points detected\relax }}{30}{figure.caption.33}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces The estimated baseline wander using cubic spline interpolation\relax }}{31}{figure.caption.34}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces The pulse waveform after removal of baseline wander\relax }}{31}{figure.caption.35}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces The normalized pulse signal\relax }}{32}{figure.caption.36}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces The basic structure of pulse waveform\relax }}{35}{figure.caption.37}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Time-domain features\relax }}{35}{figure.caption.38}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {shape features}}}{35}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {area features}}}{35}{subfigure.b}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces The key points in a pulse cycle\relax }}{37}{figure.caption.39}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces The key points detected by the algorithm\relax }}{38}{figure.caption.40}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {The detected key points}}}{38}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The first derivative of pulse waveform}}}{38}{subfigure.b}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Xian Mai: hidden tidal wave\relax }}{39}{figure.caption.41}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Illustration of the search of tidal wave\relax }}{40}{figure.caption.42}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {The pulse waveform of hidden tidal wave}}}{40}{subfigure.a}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The 1st-order difference}}}{40}{subfigure.b}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {The 2nd-order difference}}}{40}{subfigure.c}
+\addvspace {10\p@ }
+\addvspace {10\p@ }

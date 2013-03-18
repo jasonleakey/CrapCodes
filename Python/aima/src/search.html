@@ -1,0 +1,734 @@
+<html><head><title>AIMA Python file: search.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: search.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Search (Chapters 3-4)
+
+The way to use this code is to subclass Problem to create a class of problems,
+then create problem instances and solve them with calls to the various search
+functions."</font></i><i><font color="green">""</font></i>
+
+from __future__ import <a href="http://www.python.org/doc/current/lib/module-generators.html">generators</a>
+from <a href="utils.html">utils</a> import *
+import <a href="agents.html">agents</a>
+import <a href="http://www.python.org/doc/current/lib/module-math.html">math</a>, <a href="http://www.python.org/doc/current/lib/module-random.html">random</a>, <a href="http://www.python.org/doc/current/lib/module-sys.html">sys</a>, <a href="http://www.python.org/doc/current/lib/module-time.html">time</a>, <a href="http://www.python.org/doc/current/lib/module-bisect.html">bisect</a>, <a href="http://www.python.org/doc/current/lib/module-string.html">string</a>
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="Problem">Problem</b>:
+    <i><font color="green">""</font></i><i><font color="green">"The abstract class for a formal problem.  You should subclass this and
+    implement the method successor, and possibly __init__, goal_test, and
+    path_cost. Then you will create instances of your subclass and solve them
+    with the various search functions."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, initial, goal=None):
+        <i><font color="green">""</font></i><i><font color="green">"The constructor specifies the initial state, and possibly a goal
+        state, if there is a unique goal.  Your subclass's constructor can add
+        other arguments."</font></i><i><font color="green">""</font></i>
+        self.initial = initial; self.goal = goal
+
+    <b>def </b><b style="background-color:ffff00"><a name="successor">successor</b>(self, state):
+        <i><font color="green">""</font></i><i><font color="green">"Given a state, return a sequence of (action, state) pairs reachable
+        from this state. If there are many successors, consider an iterator
+        that yields the successors one at a time, rather than building them
+        all at once. Iterators will work fine within the framework."</font></i><i><font color="green">""</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="goal_test">goal_test</b>(self, state):
+        <i><font color="green">""</font></i><i><font color="green">"Return True if the state is a goal. The default method compares the
+        state to self.goal, as specified in the constructor. Implement this
+        method if checking against a single self.goal is not enough."</font></i><i><font color="green">""</font></i>
+        return state == self.goal
+
+    <b>def </b><b style="background-color:ffff00"><a name="path_cost">path_cost</b>(self, c, state1, action, state2):
+        <i><font color="green">""</font></i><i><font color="green">"Return the cost of a solution path that arrives at state2 from
+        state1 via action, assuming cost c to get up to state1. If the problem
+        is such that the path doesn't matter, this function will only look at
+        state2.  If the path does matter, it will consider c and maybe state1
+        and action. The default method costs 1 for every step in the path."</font></i><i><font color="green">""</font></i>
+        return c + 1
+
+    <b>def </b><b style="background-color:ffff00"><a name="value">value</b>(self):
+        <i><font color="green">""</font></i><i><font color="green">"For optimization problems, each state has a value.  Hill-climbing
+        and related algorithms try to maximize this value."</font></i><i><font color="green">""</font></i>
+        abstract
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="Node">Node</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A node in a search tree. Contains a pointer to the parent (the node
+    that this is a successor of) and to the actual state for this node. Note
+    that if a state is arrived at by two paths, then there are two nodes with
+    the same state.  Also includes the action that got us to this state, and
+    the total path_cost (also known as g) to reach the node.  Other functions
+    may add an f and h value; see best_first_graph_search and astar_search for
+    an explanation of how the f and h values are handled. You will not need to
+    subclass this class."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, state, parent=None, action=None, path_cost=0):
+        <i><font color="green">"Create a search tree Node, derived from a parent by an action."</font></i>
+        update(self, state=state, parent=parent, action=action,
+               path_cost=path_cost, depth=0)
+        if parent:
+            self.depth = parent.depth + 1
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        return <i><font color="green">"&lt;Node %s&gt;"</font></i> % (self.state,)
+
+    <b>def </b><b style="background-color:ffff00"><a name="path">path</b>(self):
+        <i><font color="green">"Create a list of nodes from the root to this node."</font></i>
+        x, result = self, [self]
+        while x.parent:
+            result.append(x.parent)
+            x = x.parent
+        return result
+
+    <b>def </b><b style="background-color:ffff00"><a name="expand">expand</b>(self, problem):
+        <i><font color="green">"Return a list of nodes reachable from this node. [Fig. 3.8]"</font></i>
+        return [Node(next, self, act,
+                     problem.path_cost(self.path_cost, self.state, act, next))
+                for (act, next) in problem.successor(self.state)]
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="SimpleProblemSolvingAgent">SimpleProblemSolvingAgent</b>(agents.Agent):
+    <i><font color="green">""</font></i><i><font color="green">"Abstract framework for problem-solving agent. [Fig. 3.1]"</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        Agent.__init__(self)
+        state = []
+        seq = []
+
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            state = self.update_state(state, percept)
+            if not seq:
+                goal = self.formulate_goal(state)
+                problem = self.formulate_problem(state, goal)
+                seq = self.search(problem)
+            action = seq[0]
+            seq[0:1] = []
+            return action
+
+        self.program = program
+
+<hr><font color="cc33cc">## Uninformed Search algorithms</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="tree_search">tree_search</b>(problem, fringe):
+    <i><font color="green">""</font></i><i><font color="green">"Search through the successors of a problem to find a goal.
+    The argument fringe should be an empty queue.
+    Don't worry about repeated paths to a state. [Fig. 3.8]"</font></i><i><font color="green">""</font></i>
+    fringe.append(Node(problem.initial))
+    while fringe:
+        node = fringe.pop()
+        if problem.goal_test(node.state):
+            return node
+        fringe.extend(node.expand(problem))
+    return None
+
+<b>def </b><b style="background-color:ffff00"><a name="breadth_first_tree_search">breadth_first_tree_search</b>(problem):
+    <i><font color="green">"Search the shallowest nodes in the search tree first. [p 74]"</font></i>
+    return tree_search(problem, FIFOQueue())
+
+<b>def </b><b style="background-color:ffff00"><a name="depth_first_tree_search">depth_first_tree_search</b>(problem):
+    <i><font color="green">"Search the deepest nodes in the search tree first. [p 74]"</font></i>
+    return tree_search(problem, Stack())
+
+<b>def </b><b style="background-color:ffff00"><a name="graph_search">graph_search</b>(problem, fringe):
+    <i><font color="green">""</font></i><i><font color="green">"Search through the successors of a problem to find a goal.
+    The argument fringe should be an empty queue.
+    If two paths reach a state, only use the best one. [Fig. 3.18]"</font></i><i><font color="green">""</font></i>
+    closed = {}
+    fringe.append(Node(problem.initial))
+    while fringe:
+        node = fringe.pop()
+        if problem.goal_test(node.state):
+            return node
+        if node.state not in closed:
+            closed[node.state] = True
+            fringe.extend(node.expand(problem))
+    return None
+
+<b>def </b><b style="background-color:ffff00"><a name="breadth_first_graph_search">breadth_first_graph_search</b>(problem):
+    <i><font color="green">"Search the shallowest nodes in the search tree first. [p 74]"</font></i>
+    return graph_search(problem, FIFOQueue())
+
+<b>def </b><b style="background-color:ffff00"><a name="depth_first_graph_search">depth_first_graph_search</b>(problem):
+    <i><font color="green">"Search the deepest nodes in the search tree first. [p 74]"</font></i>
+    return graph_search(problem, Stack())
+
+<b>def </b><b style="background-color:ffff00"><a name="depth_limited_search">depth_limited_search</b>(problem, limit=50):
+    <i><font color="green">"[Fig. 3.12]"</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="recursive_dls">recursive_dls</b>(node, problem, limit):
+        cutoff_occurred = False
+        if problem.goal_test(node.state):
+            return node
+        elif node.depth == limit:
+            return <i><font color="green">'cutoff'</font></i>
+        else:
+            for successor in node.expand(problem):
+                result = recursive_dls(successor, problem, limit)
+                if result == <i><font color="green">'cutoff'</font></i>:
+                    cutoff_occurred = True
+                elif result != None:
+                    return result
+        if cutoff_occurred:
+            return <i><font color="green">'cutoff'</font></i>
+        else:
+            return None
+    <font color="cc33cc"># Body of depth_limited_search:</font>
+    return recursive_dls(Node(problem.initial), problem, limit)
+
+<b>def </b><b style="background-color:ffff00"><a name="iterative_deepening_search">iterative_deepening_search</b>(problem):
+    <i><font color="green">"[Fig. 3.13]"</font></i>
+    for depth in xrange(sys.maxint):
+        result = depth_limited_search(problem, depth)
+        if result is not <i><font color="green">'cutoff'</font></i>:
+            return result
+
+<hr><font color="cc33cc"># Informed (Heuristic) Search</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="best_first_graph_search">best_first_graph_search</b>(problem, f):
+    <i><font color="green">""</font></i><i><font color="green">"Search the nodes with the lowest f scores first.
+    You specify the function f(node) that you want to minimize; for example,
+    if f is a heuristic estimate to the goal, then we have greedy best
+    first search; if f is node.depth then we have depth-first search.
+    There is a subtlety: the line "</font></i>f = memoize(f, <i><font color="green">'f'</font></i>)<i><font color="green">" means that the f
+    values will be cached on the nodes as they are computed. So after doing
+    a best first search you can examine the f values of the path returned."</font></i><i><font color="green">""</font></i>
+    f = memoize(f, <i><font color="green">'f'</font></i>)
+    return graph_search(problem, PriorityQueue(min, f))
+
+<b style="background-color:ffff00"><a name="greedy_best_first_graph_search">greedy_best_first_graph_search</b> = best_first_graph_search
+    <font color="cc33cc"># Greedy best-first search is accomplished by specifying f(n) = h(n).</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="astar_search">astar_search</b>(problem, h=None):
+    <i><font color="green">""</font></i><i><font color="green">"A* search is best-first graph search with f(n) = g(n)+h(n).
+    You need to specify the h function when you call astar_search.
+    Uses the pathmax trick: f(n) = max(f(n), g(n)+h(n))."</font></i><i><font color="green">""</font></i>
+    h = h or problem.h
+    <b>def </b><b style="background-color:ffff00"><a name="f">f</b>(n):
+        return max(getattr(n, <i><font color="green">'f'</font></i>, -infinity), n.path_cost + h(n))
+    return best_first_graph_search(problem, f)
+
+<hr><font color="cc33cc">## Other search algorithms</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="recursive_best_first_search">recursive_best_first_search</b>(problem):
+    <i><font color="green">"[Fig. 4.5]"</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="RBFS">RBFS</b>(problem, node, flimit):
+        if problem.goal_test(node.state):
+            return node
+        successors = expand(node, problem)
+        if len(successors) == 0:
+            return None, infinity
+        for s in successors:
+            s.f = max(s.path_cost + s.h, node.f)
+        while True:
+            successors.sort(lambda x,y: x.f - y.f) <font color="cc33cc"># Order by lowest f value</font>
+            best = successors[0]
+            if best.f &gt; flimit:
+                return None, best.f
+            alternative = successors[1]
+            result, best.f = RBFS(problem, best, min(flimit, alternative))
+            if result is not None:
+                return result
+    return RBFS(Node(problem.initial), infinity)
+
+
+<b>def </b><b style="background-color:ffff00"><a name="hill_climbing">hill_climbing</b>(problem):
+    <i><font color="green">""</font></i><i><font color="green">"From the initial node, keep choosing the neighbor with highest value,
+    stopping when no neighbor is better. [Fig. 4.11]"</font></i><i><font color="green">""</font></i>
+    current = Node(problem.initial)
+    while True:
+        neighbor = argmax(expand(node, problem), Node.value)
+        if neighbor.value() &lt;= current.value():
+            return current.state
+        current = neighbor
+
+<b>def </b><b style="background-color:ffff00"><a name="exp_schedule">exp_schedule</b>(k=20, lam=0.005, limit=100):
+    <i><font color="green">"One possible schedule function for simulated annealing"</font></i>
+    return lambda t: if_(t &lt; limit, k * math.exp(-lam * t), 0)
+
+<b>def </b><b style="background-color:ffff00"><a name="simulated_annealing">simulated_annealing</b>(problem, schedule=exp_schedule()):
+    <i><font color="green">"[Fig. 4.5]"</font></i>
+    current = Node(problem.initial)
+    for t in xrange(sys.maxint):
+        T = schedule(t)
+        if T == 0:
+            return current
+        next = random.choice(expand(node. problem))
+        delta_e = next.path_cost - current.path_cost
+        if delta_e &gt; 0 or probability(math.exp(delta_e/T)):
+            current = next
+
+<b>def </b><b style="background-color:ffff00"><a name="online_dfs_agent">online_dfs_agent</b>(a):
+    <i><font color="green">"[Fig. 4.12]"</font></i>
+    pass <font color="cc33cc">#### more</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="lrta_star_agent">lrta_star_agent</b>(a):
+    <i><font color="green">"[Fig. 4.12]"</font></i>
+    pass <font color="cc33cc">#### more</font>
+
+<hr><font color="cc33cc"># Genetic Algorithm</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="genetic_search">genetic_search</b>(problem, fitness_fn, ngen=1000, pmut=0.0, n=20):
+    <i><font color="green">""</font></i><i><font color="green">"Call genetic_algorithm on the appropriate parts of a problem.
+    This requires that the problem has a successor function that generates
+    reasonable states, and that it has a path_cost function that scores states.
+    We use the negative of the path_cost function, because costs are to be
+    minimized, while genetic-algorithm expects a fitness_fn to be maximized."</font></i><i><font color="green">""</font></i>
+    states = [s for (a, s) in problem.successor(problem.initial_state)[:n]]
+    random.shuffle(states)
+    fitness_fn = lambda s: - problem.path_cost(0, s, None, s)
+    return genetic_algorithm(states, fitness_fn, ngen, pmut)
+
+<b>def </b><b style="background-color:ffff00"><a name="genetic_algorithm">genetic_algorithm</b>(population, fitness_fn, ngen=1000, pmut=0.0):
+    <i><font color="green">""</font></i><i><font color="green">"[Fig. 4.7]"</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="reproduce">reproduce</b>(p1, p2):
+        c = random.randrange(len(p1))
+        return p1[:c] + p2[c:]
+
+    for i in range(ngen):
+        new_population = []
+        for i in len(population):
+            p1, p2 = random_weighted_selections(population, 2, fitness_fn)
+            child = reproduce(p1, p2)
+            if random.uniform(0,1) &gt; pmut:
+                child.mutate()
+            new_population.append(child)
+        population = new_population
+    return argmax(population, fitness_fn)
+
+<b>def </b><b style="background-color:ffff00"><a name="random_weighted_selection">random_weighted_selection</b>(seq, n, weight_fn):
+    <i><font color="green">""</font></i><i><font color="green">"Pick n elements of seq, weighted according to weight_fn.
+    That is, apply weight_fn to each element of seq, add up the total.
+    Then choose an element e with probability weight[e]/total.
+    Repeat n times, with replacement. "</font></i><i><font color="green">""</font></i>
+    totals = []; runningtotal = 0
+    for item in seq:
+        runningtotal += weight_fn(item)
+        totals.append(runningtotal)
+    selections = []
+    for s in range(n):
+        r = random.uniform(0, totals[-1])
+        for i in range(len(seq)):
+            if totals[i] &gt; r:
+                selections.append(seq[i])
+                break
+    return selections
+
+
+<hr><font color="cc33cc"># The remainder of this file implements examples for the search algorithms.</font>
+
+<hr><font color="cc33cc"># Graphs and Graph Problems</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="Graph">Graph</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A graph connects nodes (verticies) by edges (links).  Each edge can also
+    have a length associated with it.  The constructor call is something like:
+        g = Graph({'A': {'B': 1, 'C': 2})
+    this makes a graph with 3 nodes, A, B, and C, with an edge of length 1 from
+    A to B,  and an edge of length 2 from A to C.  You can also do:
+        g = Graph({'A': {'B': 1, 'C': 2}, directed=False)
+    This makes an undirected graph, so inverse links are also added. The graph
+    stays undirected; if you add more links with g.connect('B', 'C', 3), then
+    inverse link is also added.  You can use g.nodes() to get a list of nodes,
+    g.get('A') to get a dict of links out of A, and g.get('A', 'B') to get the
+    length of the link from A to B.  'Lengths' can actually be any object at
+    all, and nodes can be any hashable object."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, dict=None, directed=True):
+        self.dict = dict or {}
+        self.directed = directed
+        if not directed: self.make_undirected()
+
+    <b>def </b><b style="background-color:ffff00"><a name="make_undirected">make_undirected</b>(self):
+        <i><font color="green">"Make a digraph into an undirected graph by adding symmetric edges."</font></i>
+        for a in self.dict.keys():
+            for (b, distance) in self.dict[a].items():
+                self.connect1(b, a, distance)
+
+    <b>def </b><b style="background-color:ffff00"><a name="connect">connect</b>(self, A, B, distance=1):
+        <i><font color="green">""</font></i><i><font color="green">"Add a link from A and B of given distance, and also add the inverse
+        link if the graph is undirected."</font></i><i><font color="green">""</font></i>
+        self.connect1(A, B, distance)
+        if not self.directed: self.connect1(B, A, distance)
+
+    <b>def </b><b style="background-color:ffff00"><a name="connect1">connect1</b>(self, A, B, distance):
+        <i><font color="green">"Add a link from A to B of given distance, in one direction only."</font></i>
+        self.dict.setdefault(A,{})[B] = distance
+
+    <b>def </b><b style="background-color:ffff00"><a name="get">get</b>(self, a, b=None):
+        <i><font color="green">""</font></i><i><font color="green">"Return a link distance or a dict of {node: distance} entries.
+        .get(a,b) returns the distance or None;
+        .get(a) returns a dict of {node: distance} entries, possibly {}."</font></i><i><font color="green">""</font></i>
+        links = self.dict.setdefault(a, {})
+        if b is None: return links
+        else: return links.get(b)
+
+    <b>def </b><b style="background-color:ffff00"><a name="nodes">nodes</b>(self):
+        <i><font color="green">"Return a list of nodes in the graph."</font></i>
+        return self.dict.keys()
+
+<b>def </b><b style="background-color:ffff00"><a name="UndirectedGraph">UndirectedGraph</b>(dict=None):
+    <i><font color="green">"Build a Graph where every edge (including future ones) goes both ways."</font></i>
+    return Graph(dict=dict, directed=False)
+
+<b>def </b><b style="background-color:ffff00"><a name="RandomGraph">RandomGraph</b>(nodes=range(10), min_links=2, width=400, height=300,
+                                curvature=lambda: random.uniform(1.1, 1.5)):
+    <i><font color="green">""</font></i><i><font color="green">"Construct a random graph, with the specified nodes, and random links.
+    The nodes are laid out randomly on a (width x height) rectangle.
+    Then each node is connected to the min_links nearest neighbors.
+    Because inverse links are added, some nodes will have more connections.
+    The distance between nodes is the hypotenuse times curvature(),
+    where curvature() defaults to a random number between 1.1 and 1.5."</font></i><i><font color="green">""</font></i>
+    g = UndirectedGraph()
+    g.locations = {}
+    <font color="cc33cc">## Build the cities</font>
+    for node in nodes:
+        g.locations[node] = (random.randrange(width), random.randrange(height))
+    <font color="cc33cc">## Build roads from each city to at least min_links nearest neighbors.</font>
+    for i in range(min_links):
+        for node in nodes:
+            if len(g.get(node)) &lt; min_links:
+                here = g.locations[node]
+                <b>def </b><b style="background-color:ffff00"><a name="distance_to_node">distance_to_node</b>(n):
+                    if n is node or g.get(node,n): return infinity
+                    return distance(g.locations[n], here)
+                neighbor = argmin(nodes, distance_to_node)
+                d = distance(g.locations[neighbor], here) * curvature()
+                g.connect(node, neighbor, int(d))
+    return g
+
+<b style="background-color:ffff00"><a name="romania">romania</b> = UndirectedGraph(Dict(
+    A=Dict(Z=75, S=140, T=118),
+    B=Dict(U=85, P=101, G=90, F=211),
+    C=Dict(D=120, R=146, P=138),
+    D=Dict(M=75),
+    E=Dict(H=86),
+    F=Dict(S=99),
+    H=Dict(U=98),
+    I=Dict(V=92, N=87),
+    L=Dict(T=111, M=70),
+    O=Dict(Z=71, S=151),
+    P=Dict(R=97),
+    R=Dict(S=80),
+    U=Dict(V=142)))
+romania.locations = Dict(
+    A=( 91, 492),    B=(400, 327),    C=(253, 288),   D=(165, 299),
+    E=(562, 293),    F=(305, 449),    G=(375, 270),   H=(534, 350),
+    I=(473, 506),    L=(165, 379),    M=(168, 339),   N=(406, 537),
+    O=(131, 571),    P=(320, 368),    R=(233, 410),   S=(207, 457),
+    T=( 94, 410),    U=(456, 350),    V=(509, 444),   Z=(108, 531))
+
+<b style="background-color:ffff00"><a name="australia">australia</b> = UndirectedGraph(Dict(
+    T=Dict(),
+    SA=Dict(WA=1, NT=1, Q=1, NSW=1, V=1),
+    NT=Dict(WA=1, Q=1),
+    NSW=Dict(Q=1, V=1)))
+australia.locations = Dict(WA=(120, 24), NT=(135, 20), SA=(135, 30),
+                           Q=(145, 20), NSW=(145, 32), T=(145, 42), V=(145, 37))
+
+<b>class </b><b style="background-color:ffff00"><a name="GraphProblem">GraphProblem</b>(Problem):
+    <i><font color="green">"The problem of searching a graph from one node to another."</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, initial, goal, graph):
+        Problem.__init__(self, initial, goal)
+        self.graph = graph
+
+    <b>def </b><b style="background-color:ffff00"><a name="successor">successor</b>(self, A):
+        <i><font color="green">"Return a list of (action, result) pairs."</font></i>
+        return [(B, B) for B in self.graph.get(A).keys()]
+
+    <b>def </b><b style="background-color:ffff00"><a name="path_cost">path_cost</b>(self, cost_so_far, A, action, B):
+        return cost_so_far + (self.graph.get(A,B) or infinity)
+
+    <b>def </b><b style="background-color:ffff00"><a name="h">h</b>(self, node):
+        <i><font color="green">"h function is straight-line distance from a node's state to goal."</font></i>
+        locs = getattr(self.graph, <i><font color="green">'locations'</font></i>, None)
+        if locs:
+            return int(distance(locs[node.state], locs[self.goal]))
+        else:
+            return infinity
+
+<hr>
+<font color="cc33cc">#### NOTE: NQueensProblem not working properly yet.</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="NQueensProblem">NQueensProblem</b>(Problem):
+    <i><font color="green">""</font></i><i><font color="green">"The problem of placing N queens on an NxN board with none attacking
+    each other.  A state is represented as an N-element array, where the
+    a value of r in the c-th entry means there is a queen at column c,
+    row r, and a value of None means that the c-th column has not been
+    filled in left.  We fill in columns left to right."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, N):
+        self.N = N
+        self.initial = [None] * N
+
+    <b>def </b><b style="background-color:ffff00"><a name="successor">successor</b>(self, state):
+        <i><font color="green">"In the leftmost empty column, try all non-conflicting rows."</font></i>
+        if state[-1] is not None:
+            return [] <font color="cc33cc">## All columns filled; no successors</font>
+        else:
+            <b>def </b><b style="background-color:ffff00"><a name="place">place</b>(col, row):
+                new = state[:]
+                new[col] = row
+                return new
+            col = state.index(None)
+            return [(row, place(col, row)) for row in range(self.N)
+                    if not self.conflicted(state, row, col)]
+
+    <b>def </b><b style="background-color:ffff00"><a name="conflicted">conflicted</b>(self, state, row, col):
+        <i><font color="green">"Would placing a queen at (row, col) conflict with anything?"</font></i>
+        for c in range(col-1):
+            if self.conflict(row, col, state[c], c):
+                return True
+        return False
+
+    <b>def </b><b style="background-color:ffff00"><a name="conflict">conflict</b>(self, row1, col1, row2, col2):
+        <i><font color="green">"Would putting two queens in (row1, col1) and (row2, col2) conflict?"</font></i>
+        return (row1 == row2 <font color="cc33cc">## same row</font>
+                or col1 == col2 <font color="cc33cc">## same column</font>
+                or row1-col1 == row2-col2  <font color="cc33cc">## same \ diagonal</font>
+                or row1+col1 == row2+col2) <font color="cc33cc">## same / diagonal</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="goal_test">goal_test</b>(self, state):
+        <i><font color="green">"Check if all columns filled, no conflicts."</font></i>
+        if state[-1] is None:
+            return False
+        for c in range(len(state)):
+            if self.conflicted(state, state[c], c):
+                return False
+        return True
+
+<hr><font color="cc33cc">## Inverse Boggle: Search for a high-scoring Boggle board. A good domain for</font>
+<font color="cc33cc">## iterative-repair and related search tehniques, as suggested by Justin Boyan.</font>
+
+<b style="background-color:ffff00"><a name="ALPHABET">ALPHABET</b> = <i><font color="green">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</font></i>
+
+<b style="background-color:ffff00"><a name="cubes16">cubes16</b> = [<i><font color="green">'FORIXB'</font></i>, <i><font color="green">'MOQABJ'</font></i>, <i><font color="green">'GURILW'</font></i>, <i><font color="green">'SETUPL'</font></i>,
+           <i><font color="green">'CMPDAE'</font></i>, <i><font color="green">'ACITAO'</font></i>, <i><font color="green">'SLCRAE'</font></i>, <i><font color="green">'ROMASH'</font></i>,
+           <i><font color="green">'NODESW'</font></i>, <i><font color="green">'HEFIYE'</font></i>, <i><font color="green">'ONUDTK'</font></i>, <i><font color="green">'TEVIGN'</font></i>,
+           <i><font color="green">'ANEDVZ'</font></i>, <i><font color="green">'PINESH'</font></i>, <i><font color="green">'ABILYT'</font></i>, <i><font color="green">'GKYLEU'</font></i>]
+
+<b>def </b><b style="background-color:ffff00"><a name="random_boggle">random_boggle</b>(n=4):
+    <i><font color="green">""</font></i><i><font color="green">"Return a random Boggle board of size n x n.
+    We represent a board as a linear list of letters."</font></i><i><font color="green">""</font></i>
+    cubes = [cubes16[i % 16] for i in range(n*n)]
+    random.shuffle(cubes)
+    return map(random.choice, cubes)
+
+<font color="cc33cc">## The best 5x5 board found by Boyan, with our word list this board scores</font>
+<font color="cc33cc">## 2274 words, for a score of 9837</font>
+
+<b style="background-color:ffff00"><a name="boyan_best">boyan_best</b> = list(<i><font color="green">'RSTCSDEIAEGNLRPEATESMSSID'</font></i>)
+
+<b>def </b><b style="background-color:ffff00"><a name="print_boggle">print_boggle</b>(board):
+    <i><font color="green">"Print the board in a 2-d array."</font></i>
+    n2 = len(board); n = exact_sqrt(n2)
+    for i in range(n2):
+        if i % n == 0: print
+        if board[i] == <i><font color="green">'Q'</font></i>: print <i><font color="green">'Qu'</font></i>,
+        else: print str(board[i]) + <i><font color="green">' '</font></i>,
+    print
+
+<b>def </b><b style="background-color:ffff00"><a name="boggle_neighbors">boggle_neighbors</b>(n2, cache={}):
+    <i><font color="green">""</font></i><i><font color="green">""</font></i>Return a list of lists, where the i-th element is the list of indexes
+    for the neighbors of square i.<i><font color="green">""</font></i><i><font color="green">"
+    if cache.get(n2):
+        return cache.get(n2)
+    n = exact_sqrt(n2)
+    neighbors = [None] * n2
+    for i in range(n2):
+        neighbors[i] = []
+        on_top = i &lt; n
+        on_bottom = i &gt;= n2 - n
+        on_left = i % n == 0
+        on_right = (i+1) % n == 0
+        if not on_top:
+            neighbors[i].append(i - n)
+            if not on_left:  neighbors[i].append(i - n - 1)
+            if not on_right: neighbors[i].append(i - n + 1)
+        if not on_bottom:
+            neighbors[i].append(i + n)
+            if not on_left:  neighbors[i].append(i + n - 1)
+            if not on_right: neighbors[i].append(i + n + 1)
+        if not on_left: neighbors[i].append(i - 1)
+        if not on_right: neighbors[i].append(i + 1)
+    cache[n2] = neighbors
+    return neighbors
+
+<b>def </b><b style="background-color:ffff00"><a name="exact_sqrt">exact_sqrt</b>(n2):
+    "</font></i>If n2 is a perfect square, return its square root, else raise error.<i><font color="green">"
+    n = int(math.sqrt(n2))
+    assert n * n == n2
+    return n
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="Wordlist">Wordlist</b>:
+    "</font></i><i><font color="green">""</font></i>This class holds a list of words. You can use (word in wordlist)
+    to check if a word is in the list, or wordlist.lookup(prefix)
+    to see if prefix starts any of the words in the list.<i><font color="green">""</font></i><i><font color="green">"
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, filename, min_len=3):
+        lines = open(filename).read().upper().split()
+        self.words = [word for word in lines if len(word) &gt;= min_len]
+        self.words.sort()
+        self.bounds = {}
+        for c in ALPHABET:
+            c2 = chr(ord(c) + 1)
+            self.bounds[c] = (bisect.bisect(self.words, c),
+                              bisect.bisect(self.words, c2))
+
+    <b>def </b><b style="background-color:ffff00"><a name="lookup">lookup</b>(self, prefix, lo=0, hi=None):
+        "</font></i><i><font color="green">""</font></i>See if prefix is in dictionary, as a full word or as a prefix.
+        Return two values: the first is the lowest i such that
+        words[i].startswith(prefix), or is None; the second is
+        True iff prefix itself is in the Wordlist.<i><font color="green">""</font></i><i><font color="green">"
+        words = self.words
+        i = bisect.bisect_left(words, prefix, lo, hi)
+        if i &lt; len(words) and words[i].startswith(prefix):
+            return i, (words[i] == prefix)
+        else:
+            return None, False
+
+    <b>def </b><b style="background-color:ffff00"><a name="__contains__">__contains__</b>(self, word):
+        return self.words[bisect.bisect_left(self.words, word)] == word
+
+    <b>def </b><b style="background-color:ffff00"><a name="__len__">__len__</b>(self):
+        return len(self.words)
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="BoggleFinder">BoggleFinder</b>:
+    "</font></i><i><font color="green">""</font></i>A class that allows you to find all the words in a Boggle board. <i><font color="green">""</font></i><i><font color="green">"
+
+    wordlist = None <font color="cc33cc">## A class variable, holding a wordlist</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, board=None):
+        if BoggleFinder.wordlist is None:
+            BoggleFinder.wordlist = Wordlist("</font></i>../data/wordlist<i><font color="green">")
+        self.found = {}
+        if board:
+            self.set_board(board)
+
+    <b>def </b><b style="background-color:ffff00"><a name="set_board">set_board</b>(self, board=None):
+        "</font></i>Set the board, and find all the words in it.<i><font color="green">"
+        if board is None:
+            board = random_boggle()
+        self.board = board
+        self.neighbors = boggle_neighbors(len(board))
+        self.found = {}
+        for i in range(len(board)):
+            lo, hi = self.wordlist.bounds[board[i]]
+            self.find(lo, hi, i, [], '')
+        return self
+
+    <b>def </b><b style="background-color:ffff00"><a name="find">find</b>(self, lo, hi, i, visited, prefix):
+        "</font></i><i><font color="green">""</font></i>Looking in square i, find the words that continue the prefix,
+        considering the entries in self.wordlist.words[lo:hi], and not
+        revisiting the squares in visited.<i><font color="green">""</font></i><i><font color="green">"
+        if i in visited:
+            return
+        wordpos, is_word = self.wordlist.lookup(prefix, lo, hi)
+        if wordpos is not None:
+            if is_word:
+                self.found[prefix] = True
+            visited.append(i)
+            c = self.board[i]
+            if c == 'Q': c = 'QU'
+            prefix += c
+            for j in self.neighbors[i]:
+                self.find(wordpos, hi, j, visited, prefix)
+            visited.pop()
+
+    <b>def </b><b style="background-color:ffff00"><a name="words">words</b>(self):
+        "</font></i>The words found.<i><font color="green">"
+        return self.found.keys()
+
+    scores = [0, 0, 0, 0, 1, 2, 3, 5] + [11] * 100
+
+    <b>def </b><b style="background-color:ffff00"><a name="score">score</b>(self):
+        "</font></i>The total score for the words found, according to the rules.<i><font color="green">"
+        return sum([self.scores[len(w)] for w in self.words()])
+
+    <b>def </b><b style="background-color:ffff00"><a name="__len__">__len__</b>(self):
+        "</font></i>The number of words found.<i><font color="green">"
+        return len(self.found)
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="boggle_hill_climbing">boggle_hill_climbing</b>(board=None, ntimes=100, print_it=True):
+    "</font></i><i><font color="green">""</font></i>Solve inverse Boggle by hill-climbing: find a high-scoring board by
+    starting with a random one and changing it.<i><font color="green">""</font></i><i><font color="green">"
+    finder = BoggleFinder()
+    if board is None:
+        board = random_boggle()
+    best = len(finder.set_board(board))
+    for _ in range(ntimes):
+        i, oldc = mutate_boggle(board)
+        new = len(finder.set_board(board))
+        if new &gt; best:
+            best = new
+            print best, _, board
+        else:
+            board[i] = oldc <font color="cc33cc">## Change back</font>
+    if print_it:
+        print_boggle(board)
+    return board, best
+
+<b>def </b><b style="background-color:ffff00"><a name="mutate_boggle">mutate_boggle</b>(board):
+    i = random.randrange(len(board))
+    oldc = board[i]
+    board[i] = random.choice(random.choice(cubes16)) <font color="cc33cc">##random.choice(boyan_best)</font>
+    return i, oldc
+
+<hr>
+<font color="cc33cc">## Code to compare searchers on various problems.</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="InstrumentedProblem">InstrumentedProblem</b>(Problem):
+    "</font></i><i><font color="green">""</font></i>Delegates to a problem, and keeps statistics.<i><font color="green">""</font></i><i><font color="green">"
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, problem):
+        self.problem = problem
+        self.succs = self.goal_tests = self.states = 0
+        self.found = None
+
+    <b>def </b><b style="background-color:ffff00"><a name="successor">successor</b>(self, state):
+        "</font></i>Return a list of (action, state) pairs reachable from this state.<i><font color="green">"
+        result =  self.problem.successor(state)
+        self.succs += 1; self.states += len(result)
+        return result
+
+    <b>def </b><b style="background-color:ffff00"><a name="goal_test">goal_test</b>(self, state):
+        "</font></i>Return true if the state is a goal."
+        self.goal_tests += 1
+        result = self.problem.goal_test(state)
+        if result:
+            self.found = state
+        return result
+
+    <b>def </b><b style="background-color:ffff00"><a name="__getattr__">__getattr__</b>(self, attr):
+        if attr in (<i><font color="green">'succs'</font></i>, <i><font color="green">'goal_tests'</font></i>, <i><font color="green">'states'</font></i>):
+            return self.__dict__[attr]
+        else:
+            return getattr(self.problem, attr)
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        return <i><font color="green">'&lt;%4d/%4d/%4d/%s&gt;'</font></i> % (self.succs, self.goal_tests,
+                                     self.states, str(self.found)[0:4])
+
+<b>def </b><b style="background-color:ffff00"><a name="compare_searchers">compare_searchers</b>(problems, header, searchers=[breadth_first_tree_search,
+                      breadth_first_graph_search, depth_first_graph_search,
+                      iterative_deepening_search, depth_limited_search,
+                      astar_search]):
+    <b>def </b><b style="background-color:ffff00"><a name="do">do</b>(searcher, problem):
+        p = InstrumentedProblem(problem)
+        searcher(p)
+        return p
+    table = [[name(s)] + [do(s, p) for p in problems] for s in searchers]
+    print_table(table, header)
+
+<b>def </b><b style="background-color:ffff00"><a name="compare_graph_searchers">compare_graph_searchers</b>():
+    compare_searchers(problems=[GraphProblem(<i><font color="green">'A'</font></i>, <i><font color="green">'B'</font></i>, romania),
+                                GraphProblem(<i><font color="green">'O'</font></i>, <i><font color="green">'N'</font></i>, romania),
+                                GraphProblem(<i><font color="green">'Q'</font></i>, <i><font color="green">'WA'</font></i>, australia)],
+            header=[<i><font color="green">'Searcher'</font></i>, <i><font color="green">'Romania(A,B)'</font></i>, <i><font color="green">'Romania(O, N)'</font></i>, <i><font color="green">'Australia'</font></i>])
+</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

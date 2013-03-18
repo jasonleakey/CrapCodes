@@ -1,0 +1,38 @@
+# depslib dependency file v1.0
+1227022064 source:/home/jasonleakey/project/C_basic_operation_BiTree/basic_operation_LinkQueue.c
+	<stdio.h>
+	<stdlib.h>
+	<assert.h>
+	"LinkQueue.h"
+	"BiTree.h"
+
+1227018454 /home/jasonleakey/project/C_basic_operation_BiTree/LinkQueue.h
+	"BiTree.h"
+
+1230306443 /home/jasonleakey/project/C_basic_operation_BiTree/BiTree.h
+
+1229957590 source:/home/jasonleakey/project/C_basic_operation_BiTree/basic_operation_SqStack.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	"BiTree.h"
+	"SqStack.h"
+
+1230306426 /home/jasonleakey/project/C_basic_operation_BiTree/SqStack.h
+
+1232769159 source:/home/jasonleakey/project/C_basic_operation_BiTree/main.c
+	<stdio.h>
+	<stdlib.h>
+	<termios.h>
+	<unistd.h>
+	"BiTree.h"
+
+1238153622 source:/home/jasonleakey/project/C_basic_operation_BiTree/basic_operation_BiTree.c
+	<stdio.h>
+	<stdlib.h>
+	<assert.h>
+	"BiTree.h"
+	"LinkQueue.h"
+	"SqStack.h"
+

@@ -1,0 +1,181 @@
+<html><head><title>AIMA Python file: nlp.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: nlp.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"A chart parser and some grammars. (Chapter 22)"</font></i><i><font color="green">""</font></i>
+
+from <a href="utils.html">utils</a> import *
+
+<hr><font color="cc33cc"># Grammars and Lexicons</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="Rules">Rules</b>(**rules):
+    <i><font color="green">""</font></i><i><font color="green">"Create a dictionary mapping symbols to alternative sequences.
+    &gt;&gt;&gt; Rules(A = "</font></i>B C | D E<i><font color="green">")
+    {'A': [['B', 'C'], ['D', 'E']]}
+    "</font></i><i><font color="green">""</font></i>
+    for (lhs, rhs) in rules.items():
+        rules[lhs] = [alt.strip().split() for alt in rhs.split(<i><font color="green">'|'</font></i>)]
+    return rules
+
+<b>def </b><b style="background-color:ffff00"><a name="Lexicon">Lexicon</b>(**rules):
+    <i><font color="green">""</font></i><i><font color="green">"Create a dictionary mapping symbols to alternative words.
+    &gt;&gt;&gt; Lexicon(Art = "</font></i>the | a | an<i><font color="green">")
+    {'Art': ['the', 'a', 'an']}
+    "</font></i><i><font color="green">""</font></i>
+    for (lhs, rhs) in rules.items():
+        rules[lhs] = [word.strip() for word in rhs.split(<i><font color="green">'|'</font></i>)]
+    return rules
+
+<b>class </b><b style="background-color:ffff00"><a name="Grammar">Grammar</b>:
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, name, rules, lexicon):
+        <i><font color="green">"A grammar has a set of rules and a lexicon."</font></i>
+        update(self, name=name, rules=rules, lexicon=lexicon)
+        self.categories = DefaultDict([])
+        for lhs in lexicon:
+            for word in lexicon[lhs]:
+                self.categories[word].append(lhs)
+
+    <b>def </b><b style="background-color:ffff00"><a name="rewrites_for">rewrites_for</b>(self, cat):
+        <i><font color="green">"Return a sequence of possible rhs's that cat can be rewritten as."</font></i>
+        return self.rules.get(cat, ())
+
+    <b>def </b><b style="background-color:ffff00"><a name="isa">isa</b>(self, word, cat):
+        <i><font color="green">"Return True iff word is of category cat"</font></i>
+        return cat in self.categories[word]
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        return <i><font color="green">'&lt;Grammar %s&gt;'</font></i> % self.name
+
+<b style="background-color:ffff00"><a name="E0">E0</b> = Grammar(<i><font color="green">'E0'</font></i>,
+    Rules( <font color="cc33cc"># Grammar for E_0 [Fig. 22.4]</font>
+    S = <i><font color="green">'NP VP | S Conjunction S'</font></i>,
+    NP = <i><font color="green">'Pronoun | Noun | Article Noun | Digit Digit | NP PP | NP RelClause'</font></i>,
+    VP = <i><font color="green">'Verb | VP NP | VP Adjective | VP PP | VP Adverb'</font></i>,
+    PP = <i><font color="green">'Preposition NP'</font></i>,
+    RelClause = <i><font color="green">'That VP'</font></i>),
+
+    Lexicon( <font color="cc33cc"># Lexicon for E_0 [Fig. 22.3]</font>
+    Noun = <i><font color="green">"stench | breeze | glitter | nothing | wumpus | pit | pits | gold | east"</font></i>,
+    Verb = <i><font color="green">"is | see | smell | shoot | fell | stinks | go | grab | carry | kill | turn | feel"</font></i>,
+    Adjective = <i><font color="green">"right | left | east | south | back | smelly"</font></i>,
+    Adverb = <i><font color="green">"here | there | nearby | ahead | right | left | east | south | back"</font></i>,
+    Pronoun = <i><font color="green">"me | you | I | it"</font></i>,
+    Name = <i><font color="green">"John | Mary | Boston | Aristotle"</font></i>,
+    Article = <i><font color="green">"the | a | an"</font></i>,
+    Preposition = <i><font color="green">"to | in | on | near"</font></i>,
+    Conjunction = <i><font color="green">"and | or | but"</font></i>,
+    Digit = <i><font color="green">"0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9"</font></i>,
+    That = <i><font color="green">"that"</font></i>
+    ))
+
+<b style="background-color:ffff00"><a name="E_">E_</b> = Grammar(<i><font color="green">'E_'</font></i>, <font color="cc33cc"># Trivial Grammar and lexicon for testing</font>
+    Rules(
+    S = <i><font color="green">'NP VP'</font></i>,
+    NP = <i><font color="green">'Art N | Pronoun'</font></i>,
+    VP = <i><font color="green">'V NP'</font></i>),
+
+    Lexicon(
+    Art = <i><font color="green">'the | a'</font></i>,
+    N = <i><font color="green">'man | woman | table | shoelace | saw'</font></i>,
+    Pronoun = <i><font color="green">'I | you | it'</font></i>,
+    V = <i><font color="green">'saw | liked | feel'</font></i>
+    ))
+
+<b>def </b><b style="background-color:ffff00"><a name="generate_random">generate_random</b>(grammar=E_, s=<i><font color="green">'S'</font></i>):
+    <i><font color="green">""</font></i><i><font color="green">"Replace each token in s by a random entry in grammar (recursively).
+    This is useful for testing a grammar, e.g. generate_random(E_)"</font></i><i><font color="green">""</font></i>
+    import <a href="http://www.python.org/doc/current/lib/module-random.html">random</a>
+
+    <b>def </b><b style="background-color:ffff00"><a name="rewrite">rewrite</b>(tokens, into):
+        for token in tokens:
+            if token in grammar.rules:
+                rewrite(random.choice(grammar.rules[token]), into)
+            elif token in grammar.lexicon:
+                into.append(random.choice(grammar.lexicon[token]))
+            else:
+                into.append(token)
+        return into
+
+    return <i><font color="green">' '</font></i>.join(rewrite(s.split(), []))
+
+<hr><font color="cc33cc"># Chart Parsing</font>
+
+
+<b>class </b><b style="background-color:ffff00"><a name="Chart">Chart</b>:
+    <i><font color="green">""</font></i><i><font color="green">"Class for parsing sentences using a chart data structure. [Fig 22.7]
+    &gt;&gt;&gt; chart = Chart(E0);
+    &gt;&gt;&gt; len(chart.parses('the stench is in 2 2'))
+    1
+    "</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, grammar, trace=False):
+        <i><font color="green">""</font></i><i><font color="green">"A datastructure for parsing a string; and methods to do the parse.
+        self.chart[i] holds the edges that end just before the i'th word.
+        Edges are 5-element lists of [start, end, lhs, [found], [expects]]."</font></i><i><font color="green">""</font></i>
+        update(self, grammar=grammar, trace=trace)
+
+    <b>def </b><b style="background-color:ffff00"><a name="parses">parses</b>(self, words, S=<i><font color="green">'S'</font></i>):
+        <i><font color="green">""</font></i><i><font color="green">"Return a list of parses; words can be a list or string."</font></i><i><font color="green">""</font></i>
+        if isinstance(words, str):
+            words = words.split()
+        self.parse(words, S)
+        <font color="cc33cc"># Return all the parses that span the whole input</font>
+        return [[i, j, S, found, []]
+                for (i, j, lhs, found, expects) in self.chart[len(words)]
+                if lhs == S and expects == []]
+
+    <b>def </b><b style="background-color:ffff00"><a name="parse">parse</b>(self, words, S=<i><font color="green">'S'</font></i>):
+        <i><font color="green">""</font></i><i><font color="green">"Parse a list of words; according to the grammar.
+        Leave results in the chart."</font></i><i><font color="green">""</font></i>
+        self.chart = [[] for i in range(len(words)+1)]
+        self.add_edge([0, 0, <i><font color="green">'S_'</font></i>, [], [S]])
+        for i in range(len(words)):
+            self.scanner(i, words[i])
+        return self.chart
+
+    <b>def </b><b style="background-color:ffff00"><a name="add_edge">add_edge</b>(self, edge):
+        <i><font color="green">"Add edge to chart, and see if it extends or predicts another edge."</font></i>
+        start, end, lhs, found, expects = edge
+        if edge not in self.chart[end]:
+            self.chart[end].append(edge)
+            if self.trace:
+                print <i><font color="green">'%10s: added %s'</font></i> % (caller(2), edge)
+            if not expects:
+                self.extender(edge)
+            else:
+                self.predictor(edge)
+
+    <b>def </b><b style="background-color:ffff00"><a name="scanner">scanner</b>(self, j, word):
+        <i><font color="green">"For each edge expecting a word of this category here, extend the edge."</font></i>
+        for (i, j, A, alpha, Bb) in self.chart[j]:
+            if Bb and self.grammar.isa(word, Bb[0]):
+                self.add_edge([i, j+1, A, alpha + [(Bb[0], word)], Bb[1:]])
+
+    <b>def </b><b style="background-color:ffff00"><a name="predictor">predictor</b>(self, (i, j, A, alpha, Bb)):
+        <i><font color="green">"Add to chart any rules for B that could help extend this edge."</font></i>
+        B = Bb[0]
+        if B in self.grammar.rules:
+            for rhs in self.grammar.rewrites_for(B):
+                self.add_edge([j, j, B, [], rhs])
+
+    <b>def </b><b style="background-color:ffff00"><a name="extender">extender</b>(self, edge):
+        <i><font color="green">"See what edges can be extended by this edge."</font></i>
+        (j, k, B, _, _) = edge
+        for (i, j, A, alpha, B1b) in self.chart[j]:
+            if B1b and B == B1b[0]:
+                self.add_edge([i, k, A, alpha + [edge], B1b[1:]])
+
+
+
+<font color="cc33cc">#### TODO:</font>
+<font color="cc33cc">#### 1. Parsing with augmentations -- requires unification, etc.</font>
+<font color="cc33cc">#### 2. Sequitor</font></pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

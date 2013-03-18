@@ -1,0 +1,890 @@
+<html><head><title>AIMA Python file: logic.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: logic.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Representations and Inference for Logic (Chapters 7-10)
+
+Covers both Propositional and First-Order Logic. First we have four
+important data types:
+
+    KB            Abstract class holds a knowledge base of logical expressions
+    KB_Agent      Abstract class subclasses agents.Agent
+    Expr          A logical expression
+    substitution  Implemented as a dictionary of var:value pairs, {x:1, y:x}
+
+Be careful: some functions take an Expr as argument, and some take a KB.
+Then we implement various functions for doing logical inference:
+
+    pl_true          Evaluate a propositional logical sentence in a model
+    tt_entails       Say if a statement is entailed by a KB
+    pl_resolution    Do resolution on propositional sentences
+    dpll_satisfiable See if a propositional sentence is satisfiable
+    WalkSAT          (not yet implemented)
+
+And a few other functions:
+
+    to_cnf           Convert to conjunctive normal form
+    unify            Do unification of two FOL sentences
+    diff, simp       Symbolic differentiation and simplification
+"</font></i><i><font color="green">""</font></i>
+
+from __future__ import <a href="http://www.python.org/doc/current/lib/module-generators.html">generators</a>
+import <a href="http://www.python.org/doc/current/lib/module-re.html">re</a>
+import <a href="agents.html">agents</a>
+from <a href="utils.html">utils</a> import *
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="KB">KB</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A Knowledge base to which you can tell and ask sentences.
+    To create a KB, first subclass this class and implement
+    tell, ask_generator, and retract.  Why ask_generator instead of ask?
+    The book is a bit vague on what ask means --
+    For a Propositional Logic KB, ask(P &amp; Q) returns True or False, but for an
+    FOL KB, something like ask(Brother(x, y)) might return many substitutions
+    such as {x: Cain, y: Able}, {x: Able, y: Cain}, {x: George, y: Jeb}, etc.
+    So ask_generator generates these one at a time, and ask either returns the
+    first one or returns False."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, sentence=None):
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="tell">tell</b>(self, sentence):
+        <i><font color="green">"Add the sentence to the KB"</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="ask">ask</b>(self, query):
+        <i><font color="green">""</font></i><i><font color="green">"Ask returns a substitution that makes the query true, or
+        it returns False. It is implemented in terms of ask_generator."</font></i><i><font color="green">""</font></i>
+        try:
+            return self.ask_generator(query).next()
+        except StopIteration:
+            return False
+
+    <b>def </b><b style="background-color:ffff00"><a name="ask_generator">ask_generator</b>(self, query):
+        <i><font color="green">"Yield all the substitutions that make query true."</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="retract">retract</b>(self, sentence):
+        <i><font color="green">"Remove the sentence from the KB"</font></i>
+        abstract
+
+
+<b>class </b><b style="background-color:ffff00"><a name="PropKB">PropKB</b>(KB):
+    <i><font color="green">"A KB for Propositional Logic.  Inefficient, with no indexing."</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, sentence=None):
+        self.clauses = []
+        if sentence:
+            self.tell(sentence)
+
+    <b>def </b><b style="background-color:ffff00"><a name="tell">tell</b>(self, sentence):
+        <i><font color="green">"Add the sentence's clauses to the KB"</font></i>
+        self.clauses.extend(conjuncts(to_cnf(sentence)))
+
+    <b>def </b><b style="background-color:ffff00"><a name="ask_generator">ask_generator</b>(self, query):
+        <i><font color="green">"Yield the empty substitution if KB implies query; else False"</font></i>
+        if not tt_entails(Expr(<i><font color="green">'&amp;'</font></i>, *self.clauses), query):
+            return
+        yield {}
+
+    <b>def </b><b style="background-color:ffff00"><a name="retract">retract</b>(self, sentence):
+        <i><font color="green">"Remove the sentence's clauses from the KB"</font></i>
+        for c in conjuncts(to_cnf(sentence)):
+            if c in self.clauses:
+                self.clauses.remove(c)
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="KB_Agent">KB_Agent</b>(agents.Agent):
+    <i><font color="green">""</font></i><i><font color="green">"A generic logical knowledge-based agent. [Fig. 7.1]"</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, KB):
+        t = 0
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            KB.tell(self.make_percept_sentence(percept, t))
+            action = KB.ask(self.make_action_query(t))
+            KB.tell(self.make_action_sentence(action, t))
+            t = t + 1
+            return action
+        self.program = program
+
+    <b>def </b><b style="background-color:ffff00"><a name="make_percept_sentence">make_percept_sentence</b>(self, percept, t):
+        return(Expr(<i><font color="green">"Percept"</font></i>)(percept, t))
+
+    <b>def </b><b style="background-color:ffff00"><a name="make_action_query">make_action_query</b>(self, t):
+        return(expr(<i><font color="green">"ShouldDo(action, %d)"</font></i> % t))
+
+    <b>def </b><b style="background-color:ffff00"><a name="make_action_sentence">make_action_sentence</b>(self, action, t):
+        return(Expr(<i><font color="green">"Did"</font></i>)(action, t))
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="Expr">Expr</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A symbolic mathematical expression.  We use this class for logical
+    expressions, and for terms within logical expressions. In general, an
+    Expr has an op (operator) and a list of args.  The op can be:
+      Null-ary (no args) op:
+        A number, representing the number itself.  (e.g. Expr(42) =&gt; 42)
+        A symbol, representing a variable or constant (e.g. Expr('F') =&gt; F)
+      Unary (1 arg) op:
+        '~', '-', representing NOT, negation (e.g. Expr('~', Expr('P')) =&gt; ~P)
+      Binary (2 arg) op:
+        '&gt;&gt;', '&lt;&lt;', representing forward and backward implication
+        '+', '-', '*', '/', '**', representing arithmetic operators
+        '&lt;', '&gt;', '&gt;=', '&lt;=', representing comparison operators
+        '&lt;=&gt;', '^', representing logical equality and XOR
+      N-ary (0 or more args) op:
+        '&amp;', '|', representing conjunction and disjunction
+        A symbol, representing a function term or FOL proposition
+
+    Exprs can be constructed with operator overloading: if x and y are Exprs,
+    then so are x + y and x &amp; y, etc.  Also, if F and x are Exprs, then so is
+    F(x); it works by overloading the __call__ method of the Expr F.  Note
+    that in the Expr that is created by F(x), the op is the str 'F', not the
+    Expr F.   See http://www.python.org/doc/current/ref/specialnames.html
+    to learn more about operator overloading in Python.
+
+    WARNING: x == y and x != y are NOT Exprs.  The reason is that we want
+    to write code that tests 'if x == y:' and if x == y were the same
+    as Expr('==', x, y), then the result would always be true; not what a
+    programmer would expect.  But we still need to form Exprs representing
+    equalities and disequalities.  We concentrate on logical equality (or
+    equivalence) and logical disequality (or XOR).  You have 3 choices:
+        (1) Expr('&lt;=&gt;', x, y) and Expr('^', x, y)
+            Note that ^ is bitwose XOR in Python (and Java and C++)
+        (2) expr('x &lt;=&gt; y') and expr('x =/= y').
+            See the doc string for the function expr.
+        (3) (x % y) and (x ^ y).
+            It is very ugly to have (x % y) mean (x &lt;=&gt; y), but we need
+            SOME operator to make (2) work, and this seems the best choice.
+
+    WARNING: if x is an Expr, then so is x + 1, because the int 1 gets
+    coerced to an Expr by the constructor.  But 1 + x is an error, because
+    1 doesn't know how to add an Expr.  (Adding an __radd__ method to Expr
+    wouldn't help, because int.__add__ is still called first.) Therefore,
+    you should use Expr(1) + x instead, or ONE + x, or expr('1 + x').
+    "</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, op, *args):
+        <i><font color="green">"Op is a string or number; args are Exprs (or are coerced to Exprs)."</font></i>
+        assert isinstance(op, str) or (isnumber(op) and not args)
+        self.op = num_or_str(op)
+        self.args = map(expr, args) <font color="cc33cc">## Coerce args to Exprs</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__call__">__call__</b>(self, *args):
+        <i><font color="green">""</font></i><i><font color="green">"Self must be a symbol with no args, such as Expr('F').  Create a new
+        Expr with 'F' as op and the args as arguments."</font></i><i><font color="green">""</font></i>
+        assert is_symbol(self.op) and not self.args
+        return Expr(self.op, *args)
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        <i><font color="green">"Show something like 'P' or 'P(x, y)', or '~P' or '(P | Q | R)'"</font></i>
+        if len(self.args) == 0: <font color="cc33cc"># Constant or proposition with arity 0</font>
+            return str(self.op)
+        elif is_symbol(self.op): <font color="cc33cc"># Functional or Propositional operator</font>
+            return <i><font color="green">'%s(%s)'</font></i> % (self.op, <i><font color="green">', '</font></i>.join(map(repr, self.args)))
+        elif len(self.args) == 1: <font color="cc33cc"># Prefix operator</font>
+            return self.op + repr(self.args[0])
+        else: <font color="cc33cc"># Infix operator</font>
+            return <i><font color="green">'(%s)'</font></i> % (<i><font color="green">' '</font></i>+self.op+<i><font color="green">' '</font></i>).join(map(repr, self.args))
+
+    <b>def </b><b style="background-color:ffff00"><a name="__eq__">__eq__</b>(self, other):
+        <i><font color="green">""</font></i><i><font color="green">"x and y are equal iff their ops and args are equal."</font></i><i><font color="green">""</font></i>
+        return (other is self) or (isinstance(other, Expr)
+            and self.op == other.op and self.args == other.args)
+
+    <b>def </b><b style="background-color:ffff00"><a name="__hash__">__hash__</b>(self):
+        <i><font color="green">"Need a hash method so Exprs can live in dicts."</font></i>
+        return hash(self.op) ^ hash(tuple(self.args))
+
+    <font color="cc33cc"># See http://www.python.org/doc/current/lib/module-operator.html</font>
+    <font color="cc33cc"># Not implemented: not, abs, pos, concat, contains, *item, *slice</font>
+    <b>def </b><b style="background-color:ffff00"><a name="__lt__">__lt__</b>(self, other):     return Expr(<i><font color="green">'&lt;'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__le__">__le__</b>(self, other):     return Expr(<i><font color="green">'&lt;='</font></i>, self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__ge__">__ge__</b>(self, other):     return Expr(<i><font color="green">'&gt;='</font></i>, self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__gt__">__gt__</b>(self, other):     return Expr(<i><font color="green">'&gt;'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__add__">__add__</b>(self, other):    return Expr(<i><font color="green">'+'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__sub__">__sub__</b>(self, other):    return Expr(<i><font color="green">'-'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__and__">__and__</b>(self, other):    return Expr(<i><font color="green">'&amp;'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__div__">__div__</b>(self, other):    return Expr(<i><font color="green">'/'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__truediv__">__truediv__</b>(self, other):return Expr(<i><font color="green">'/'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__invert__">__invert__</b>(self):        return Expr(<i><font color="green">'~'</font></i>,  self)
+    <b>def </b><b style="background-color:ffff00"><a name="__lshift__">__lshift__</b>(self, other): return Expr(<i><font color="green">'&lt;&lt;'</font></i>, self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__rshift__">__rshift__</b>(self, other): return Expr(<i><font color="green">'&gt;&gt;'</font></i>, self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__mul__">__mul__</b>(self, other):    return Expr(<i><font color="green">'*'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__neg__">__neg__</b>(self):           return Expr(<i><font color="green">'-'</font></i>,  self)
+    <b>def </b><b style="background-color:ffff00"><a name="__or__">__or__</b>(self, other):     return Expr(<i><font color="green">'|'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__pow__">__pow__</b>(self, other):    return Expr(<i><font color="green">'**'</font></i>, self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__xor__">__xor__</b>(self, other):    return Expr(<i><font color="green">'^'</font></i>,  self, other)
+    <b>def </b><b style="background-color:ffff00"><a name="__mod__">__mod__</b>(self, other):    return Expr(<i><font color="green">'&lt;=&gt;'</font></i>,  self, other) <font color="cc33cc">## (x % y)</font>
+
+
+
+<b>def </b><b style="background-color:ffff00"><a name="expr">expr</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Create an Expr representing a logic expression by parsing the input
+    string. Symbols and numbers are automatically converted to Exprs.
+    In addition you can use alternative spellings of these operators:
+      'x ==&gt; y'   parses as   (x &gt;&gt; y)    <font color="cc33cc"># Implication</font>
+      'x &lt;== y'   parses as   (x &lt;&lt; y)    <font color="cc33cc"># Reverse implication</font>
+      'x &lt;=&gt; y'   parses as   (x % y)     <font color="cc33cc"># Logical equivalence</font>
+      'x =/= y'   parses as   (x ^ y)     <font color="cc33cc"># Logical disequality (xor)</font>
+    But BE CAREFUL; precedence of implication is wrong. expr('P &amp; Q ==&gt; R &amp; S')
+    is ((P &amp; (Q &gt;&gt; R)) &amp; S); so you must use expr('(P &amp; Q) ==&gt; (R &amp; S)').
+    &gt;&gt;&gt; expr('P &lt;=&gt; Q(1)')
+    (P &lt;=&gt; Q(1))
+    &gt;&gt;&gt; expr('P &amp; Q | ~R(x, F(x))')
+    ((P &amp; Q) | ~R(x, F(x)))
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(s, Expr): return s
+    if isnumber(s): return Expr(s)
+    <font color="cc33cc">## Replace the alternative spellings of operators with canonical spellings</font>
+    s = s.replace(<i><font color="green">'==&gt;'</font></i>, <i><font color="green">'&gt;&gt;'</font></i>).replace(<i><font color="green">'&lt;=='</font></i>, <i><font color="green">'&lt;&lt;'</font></i>)
+    s = s.replace(<i><font color="green">'&lt;=&gt;'</font></i>, <i><font color="green">'%'</font></i>).replace(<i><font color="green">'=/='</font></i>, <i><font color="green">'^'</font></i>)
+    <font color="cc33cc">## Replace a symbol or number, such as <i><font color="green">'P'</font></i> with <i><font color="green">'Expr("P")'</font></i></font>
+    s = re.sub(r<i><font color="green">'([a-zA-Z0-9_.]+)'</font></i>, r<i><font color="green">'Expr("\1")'</font></i>, s)
+    <font color="cc33cc">## Now eval the string.  (A security hole; do not use with an adversary.)</font>
+    return eval(s, {<i><font color="green">'Expr'</font></i>:Expr})
+
+<b>def </b><b style="background-color:ffff00"><a name="is_symbol">is_symbol</b>(s):
+    <i><font color="green">"A string s is a symbol if it starts with an alphabetic char."</font></i>
+    return isinstance(s, str) and s[0].isalpha()
+
+<b>def </b><b style="background-color:ffff00"><a name="is_var_symbol">is_var_symbol</b>(s):
+    <i><font color="green">"A logic variable symbol is an initial-lowercase string."</font></i>
+    return is_symbol(s) and s[0].islower()
+
+<b>def </b><b style="background-color:ffff00"><a name="is_prop_symbol">is_prop_symbol</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"A proposition logic symbol is an initial-uppercase string other than
+    TRUE or FALSE."</font></i><i><font color="green">""</font></i>
+    return is_symbol(s) and s[0].isupper() and s != <i><font color="green">'TRUE'</font></i> and s != <i><font color="green">'FALSE'</font></i>
+
+
+<font color="cc33cc">## Useful constant Exprs used in examples and code:</font>
+<b style="background-color:ffff00"><a name="TRUE, FALSE, ZERO, ONE, TWO">TRUE, FALSE, ZERO, ONE, TWO</b> = map(Expr, [<i><font color="green">'TRUE'</font></i>, <i><font color="green">'FALSE'</font></i>, 0, 1, 2])
+<b style="background-color:ffff00"><a name="A, B, C, F, G, P, Q, x, y, z ">A, B, C, F, G, P, Q, x, y, z </b> = map(Expr, <i><font color="green">'ABCFGPQxyz'</font></i>)
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="tt_entails">tt_entails</b>(kb, alpha):
+    <i><font color="green">""</font></i><i><font color="green">"Use truth tables to determine if KB entails sentence alpha. [Fig. 7.10]
+    &gt;&gt;&gt; tt_entails(expr('P &amp; Q'), expr('Q'))
+    True
+    "</font></i><i><font color="green">""</font></i>
+    return tt_check_all(kb, alpha, prop_symbols(kb &amp; alpha), {})
+
+<b>def </b><b style="background-color:ffff00"><a name="tt_check_all">tt_check_all</b>(kb, alpha, symbols, model):
+    <i><font color="green">"Auxiliary routine to implement tt_entails."</font></i>
+    if not symbols:
+        if pl_true(kb, model): return pl_true(alpha, model)
+        else: return True
+        assert result != None
+    else:
+        P, rest = symbols[0], symbols[1:]
+        return (tt_check_all(kb, alpha, rest, extend(model, P, True)) and
+                tt_check_all(kb, alpha, rest, extend(model, P, False)))
+
+<b>def </b><b style="background-color:ffff00"><a name="prop_symbols">prop_symbols</b>(x):
+    <i><font color="green">"Return a list of all propositional symbols in x."</font></i>
+    if not isinstance(x, Expr):
+        return []
+    elif is_prop_symbol(x.op):
+        return [x]
+    else:
+        s = set(())
+        for arg in x.args:
+            for symbol in prop_symbols(arg):
+                s.add(symbol)
+        return list(s)
+
+<b>def </b><b style="background-color:ffff00"><a name="tt_true">tt_true</b>(alpha):
+    <i><font color="green">""</font></i><i><font color="green">"Is the sentence alpha a tautology? (alpha will be coerced to an expr.)
+    &gt;&gt;&gt; tt_true(expr("</font></i>(P &gt;&gt; Q) &lt;=&gt; (~P | Q)<i><font color="green">"))
+    True
+    "</font></i><i><font color="green">""</font></i>
+    return tt_entails(TRUE, expr(alpha))
+
+<b>def </b><b style="background-color:ffff00"><a name="pl_true">pl_true</b>(exp, model={}):
+    <i><font color="green">""</font></i><i><font color="green">"Return True if the propositional logic expression is true in the model,
+    and False if it is false. If the model does not specify the value for
+    every proposition, this may return None to indicate 'not obvious';
+    this may happen even when the expression is tautological."</font></i><i><font color="green">""</font></i>
+    op, args = exp.op, exp.args
+    if exp == TRUE:
+        return True
+    elif exp == FALSE:
+        return False
+    elif is_prop_symbol(op):
+        return model.get(exp)
+    elif op == <i><font color="green">'~'</font></i>:
+        p = pl_true(args[0], model)
+        if p == None: return None
+        else: return not p
+    elif op == <i><font color="green">'|'</font></i>:
+        result = False
+        for arg in args:
+            p = pl_true(arg, model)
+            if p == True: return True
+            if p == None: result = None
+        return result
+    elif op == <i><font color="green">'&amp;'</font></i>:
+        result = True
+        for arg in args:
+            p = pl_true(arg, model)
+            if p == False: return False
+            if p == None: result = None
+        return result
+    p, q = args
+    if op == <i><font color="green">'&gt;&gt;'</font></i>:
+        return pl_true(~p | q, model)
+    elif op == <i><font color="green">'&lt;&lt;'</font></i>:
+        return pl_true(p | ~q, model)
+    pt = pl_true(p, model)
+    if pt == None: return None
+    qt = pl_true(q, model)
+    if qt == None: return None
+    if op == <i><font color="green">'&lt;=&gt;'</font></i>:
+        return pt == qt
+    elif op == <i><font color="green">'^'</font></i>:
+        return pt != qt
+    else:
+        raise ValueError, <i><font color="green">"illegal operator in logic expression"</font></i> + str(exp)
+
+<hr>
+<font color="cc33cc">## Convert to Conjunctive Normal Form (CNF)</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="to_cnf">to_cnf</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Convert a propositional logical sentence s to conjunctive normal form.
+    That is, of the form ((A | ~B | ...) &amp; (B | C | ...) &amp; ...) [p. 215]
+    &gt;&gt;&gt; to_cnf("</font></i>~(B|C)<i><font color="green">")
+    (~B &amp; ~C)
+    &gt;&gt;&gt; to_cnf("</font></i>B &lt;=&gt; (P1|P2)<i><font color="green">")
+    ((~P1 | B) &amp; (~P2 | B) &amp; (P1 | P2 | ~B))
+    &gt;&gt;&gt; to_cnf("</font></i>a | (b &amp; c) | d<i><font color="green">")
+    ((b | a | d) &amp; (c | a | d))
+    &gt;&gt;&gt; to_cnf("</font></i>A &amp; (B | (D &amp; E))<i><font color="green">")
+    (A &amp; (D | B) &amp; (E | B))
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(s, str): s = expr(s)
+    s = eliminate_implications(s) <font color="cc33cc"># Steps 1, 2 from p. 215</font>
+    s = move_not_inwards(s) <font color="cc33cc"># Step 3</font>
+    return distribute_and_over_or(s) <font color="cc33cc"># Step 4</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="eliminate_implications">eliminate_implications</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Change &gt;&gt;, &lt;&lt;, and &lt;=&gt; into &amp;, |, and ~. That is, return an Expr
+    that is equivalent to s, but has only &amp;, |, and ~ as logical operators.
+    &gt;&gt;&gt; eliminate_implications(A &gt;&gt; (~B &lt;&lt; C))
+    ((~B | ~C) | ~A)
+    "</font></i><i><font color="green">""</font></i>
+    if not s.args or is_symbol(s.op): return s     <font color="cc33cc">## (Atoms are unchanged.)</font>
+    args = map(eliminate_implications, s.args)
+    a, b = args[0], args[-1]
+    if s.op == <i><font color="green">'&gt;&gt;'</font></i>:
+        return (b | ~a)
+    elif s.op == <i><font color="green">'&lt;&lt;'</font></i>:
+        return (a | ~b)
+    elif s.op == <i><font color="green">'&lt;=&gt;'</font></i>:
+        return (a | ~b) &amp; (b | ~a)
+    else:
+        return Expr(s.op, *args)
+
+<b>def </b><b style="background-color:ffff00"><a name="move_not_inwards">move_not_inwards</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Rewrite sentence s by moving negation sign inward.
+    &gt;&gt;&gt; move_not_inwards(~(A | B))
+    (~A &amp; ~B)
+    &gt;&gt;&gt; move_not_inwards(~(A &amp; B))
+    (~A | ~B)
+    &gt;&gt;&gt; move_not_inwards(~(~(A | ~B) | ~~C))
+    ((A | ~B) &amp; ~C)
+    "</font></i><i><font color="green">""</font></i>
+    if s.op == <i><font color="green">'~'</font></i>:
+        NOT = lambda b: move_not_inwards(~b)
+        a = s.args[0]
+        if a.op == <i><font color="green">'~'</font></i>: return move_not_inwards(a.args[0]) <font color="cc33cc"># ~~A ==&gt; A</font>
+        if a.op ==<i><font color="green">'&amp;'</font></i>: return NaryExpr(<i><font color="green">'|'</font></i>, *map(NOT, a.args))
+        if a.op ==<i><font color="green">'|'</font></i>: return NaryExpr(<i><font color="green">'&amp;'</font></i>, *map(NOT, a.args))
+        return s
+    elif is_symbol(s.op) or not s.args:
+        return s
+    else:
+        return Expr(s.op, *map(move_not_inwards, s.args))
+
+<b>def </b><b style="background-color:ffff00"><a name="distribute_and_over_or">distribute_and_over_or</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Given a sentence s consisting of conjunctions and disjunctions
+    of literals, return an equivalent sentence in CNF.
+    &gt;&gt;&gt; distribute_and_over_or((A &amp; B) | C)
+    ((A | C) &amp; (B | C))
+    "</font></i><i><font color="green">""</font></i>
+    if s.op == <i><font color="green">'|'</font></i>:
+        s = NaryExpr(<i><font color="green">'|'</font></i>, *s.args)
+        if len(s.args) == 0:
+            return FALSE
+        if len(s.args) == 1:
+            return distribute_and_over_or(s.args[0])
+        conj = find_if((lambda d: d.op == <i><font color="green">'&amp;'</font></i>), s.args)
+        if not conj:
+            return NaryExpr(s.op, *s.args)
+        others = [a for a in s.args if a is not conj]
+        if len(others) == 1:
+            rest = others[0]
+        else:
+            rest = NaryExpr(<i><font color="green">'|'</font></i>, *others)
+        return NaryExpr(<i><font color="green">'&amp;'</font></i>, *map(distribute_and_over_or,
+                                  [(c|rest) for c in conj.args]))
+    elif s.op == <i><font color="green">'&amp;'</font></i>:
+        return NaryExpr(<i><font color="green">'&amp;'</font></i>, *map(distribute_and_over_or, s.args))
+    else:
+        return s
+
+_NaryExprTable = {<i><font color="green">'&amp;'</font></i>:TRUE, <i><font color="green">'|'</font></i>:FALSE, <i><font color="green">'+'</font></i>:ZERO, <i><font color="green">'*'</font></i>:ONE}
+
+<b>def </b><b style="background-color:ffff00"><a name="NaryExpr">NaryExpr</b>(op, *args):
+    <i><font color="green">""</font></i><i><font color="green">"Create an Expr, but with an nary, associative op, so we can promote
+    nested instances of the same op up to the top level.
+    &gt;&gt;&gt; NaryExpr('&amp;', (A&amp;B),(B|C),(B&amp;C))
+    (A &amp; B &amp; (B | C) &amp; B &amp; C)
+    "</font></i><i><font color="green">""</font></i>
+    arglist = []
+    for arg in args:
+        if arg.op == op: arglist.extend(arg.args)
+        else: arglist.append(arg)
+    if len(args) == 1:
+        return args[0]
+    elif len(args) == 0:
+        return _NaryExprTable[op]
+    else:
+        return Expr(op, *arglist)
+
+<b>def </b><b style="background-color:ffff00"><a name="conjuncts">conjuncts</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of the conjuncts in the sentence s.
+    &gt;&gt;&gt; conjuncts(A &amp; B)
+    [A, B]
+    &gt;&gt;&gt; conjuncts(A | B)
+    [(A | B)]
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(s, Expr) and s.op == <i><font color="green">'&amp;'</font></i>:
+        return s.args
+    else:
+        return [s]
+
+<b>def </b><b style="background-color:ffff00"><a name="disjuncts">disjuncts</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of the disjuncts in the sentence s.
+    &gt;&gt;&gt; disjuncts(A | B)
+    [A, B]
+    &gt;&gt;&gt; disjuncts(A &amp; B)
+    [(A &amp; B)]
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(s, Expr) and s.op == <i><font color="green">'|'</font></i>:
+        return s.args
+    else:
+        return [s]
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="pl_resolution">pl_resolution</b>(KB, alpha):
+    <i><font color="green">"Propositional Logic Resolution: say if alpha follows from KB. [Fig. 7.12]"</font></i>
+    clauses = KB.clauses + conjuncts(to_cnf(~alpha))
+    new = set()
+    while True:
+        n = len(clauses)
+        pairs = [(clauses[i], clauses[j]) for i in range(n) for j in range(i+1, n)]
+        for (ci, cj) in pairs:
+            resolvents = pl_resolve(ci, cj)
+            if FALSE in resolvents: return True
+            new.union_update(set(resolvents))
+        if new.issubset(set(clauses)): return False
+        for c in new:
+            if c not in clauses: clauses.append(c)
+
+<b>def </b><b style="background-color:ffff00"><a name="pl_resolve">pl_resolve</b>(ci, cj):
+    <i><font color="green">""</font></i><i><font color="green">"Return all clauses that can be obtained by resolving clauses ci and cj.
+    &gt;&gt;&gt; pl_resolve(to_cnf(A|B|C), to_cnf(~B|~C|F))
+    [(A | C | ~C | F), (A | B | ~B | F)]
+    "</font></i><i><font color="green">""</font></i>
+    clauses = []
+    for di in disjuncts(ci):
+        for dj in disjuncts(cj):
+            if di == ~dj or ~di == dj:
+                dnew = unique(removeall(di, disjuncts(ci)) +
+                              removeall(dj, disjuncts(cj)))
+                clauses.append(NaryExpr(<i><font color="green">'|'</font></i>, *dnew))
+    return clauses
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="PropHornKB">PropHornKB</b>(PropKB):
+    <i><font color="green">"A KB of Propositional Horn clauses."</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="tell">tell</b>(self, sentence):
+        <i><font color="green">"Add a Horn Clauses to this KB."</font></i>
+        op = sentence.op
+        assert op == <i><font color="green">'&gt;&gt;'</font></i> or is_prop_symbol(op), <i><font color="green">"Must be Horn Clause"</font></i>
+        self.clauses.append(sentence)
+
+    <b>def </b><b style="background-color:ffff00"><a name="ask_generator">ask_generator</b>(self, query):
+        <i><font color="green">"Yield the empty substitution if KB implies query; else False"</font></i>
+        if not pl_fc_entails(self.clauses, query):
+            return
+        yield {}
+
+    <b>def </b><b style="background-color:ffff00"><a name="retract">retract</b>(self, sentence):
+        <i><font color="green">"Remove the sentence's clauses from the KB"</font></i>
+        for c in conjuncts(to_cnf(sentence)):
+            if c in self.clauses:
+                self.clauses.remove(c)
+
+    <b>def </b><b style="background-color:ffff00"><a name="clauses_with_premise">clauses_with_premise</b>(self, p):
+        <i><font color="green">""</font></i><i><font color="green">"The list of clauses in KB that have p in the premise.
+        This could be cached away for O(1) speed, but we'll recompute it."</font></i><i><font color="green">""</font></i>
+        return [c for c in self.clauses
+                if c.op == <i><font color="green">'&gt;&gt;'</font></i> and p in conjuncts(c.args[0])]
+
+<b>def </b><b style="background-color:ffff00"><a name="pl_fc_entails">pl_fc_entails</b>(KB, q):
+    <i><font color="green">""</font></i><i><font color="green">"Use forward chaining to see if a HornKB entails symbol q. [Fig. 7.14]
+    &gt;&gt;&gt; pl_fc_entails(Fig[7,15], expr('Q'))
+    True
+    "</font></i><i><font color="green">""</font></i>
+    count = dict([(c, len(conjuncts(c.args[0]))) for c in KB.clauses
+                                                 if c.op == <i><font color="green">'&gt;&gt;'</font></i>])
+    inferred = DefaultDict(False)
+    agenda = [s for s in KB.clauses if is_prop_symbol(s.op)]
+    if q in agenda: return True
+    while agenda:
+        p = agenda.pop()
+        if not inferred[p]:
+            inferred[p] = True
+            for c in KB.clauses_with_premise(p):
+                count[c] -= 1
+                if count[c] == 0:
+                    if c.args[1] == q: return True
+                    agenda.append(c.args[1])
+    return False
+
+<font color="cc33cc">## Wumpus World example [Fig. 7.13]</font>
+Fig[7,13] = expr(<i><font color="green">"(B11 &lt;=&gt; (P12 | P21))  &amp;  ~B11"</font></i>)
+
+<font color="cc33cc">## Propositional Logic Forward Chanining example [Fig. 7.15]</font>
+Fig[7,15] = PropHornKB()
+for s in <i><font color="green">"P&gt;&gt;Q   (L&amp;M)&gt;&gt;P   (B&amp;L)&gt;&gt;M   (A&amp;P)&gt;&gt;L   (A&amp;B)&gt;&gt;L   A   B"</font></i>.split():
+    Fig[7,15].tell(expr(s))
+
+<hr>
+<font color="cc33cc"># DPLL-Satisfiable [Fig. 7.16]</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="dpll_satisfiable">dpll_satisfiable</b>(s):
+    <i><font color="green">""</font></i><i><font color="green">"Check satisfiability of a propositional sentence.
+    This differs from the book code in two ways: (1) it returns a model
+    rather than True when it succeeds; this is more useful. (2) The
+    function find_pure_symbol is passed a list of unknown clauses, rather
+    than a list of all clauses and the model; this is more efficient.
+    &gt;&gt;&gt; dpll_satisfiable(A&amp;~B)
+    {A: True, B: False}
+    &gt;&gt;&gt; dpll_satisfiable(P&amp;~P)
+    False
+    "</font></i><i><font color="green">""</font></i>
+    clauses = conjuncts(to_cnf(s))
+    symbols = prop_symbols(s)
+    return dpll(clauses, symbols, {})
+
+<b>def </b><b style="background-color:ffff00"><a name="dpll">dpll</b>(clauses, symbols, model):
+    <i><font color="green">"See if the clauses are true in a partial model."</font></i>
+    unknown_clauses = [] <font color="cc33cc">## clauses with an unknown truth value</font>
+    for c in clauses:
+        val =  pl_true(c, model)
+        if val == False:
+            return False
+        if val != True:
+            unknown_clauses.append(c)
+    if not unknown_clauses:
+        return model
+    P, value = find_pure_symbol(symbols, unknown_clauses)
+    if P:
+        return dpll(clauses, removeall(P, symbols), extend(model, P, value))
+    P, value = find_unit_clause(clauses, model)
+    if P:
+        return dpll(clauses, removeall(P, symbols), extend(model, P, value))
+    P = symbols.pop()
+    return (dpll(clauses, symbols, extend(model, P, True)) or
+            dpll(clauses, symbols, extend(model, P, False)))
+
+<b>def </b><b style="background-color:ffff00"><a name="find_pure_symbol">find_pure_symbol</b>(symbols, unknown_clauses):
+    <i><font color="green">""</font></i><i><font color="green">"Find a symbol and its value if it appears only as a positive literal
+    (or only as a negative) in clauses.
+    &gt;&gt;&gt; find_pure_symbol([A, B, C], [A|~B,~B|~C,C|A])
+    (A, True)
+    "</font></i><i><font color="green">""</font></i>
+    for s in symbols:
+        found_pos, found_neg = False, False
+        for c in unknown_clauses:
+            if not found_pos and s in disjuncts(c): found_pos = True
+            if not found_neg and ~s in disjuncts(c): found_neg = True
+        if found_pos != found_neg: return s, found_pos
+    return None, None
+
+<b>def </b><b style="background-color:ffff00"><a name="find_unit_clause">find_unit_clause</b>(clauses, model):
+    <i><font color="green">""</font></i><i><font color="green">"A unit clause has only 1 variable that is not bound in the model.
+    &gt;&gt;&gt; find_unit_clause([A|B|C, B|~C, A|~B], {A:True})
+    (B, False)
+    "</font></i><i><font color="green">""</font></i>
+    for clause in clauses:
+        num_not_in_model = 0
+        for literal in disjuncts(clause):
+            sym = literal_symbol(literal)
+            if sym not in model:
+                num_not_in_model += 1
+                P, value = sym, (literal.op != <i><font color="green">'~'</font></i>)
+        if num_not_in_model == 1:
+            return P, value
+    return None, None
+
+
+<b>def </b><b style="background-color:ffff00"><a name="literal_symbol">literal_symbol</b>(literal):
+    <i><font color="green">""</font></i><i><font color="green">"The symbol in this literal (without the negation).
+    &gt;&gt;&gt; literal_symbol(P)
+    P
+    &gt;&gt;&gt; literal_symbol(~P)
+    P
+    "</font></i><i><font color="green">""</font></i>
+    if literal.op == <i><font color="green">'~'</font></i>:
+        return literal.args[0]
+    else:
+        return literal
+
+
+<hr><font color="cc33cc"># Walk-SAT [Fig. 7.17]</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="WalkSAT">WalkSAT</b>(clauses, p=0.5, max_flips=10000):
+    <font color="cc33cc">## model is a random assignment of true/false to the symbols in clauses</font>
+    <font color="cc33cc">## See ~/aima1e/print1/manual/knowledge+logic-answers.tex ???</font>
+    model = dict([(s, random.choice([True, False]))
+                 for s in prop_symbols(clauses)])
+    for i in range(max_flips):
+        satisfied, unsatisfied = [], []
+        for clause in clauses:
+            if_(pl_true(clause, model), satisfied, unsatisfied).append(clause)
+        if not unsatisfied: <font color="cc33cc">## if model satisfies all the clauses</font>
+            return model
+        clause = random.choice(unsatisfied)
+        if probability(p):
+            sym = random.choice(prop_symbols(clause))
+        else:
+            <font color="cc33cc">## Flip the symbol in clause that miximizes number of sat. clauses</font>
+            raise NotImplementedError
+        model[sym] = not model[sym]
+
+
+<font color="cc33cc"># PL-Wumpus-Agent [Fig. 7.19]</font>
+<b>class </b><b style="background-color:ffff00"><a name="PLWumpusAgent">PLWumpusAgent</b>(agents.Agent):
+    <i><font color="green">"An agent for the wumpus world that does logical inference. [Fig. 7.19]"</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        KB = FOLKB()
+        x, y, orientation = 1, 1, (1, 0)
+        visited = set() <font color="cc33cc">## squares already visited</font>
+        action = None
+        plan = []
+
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            stench, breeze, glitter = percept
+            x, y, orientation = update_position(x, y, orientation, action)
+            KB.tell(<i><font color="green">'%sS_%d,%d'</font></i> % (if_(stench, <i><font color="green">''</font></i>, <i><font color="green">'~'</font></i>), x, y))
+            KB.tell(<i><font color="green">'%sB_%d,%d'</font></i> % (if_(breeze, <i><font color="green">''</font></i>, <i><font color="green">'~'</font></i>), x, y))
+            if glitter: action = <i><font color="green">'Grab'</font></i>
+            elif plan: action = plan.pop()
+            else:
+                for [i, j] in fringe(visited):
+                    if KB.ask(<i><font color="green">'~P_%d,%d &amp; ~W_%d,%d'</font></i> % (i, j, i, j)) != False:
+                        raise NotImplementedError
+                    KB.ask(<i><font color="green">'~P_%d,%d | ~W_%d,%d'</font></i> % (i, j, i, j)) != False
+            if action == None:
+                action = random.choice([<i><font color="green">'Forward'</font></i>, <i><font color="green">'Right'</font></i>, <i><font color="green">'Left'</font></i>])
+            return action
+
+        self.program = program
+
+<b>def </b><b style="background-color:ffff00"><a name="update_position">update_position</b>(x, y, orientation, action):
+    if action == <i><font color="green">'TurnRight'</font></i>:
+        orientation = turn_right(orientation)
+    elif action == <i><font color="green">'TurnLeft'</font></i>:
+        orientation = turn_left(orientation)
+    elif action == <i><font color="green">'Forward'</font></i>:
+        x, y = x + vector_add((x, y), orientation)
+    return x, y, orientation
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="unify">unify</b>(x, y, s):
+    <i><font color="green">""</font></i><i><font color="green">"Unify expressions x,y with substitution s; return a substitution that
+    would make x,y equal, or None if x,y can not unify. x and y can be
+    variables (e.g. Expr('x')), constants, lists, or Exprs. [Fig. 9.1]
+    &gt;&gt;&gt; unify(x + y, y + C, {})
+    {y: C, x: y}
+    "</font></i><i><font color="green">""</font></i>
+    if s == None:
+        return None
+    elif x == y:
+        return s
+    elif is_variable(x):
+        return unify_var(x, y, s)
+    elif is_variable(y):
+        return unify_var(y, x, s)
+    elif isinstance(x, Expr) and isinstance(y, Expr):
+        return unify(x.args, y.args, unify(x.op, y.op, s))
+    elif isinstance(x, str) or isinstance(y, str) or not x or not y:
+        return if_(x == y, s, None)
+    elif issequence(x) and issequence(y) and len(x) == len(y):
+        return unify(x[1:], y[1:], unify(x[0], y[0], s))
+    else:
+        return None
+
+<b>def </b><b style="background-color:ffff00"><a name="is_variable">is_variable</b>(x):
+    <i><font color="green">"A variable is an Expr with no args and a lowercase symbol as the op."</font></i>
+    return isinstance(x, Expr) and not x.args and is_var_symbol(x.op)
+
+<b>def </b><b style="background-color:ffff00"><a name="unify_var">unify_var</b>(var, x, s):
+    if var in s:
+        return unify(s[var], x, s)
+    elif occur_check(var, x):
+        return None
+    else:
+        return extend(s, var, x)
+
+<b>def </b><b style="background-color:ffff00"><a name="occur_check">occur_check</b>(var, x):
+    <i><font color="green">"Return true if var occurs anywhere in x."</font></i>
+    if var == x:
+        return True
+    elif isinstance(x, Expr):
+        return var.op == x.op or occur_check(var, x.args)
+    elif not isinstance(x, str) and issequence(x):
+        for xi in x:
+            if occur_check(var, xi): return True
+    return False
+
+<b>def </b><b style="background-color:ffff00"><a name="extend">extend</b>(s, var, val):
+    <i><font color="green">""</font></i><i><font color="green">"Copy the substitution s and extend it by setting var to val; return copy.
+    &gt;&gt;&gt; extend({x: 1}, y, 2)
+    {y: 2, x: 1}
+    "</font></i><i><font color="green">""</font></i>
+    s2 = s.copy()
+    s2[var] = val
+    return s2
+
+<b>def </b><b style="background-color:ffff00"><a name="subst">subst</b>(s, x):
+    <i><font color="green">""</font></i><i><font color="green">"Substitute the substitution s into the expression x.
+    &gt;&gt;&gt; subst({x: 42, y:0}, F(x) + y)
+    (F(42) + 0)
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(x, list):
+        return [subst(s, xi) for xi in x]
+    elif isinstance(x, tuple):
+        return tuple([subst(s, xi) for xi in x])
+    elif not isinstance(x, Expr):
+        return x
+    elif is_var_symbol(x.op):
+        return s.get(x, x)
+    else:
+        return Expr(x.op, *[subst(s, arg) for arg in x.args])
+
+<b>def </b><b style="background-color:ffff00"><a name="fol_fc_ask">fol_fc_ask</b>(KB, alpha):
+    <i><font color="green">""</font></i><i><font color="green">"Inefficient forward chaining for first-order logic. [Fig. 9.3]
+    KB is an FOLHornKB and alpha must be an atomic sentence."</font></i><i><font color="green">""</font></i>
+    while True:
+        new = {}
+        for r in KB.clauses:
+            r1 = standardize_apart(r)
+            ps, q = conjuncts(r.args[0]), r.args[1]
+            raise NotImplementedError
+
+<b>def </b><b style="background-color:ffff00"><a name="standardize_apart">standardize_apart</b>(sentence, dic):
+    <i><font color="green">""</font></i><i><font color="green">"Replace all the variables in sentence with new variables."</font></i><i><font color="green">""</font></i>
+    if not isinstance(sentence, Expr):
+        return sentence
+    elif is_var_symbol(sentence.op):
+        if sentence in dic:
+            return dic[sentence]
+        else:
+            standardize_apart.counter += 1
+            dic[sentence] = Expr(<i><font color="green">'V_%d'</font></i> % standardize-apart.counter)
+            return dic[sentence]
+    else:
+        return Expr(sentence.op, *[standardize-apart(a, dic) for a in sentence.args])
+
+standardize_apart.counter = 0
+
+<b>def </b><b style="background-color:ffff00"><a name="fol_bc_ask">fol_bc_ask</b>(KB, goals, theta):
+    <i><font color="green">"A simple backward-chaining algorithm for first-order logic. [Fig. 9.6]"</font></i>
+    if not goals:
+        yield theta
+    q1 = subst(theta, goals[0])
+    raise NotImplementedError
+
+<hr>
+<font color="cc33cc"># Example application (not in the book).</font>
+<font color="cc33cc"># You can use the Expr class to do symbolic differentiation.  This used to be</font>
+<font color="cc33cc"># a part of AI; now it is considered a separate field, Symbolic Algebra.</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="diff">diff</b>(y, x):
+    <i><font color="green">""</font></i><i><font color="green">"Return the symbolic derivative, dy/dx, as an Expr.
+    However, you probably want to simplify the results with simp.
+    &gt;&gt;&gt; diff(x * x, x)
+    ((x * 1) + (x * 1))
+    &gt;&gt;&gt; simp(diff(x * x, x))
+    (2 * x)
+    "</font></i><i><font color="green">""</font></i>
+    if y == x: return ONE
+    elif not y.args: return ZERO
+    else:
+        u, op, v = y.args[0], y.op, y.args[-1]
+        if op == <i><font color="green">'+'</font></i>: return diff(u, x) + diff(v, x)
+        elif op == <i><font color="green">'-'</font></i> and len(args) == 1: return -diff(u, x)
+        elif op == <i><font color="green">'-'</font></i>: return diff(u, x) - diff(v, x)
+        elif op == <i><font color="green">'*'</font></i>: return u * diff(v, x) + v * diff(u, x)
+        elif op == <i><font color="green">'/'</font></i>: return (v*diff(u, x) - u*diff(v, x)) / (v * v)
+        elif op == <i><font color="green">'**'</font></i> and isnumber(x.op):
+            return (v * u ** (v - 1) * diff(u, x))
+        elif op == <i><font color="green">'**'</font></i>: return (v * u ** (v - 1) * diff(u, x)
+                                 + u ** v * Expr(<i><font color="green">'log'</font></i>)(u) * diff(v, x))
+        elif op == <i><font color="green">'log'</font></i>: return diff(u, x) / u
+        else: raise ValueError(<i><font color="green">"Unknown op: %s in diff(%s, %s)"</font></i> % (op, y, x))
+
+<b>def </b><b style="background-color:ffff00"><a name="simp">simp</b>(x):
+    if not x.args: return x
+    args = map(simp, x.args)
+    u, op, v = args[0], x.op, args[-1]
+    if op == <i><font color="green">'+'</font></i>:
+        if v == ZERO: return u
+        if u == ZERO: return v
+        if u == v: return TWO * u
+        if u == -v or v == -u: return ZERO
+    elif op == <i><font color="green">'-'</font></i> and len(args) == 1:
+        if u.op == <i><font color="green">'-'</font></i> and len(u.args) == 1: return u.args[0] <font color="cc33cc">## --y ==&gt; y</font>
+    elif op == <i><font color="green">'-'</font></i>:
+        if v == ZERO: return u
+        if u == ZERO: return -v
+        if u == v: return ZERO
+        if u == -v or v == -u: return ZERO
+    elif op == <i><font color="green">'*'</font></i>:
+        if u == ZERO or v == ZERO: return ZERO
+        if u == ONE: return v
+        if v == ONE: return u
+        if u == v: return u ** 2
+    elif op == <i><font color="green">'/'</font></i>:
+        if u == ZERO: return ZERO
+        if v == ZERO: return Expr(<i><font color="green">'Undefined'</font></i>)
+        if u == v: return ONE
+        if u == -v or v == -u: return ZERO
+    elif op == <i><font color="green">'**'</font></i>:
+        if u == ZERO: return ZERO
+        if v == ZERO: return ONE
+        if u == ONE: return ONE
+        if v == ONE: return u
+    elif op == <i><font color="green">'log'</font></i>:
+        if u == ONE: return ZERO
+    else: raise ValueError(<i><font color="green">"Unknown op: "</font></i> + op)
+    <font color="cc33cc">## If we fall through to here, we can not simplify further</font>
+    return Expr(op, *args)
+
+<b>def </b><b style="background-color:ffff00"><a name="d">d</b>(y, x):
+    <i><font color="green">"Differentiate and then simplify."</font></i>
+    return simp(diff(y, x))
+</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

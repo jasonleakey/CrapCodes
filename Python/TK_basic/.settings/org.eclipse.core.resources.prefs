@@ -1,0 +1,26 @@
+#Mon Sep 21 21:33:34 CST 2009
+eclipse.preferences.version=1
+encoding//src/Test_Arrows.py=UTF-8
+encoding//src/alignment.py=UTF-8
+encoding//src/base.py=utf-8
+encoding//src/basictreeview.py=UTF-8
+encoding//src/button_signals.py=utf-8
+encoding//src/button_with_pixmap_label.py=UTF-8
+encoding//src/colorSelection.py=utf-8
+encoding//src/dialog.py=utf-8
+encoding//src/entry.py=UTF-8
+encoding//src/event_box.py=utf-8
+encoding//src/image.py=UTF-8
+encoding//src/layout.py=UTF-8
+encoding//src/menu.py=UTF-8
+encoding//src/miniFTP.py=UTF-8
+encoding//src/progressBar.py=UTF-8
+encoding//src/range_widgets.py=UTF-8
+encoding//src/ruler.py=utf-8
+encoding//src/spinbutton.py=UTF-8
+encoding//src/test_box.py=UTF-8
+encoding//src/test_check_button.py=UTF-8
+encoding//src/test_label.py=UTF-8
+encoding//src/test_radiobutton.py=UTF-8
+encoding//src/test_table.py=UTF-8
+encoding//src/test_toggle_button.py=UTF-8

@@ -1,0 +1,56 @@
+<html><head><title>AIMA Python file: doctests.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: doctests.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Run all doctests from modules on the command line.  For each
+module, if there is a "</font></i>module.txt<i><font color="green">" file, run that too.  However,
+if the module.txt file contains the comment "</font></i><font color="cc33cc"># demo<i><font color="green">",</font>
+then the remainder of the file has its "</font></i>&gt;&gt;&gt;<i><font color="green">" lines executed,
+but not run through doctest.  The idea is that you can use this
+to demo statements that return random or otherwise variable results.
+
+Example usage:
+
+    python doctests.py *.py
+"</font></i><i><font color="green">""</font></i>
+
+import <a href="http://www.python.org/doc/current/lib/module-doctest.html">doctest</a>, <a href="http://www.python.org/doc/current/lib/module-re.html">re</a>
+
+<b>def </b><b style="background-color:ffff00"><a name="run_tests">run_tests</b>(modules, verbose=None):
+    <i><font color="green">"Run tests for a list of modules; then summarize results."</font></i>
+    for module in modules:
+        tests, demos = split_extra_tests(module.__name__ + <i><font color="green">".txt"</font></i>)
+        if tests:
+            if <i><font color="green">'__doc__'</font></i> not in dir(module):
+                module.__doc__ = <i><font color="green">''</font></i>
+            module.__doc__ += <i><font color="green">'\n'</font></i> + tests + <i><font color="green">'\n'</font></i>
+        doctest.testmod(module, report=0, verbose=verbose)
+        if demos:
+            for stmt in re.findall(<i><font color="green">"&gt;&gt;&gt; (.*)"</font></i>, demos):
+                exec stmt in module.__dict__
+    doctest.master.summarize()
+
+
+<b>def </b><b style="background-color:ffff00"><a name="split_extra_tests">split_extra_tests</b>(filename):
+    <i><font color="green">""</font></i><i><font color="green">"Take a filename and, if it exists, return a 2-tuple of
+    the parts before and after '<font color="cc33cc"># demo'."</font></i><i><font color="green">""</font></i></font>
+    try:
+        contents = open(filename).read() + <i><font color="green">'<font color="cc33cc"># demo'</font></i></font>
+        return contents.split(<i><font color="green">"<font color="cc33cc"># demo"</font></i>, 1)</font>
+    except IOError:
+        return (<i><font color="green">''</font></i>, <i><font color="green">''</font></i>)
+
+if __name__ == <i><font color="green">"__main__"</font></i>:
+    import <a href="http://www.python.org/doc/current/lib/module-sys.html">sys</a>
+    modules = [__import__(name.replace(<i><font color="green">'.py'</font></i>,<i><font color="green">''</font></i>))
+               for name in sys.argv if name != <i><font color="green">"-v"</font></i>]
+    run_tests(modules, (<i><font color="green">"-v"</font></i> in sys.argv))</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

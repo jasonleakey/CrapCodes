@@ -1,0 +1,536 @@
+<html><head><title>AIMA Python file: agents.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: agents.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Implement Agents and Environments (Chapters 1-2).
+
+The class hierarchies are as follows:
+
+Object <font color="cc33cc">## A physical object that can exist in an environment</font>
+    Agent
+        Wumpus
+        RandomAgent
+        ReflexVacuumAgent
+        ...
+    Dirt
+    Wall
+    ...
+
+Environment <font color="cc33cc">## An environment holds objects, runs simulations</font>
+    XYEnvironment
+        VacuumEnvironment
+        WumpusEnvironment
+
+EnvFrame <font color="cc33cc">## A graphical representation of the Environment</font>
+
+"</font></i><i><font color="green">""</font></i>
+
+from <a href="utils.html">utils</a> import *
+import <a href="http://www.python.org/doc/current/lib/module-random.html">random</a>, <a href="http://www.python.org/doc/current/lib/module-copy.html">copy</a>
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="Object">Object</b>:
+    <i><font color="green">""</font></i><i><font color="green">"This represents any physical object that can appear in an Environment.
+    You subclass Object to get the objects you want.  Each object can have a
+    .__name__  slot (used for output only)."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        return <i><font color="green">'&lt;%s&gt;'</font></i> % getattr(self, <i><font color="green">'__name__'</font></i>, self.__class__.__name__)
+
+    <b>def </b><b style="background-color:ffff00"><a name="is_alive">is_alive</b>(self):
+        <i><font color="green">""</font></i><i><font color="green">"Objects that are 'alive' should return true."</font></i><i><font color="green">""</font></i>
+        return hasattr(self, <i><font color="green">'alive'</font></i>) and self.alive
+
+    <b>def </b><b style="background-color:ffff00"><a name="display">display</b>(self, canvas, x, y, width, height):
+        <i><font color="green">""</font></i><i><font color="green">"Display an image of this Object on the canvas."</font></i><i><font color="green">""</font></i>
+        pass
+
+<b>class </b><b style="background-color:ffff00"><a name="Agent">Agent</b>(Object):
+    <i><font color="green">""</font></i><i><font color="green">"An Agent is a subclass of Object with one required slot,
+    .program, which should hold a function that takes one argument, the
+    percept, and returns an action. (What counts as a percept or action
+    will depend on the specific environment in which the agent exists.)
+    Note that 'program' is a slot, not a method.  If it were a method,
+    then the program could 'cheat' and look at aspects of the agent.
+    It's not supposed to do that: the program can only look at the
+    percepts.  An agent program that needs a model of the world (and of
+    the agent itself) will have to build and maintain its own model.
+    There is an optional slots, .performance, which is a number giving
+    the performance measure of the agent in its environment."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            return raw_input(<i><font color="green">'Percept=%s; action? '</font></i> % percept)
+        self.program = program
+        self.alive = True
+
+<b>def </b><b style="background-color:ffff00"><a name="TraceAgent">TraceAgent</b>(agent):
+    <i><font color="green">""</font></i><i><font color="green">"Wrap the agent's program to print its input and output. This will let
+    you see what the agent is doing in the environment."</font></i><i><font color="green">""</font></i>
+    old_program = agent.program
+    <b>def </b><b style="background-color:ffff00"><a name="new_program">new_program</b>(percept):
+        action = old_program(percept)
+        print <i><font color="green">'%s perceives %s and does %s'</font></i> % (agent, percept, action)
+        return action
+    agent.program = new_program
+    return agent
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="TableDrivenAgent">TableDrivenAgent</b>(Agent):
+    <i><font color="green">""</font></i><i><font color="green">"This agent selects an action based on the percept sequence.
+    It is practical only for tiny domains.
+    To customize it you provide a table to the constructor. [Fig. 2.7]"</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, table):
+        <i><font color="green">"Supply as table a dictionary of all {percept_sequence:action} pairs."</font></i>
+        <font color="cc33cc">## The agent program could in principle be a function, but because</font>
+        <font color="cc33cc">## it needs to store state, we make it a callable instance of a class.</font>
+        Agent.__init__(self)
+        percepts = []
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            percepts.append(percept)
+            action = table.get(tuple(percepts))
+            return action
+        self.program = program
+
+
+<b>class </b><b style="background-color:ffff00"><a name="RandomAgent">RandomAgent</b>(Agent):
+    <i><font color="green">"An agent that chooses an action at random, ignoring all percepts."</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, actions):
+        Agent.__init__(self)
+        self.program = lambda percept: random.choice(actions)
+
+
+<hr>
+<b style="background-color:ffff00"><a name="loc_A, loc_B">loc_A, loc_B</b> = (0, 0), (1, 0) <font color="cc33cc"># The two locations for the Vacuum world</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="ReflexVacuumAgent">ReflexVacuumAgent</b>(Agent):
+    <i><font color="green">"A reflex agent for the two-state vacuum environment. [Fig. 2.8]"</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        Agent.__init__(self)
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>((location, status)):
+            if status == <i><font color="green">'Dirty'</font></i>: return <i><font color="green">'Suck'</font></i>
+            elif location == loc_A: return <i><font color="green">'Right'</font></i>
+            elif location == loc_B: return <i><font color="green">'Left'</font></i>
+        self.program = program
+
+
+<b>def </b><b style="background-color:ffff00"><a name="RandomVacuumAgent">RandomVacuumAgent</b>():
+    <i><font color="green">"Randomly choose one of the actions from the vaccum environment."</font></i>
+    return RandomAgent([<i><font color="green">'Right'</font></i>, <i><font color="green">'Left'</font></i>, <i><font color="green">'Suck'</font></i>, <i><font color="green">'NoOp'</font></i>])
+
+
+<b>def </b><b style="background-color:ffff00"><a name="TableDrivenVacuumAgent">TableDrivenVacuumAgent</b>():
+    <i><font color="green">"[Fig. 2.3]"</font></i>
+    table = {((loc_A, <i><font color="green">'Clean'</font></i>),): <i><font color="green">'Right'</font></i>,
+             ((loc_A, <i><font color="green">'Dirty'</font></i>),): <i><font color="green">'Suck'</font></i>,
+             ((loc_B, <i><font color="green">'Clean'</font></i>),): <i><font color="green">'Left'</font></i>,
+             ((loc_B, <i><font color="green">'Dirty'</font></i>),): <i><font color="green">'Suck'</font></i>,
+             ((loc_A, <i><font color="green">'Clean'</font></i>), (loc_A, <i><font color="green">'Clean'</font></i>)): <i><font color="green">'Right'</font></i>,
+             ((loc_A, <i><font color="green">'Clean'</font></i>), (loc_A, <i><font color="green">'Dirty'</font></i>)): <i><font color="green">'Suck'</font></i>,
+             <font color="cc33cc"># ...</font>
+             ((loc_A, <i><font color="green">'Clean'</font></i>), (loc_A, <i><font color="green">'Clean'</font></i>), (loc_A, <i><font color="green">'Clean'</font></i>)): <i><font color="green">'Right'</font></i>,
+             ((loc_A, <i><font color="green">'Clean'</font></i>), (loc_A, <i><font color="green">'Clean'</font></i>), (loc_A, <i><font color="green">'Dirty'</font></i>)): <i><font color="green">'Suck'</font></i>,
+             <font color="cc33cc"># ...</font>
+             }
+    return TableDrivenAgent(table)
+
+
+<b>class </b><b style="background-color:ffff00"><a name="ModelBasedVacuumAgent">ModelBasedVacuumAgent</b>(Agent):
+    <i><font color="green">"An agent that keeps track of what locations are clean or dirty."</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        Agent.__init__(self)
+        model = {loc_A: None, loc_B: None}
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>((location, status)):
+            <i><font color="green">"Same as ReflexVacuumAgent, except if everything is clean, do NoOp"</font></i>
+            model[location] = status <font color="cc33cc">## Update the model here</font>
+            if model[loc_A] == model[loc_B] == <i><font color="green">'Clean'</font></i>: return <i><font color="green">'NoOp'</font></i>
+            elif status == <i><font color="green">'Dirty'</font></i>: return <i><font color="green">'Suck'</font></i>
+            elif location == loc_A: return <i><font color="green">'Right'</font></i>
+            elif location == loc_B: return <i><font color="green">'Left'</font></i>
+        self.program = program
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="Environment">Environment</b>:
+    <i><font color="green">""</font></i><i><font color="green">"Abstract class representing an Environment.  'Real' Environment classes
+    inherit from this. Your Environment will typically need to implement:
+        percept:           Define the percept that an agent sees.
+        execute_action:    Define the effects of executing an action.
+                           Also update the agent.performance slot.
+    The environment keeps a list of .objects and .agents (which is a subset
+    of .objects). Each agent has a .performance slot, initialized to 0.
+    Each object has a .location slot, even though some environments may not
+    need this."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self,):
+        self.objects = []; self.agents = []
+
+    object_classes = [] <font color="cc33cc">## List of classes that can go into environment</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="percept">percept</b>(self, agent):
+	<i><font color="green">"Return the percept that the agent sees at this point. Override this."</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="execute_action">execute_action</b>(self, agent, action):
+        <i><font color="green">"Change the world to reflect this action. Override this."</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="default_location">default_location</b>(self, object):
+	<i><font color="green">"Default location to place a new object with unspecified location."</font></i>
+        return None
+
+    <b>def </b><b style="background-color:ffff00"><a name="exogenous_change">exogenous_change</b>(self):
+	<i><font color="green">"If there is spontaneous change in the world, override this."</font></i>
+	pass
+
+    <b>def </b><b style="background-color:ffff00"><a name="is_done">is_done</b>(self):
+        <i><font color="green">"By default, we're done when we can't find a live agent."</font></i>
+        for agent in self.agents:
+            if agent.is_alive(): return False
+        return True
+
+    <b>def </b><b style="background-color:ffff00"><a name="step">step</b>(self):
+	<i><font color="green">""</font></i><i><font color="green">"Run the environment for one time step. If the
+	actions and exogenous changes are independent, this method will
+	do.  If there are interactions between them, you'll need to
+	override this method."</font></i><i><font color="green">""</font></i>
+	if not self.is_done():
+            actions = [agent.program(self.percept(agent))
+                       for agent in self.agents]
+            for (agent, action) in zip(self.agents, actions):
+		self.execute_action(agent, action)
+            self.exogenous_change()
+
+    <b>def </b><b style="background-color:ffff00"><a name="run">run</b>(self, steps=1000):
+	<i><font color="green">""</font></i><i><font color="green">"Run the Environment for given number of time steps."</font></i><i><font color="green">""</font></i>
+	for step in range(steps):
+            if self.is_done(): return
+            self.step()
+
+    <b>def </b><b style="background-color:ffff00"><a name="add_object">add_object</b>(self, object, location=None):
+	<i><font color="green">""</font></i><i><font color="green">"Add an object to the environment, setting its location. Also keep
+	track of objects that are agents.  Shouldn't need to override this."</font></i><i><font color="green">""</font></i>
+	object.location = location or self.default_location(object)
+	self.objects.append(object)
+	if isinstance(object, Agent):
+            object.performance = 0
+            self.agents.append(object)
+	return self
+
+
+<b>class </b><b style="background-color:ffff00"><a name="XYEnvironment">XYEnvironment</b>(Environment):
+    <i><font color="green">""</font></i><i><font color="green">"This class is for environments on a 2D plane, with locations
+    labelled by (x, y) points, either discrete or continuous.  Agents
+    perceive objects within a radius.  Each agent in the environment
+    has a .location slot which should be a location such as (0, 1),
+    and a .holding slot, which should be a list of objects that are
+    held "</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, width=10, height=10):
+        update(self, objects=[], agents=[], width=width, height=height)
+
+    <b>def </b><b style="background-color:ffff00"><a name="objects_at">objects_at</b>(self, location):
+        <i><font color="green">"Return all objects exactly at a given location."</font></i>
+        return [obj for obj in self.objects if obj.location == location]
+
+    <b>def </b><b style="background-color:ffff00"><a name="objects_near">objects_near</b>(self, location, radius):
+        <i><font color="green">"Return all objects within radius of location."</font></i>
+        radius2 = radius * radius
+        return [obj for obj in self.objects
+                if distance2(location, obj.location) &lt;= radius2]
+
+    <b>def </b><b style="background-color:ffff00"><a name="percept">percept</b>(self, agent):
+        <i><font color="green">"By default, agent perceives objects within radius r."</font></i>
+        return [self.object_percept(obj, agent)
+                for obj in self.objects_near(agent)]
+
+    <b>def </b><b style="background-color:ffff00"><a name="execute_action">execute_action</b>(self, agent, action):
+        if action == <i><font color="green">'TurnRight'</font></i>:
+            agent.heading = turn_heading(agent.heading, -1)
+        elif action == <i><font color="green">'TurnLeft'</font></i>:
+            agent.heading = turn_heading(agent.heading, +1)
+        elif action == <i><font color="green">'Forward'</font></i>:
+            self.move_to(agent, vector_add(agent.heading, agent.location))
+        elif action == <i><font color="green">'Grab'</font></i>:
+            objs = [obj for obj in self.objects_at(agent.location)
+                    if obj.is_grabable(agent)]
+            if objs:
+                agent.holding.append(objs[0])
+        elif action == <i><font color="green">'Release'</font></i>:
+            if agent.holding:
+                agent.holding.pop()
+        agent.bump = False
+
+    <b>def </b><b style="background-color:ffff00"><a name="object_percept">object_percept</b>(self, obj, agent): <font color="cc33cc">#??? Should go to object?</font>
+        <i><font color="green">"Return the percept for this object."</font></i>
+        return obj.__class__.__name__
+
+    <b>def </b><b style="background-color:ffff00"><a name="default_location">default_location</b>(self, object):
+        return (random.choice(self.width), random.choice(self.height))
+
+    <b>def </b><b style="background-color:ffff00"><a name="move_to">move_to</b>(object, destination):
+        <i><font color="green">"Move an object to a new location."</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="add_object">add_object</b>(self, object, location=(1, 1)):
+        Environment.add_object(self, object, location)
+        object.holding = []
+        object.held = None
+        self.objects.append(object)
+
+    <b>def </b><b style="background-color:ffff00"><a name="add_walls">add_walls</b>(self):
+        <i><font color="green">"Put walls around the entire perimeter of the grid."</font></i>
+        for x in range(self.width):
+            self.add_object(Wall(), (x, 0))
+            self.add_object(Wall(), (x, self.height-1))
+        for y in range(self.height):
+            self.add_object(Wall(), (0, y))
+            self.add_object(Wall(), (self.width-1, y))
+
+<b>def </b><b style="background-color:ffff00"><a name="turn_heading">turn_heading</b>(self, heading, inc,
+                 headings=[(1, 0), (0, 1), (-1, 0), (0, -1)]):
+    <i><font color="green">"Return the heading to the left (inc=+1) or right (inc=-1) in headings."</font></i>
+    return headings[(headings.index(heading) + inc) % len(headings)]
+
+<hr><font color="cc33cc">## Vacuum environment</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="TrivialVacuumEnvironment">TrivialVacuumEnvironment</b>(Environment):
+    <i><font color="green">""</font></i><i><font color="green">"This environment has two locations, A and B. Each can be Dirty or Clean.
+    The agent perceives its location and the location's status. This serves as
+    an example of how to implement a simple Environment."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        Environment.__init__(self)
+        self.status = {loc_A:random.choice([<i><font color="green">'Clean'</font></i>, <i><font color="green">'Dirty'</font></i>]),
+                       loc_B:random.choice([<i><font color="green">'Clean'</font></i>, <i><font color="green">'Dirty'</font></i>])}
+
+    <b>def </b><b style="background-color:ffff00"><a name="percept">percept</b>(self, agent):
+        <i><font color="green">"Returns the agent's location, and the location status (Dirty/Clean)."</font></i>
+        return (agent.location, self.status[agent.location])
+
+    <b>def </b><b style="background-color:ffff00"><a name="execute_action">execute_action</b>(self, agent, action):
+        <i><font color="green">""</font></i><i><font color="green">"Change agent's location and/or location's status; track performance.
+        Score 10 for each dirt cleaned; -1 for each move."</font></i><i><font color="green">""</font></i>
+        if action == <i><font color="green">'Right'</font></i>:
+            agent.location = loc_B
+            agent.performance -= 1
+        elif action == <i><font color="green">'Left'</font></i>:
+            agent.location = loc_A
+            agent.performance -= 1
+        elif action == <i><font color="green">'Suck'</font></i>:
+            if self.status[agent.location] == <i><font color="green">'Dirty'</font></i>:
+                agent.performance += 10
+            self.status[agent.location] = <i><font color="green">'Clean'</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="default_location">default_location</b>(self, object):
+        <i><font color="green">"Agents start in either location at random."</font></i>
+        return random.choice([loc_A, loc_B])
+
+<b>class </b><b style="background-color:ffff00"><a name="Dirt">Dirt</b>(Object): pass
+<b>class </b><b style="background-color:ffff00"><a name="Wall">Wall</b>(Object): pass
+
+<b>class </b><b style="background-color:ffff00"><a name="VacuumEnvironment">VacuumEnvironment</b>(XYEnvironment):
+    <i><font color="green">""</font></i><i><font color="green">"The environment of [Ex. 2.12]. Agent perceives dirty or clean,
+    and bump (into obstacle) or not; 2D discrete world of unknown size;
+    performance measure is 100 for each dirt cleaned, and -1 for
+    each turn taken."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, width=10, height=10):
+        XYEnvironment.__init__(self, width, height)
+        self.add_walls()
+
+    object_classes = [Wall, Dirt, ReflexVacuumAgent, RandomVacuumAgent,
+                      TableDrivenVacuumAgent, ModelBasedVacuumAgent]
+
+    <b>def </b><b style="background-color:ffff00"><a name="percept">percept</b>(self, agent):
+        <i><font color="green">""</font></i><i><font color="green">"The percept is a tuple of ('Dirty' or 'Clean', 'Bump' or 'None').
+        Unlike the TrivialVacuumEnvironment, location is NOT perceived."</font></i><i><font color="green">""</font></i>
+        status =  if_(self.find_at(Dirt, agent.location), <i><font color="green">'Dirty'</font></i>, <i><font color="green">'Clean'</font></i>)
+        bump = if_(agent.bump, <i><font color="green">'Bump'</font></i>, <i><font color="green">'None'</font></i>)
+        return (status, bump)
+
+    <b>def </b><b style="background-color:ffff00"><a name="execute_action">execute_action</b>(self, agent, action):
+        if action == <i><font color="green">'Suck'</font></i>:
+            if self.find_at(Dirt, agent.location):
+                agent.performance += 100
+        agent.performance -= 1
+        XYEnvironment.execute_action(self, agent, action)
+
+<hr>
+<b>class </b><b style="background-color:ffff00"><a name="SimpleReflexAgent">SimpleReflexAgent</b>(Agent):
+    <i><font color="green">""</font></i><i><font color="green">"This agent takes action based solely on the percept. [Fig. 2.13]"</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, rules, interpret_input):
+        Agent.__init__(self)
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            state = interpret_input(percept)
+            rule = rule_match(state, rules)
+            action = rule.action
+            return action
+        self.program = program
+
+<b>class </b><b style="background-color:ffff00"><a name="ReflexAgentWithState">ReflexAgentWithState</b>(Agent):
+    <i><font color="green">""</font></i><i><font color="green">"This agent takes action based on the percept and state. [Fig. 2.16]"</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, rules, udpate_state):
+        Agent.__init__(self)
+        state, action = None, None
+        <b>def </b><b style="background-color:ffff00"><a name="program">program</b>(percept):
+            state = update_state(state, action, percept)
+            rule = rule_match(state, rules)
+            action = rule.action
+            return action
+        self.program = program
+
+<hr><font color="cc33cc">## The Wumpus World</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="Gold">Gold</b>(Object): pass
+<b>class </b><b style="background-color:ffff00"><a name="Pit">Pit</b>(Object): pass
+<b>class </b><b style="background-color:ffff00"><a name="Arrow">Arrow</b>(Object): pass
+<b>class </b><b style="background-color:ffff00"><a name="Wumpus">Wumpus</b>(Agent): pass
+<b>class </b><b style="background-color:ffff00"><a name="Explorer">Explorer</b>(Agent): pass
+
+<b>class </b><b style="background-color:ffff00"><a name="WumpusEnvironment">WumpusEnvironment</b>(XYEnvironment):
+    object_classes = [Wall, Gold, Pit, Arrow, Wumpus, Explorer]
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, width=10, height=10):
+        XYEnvironment.__init__(self, width, height)
+        self.add_walls()
+    <font color="cc33cc">## Needs a lot of work ...</font>
+
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="compare_agents">compare_agents</b>(EnvFactory, AgentFactories, n=10, steps=1000):
+    <i><font color="green">""</font></i><i><font color="green">"See how well each of several agents do in n instances of an environment.
+    Pass in a factory (constructor) for environments, and several for agents.
+    Create n instances of the environment, and run each agent in copies of
+    each one for steps. Return a list of (agent, average-score) tuples."</font></i><i><font color="green">""</font></i>
+    envs = [EnvFactory() for i in range(n)]
+    return [(A, test_agent(A, steps, copy.deepcopy(envs)))
+            for A in AgentFactories]
+
+<b>def </b><b style="background-color:ffff00"><a name="test_agent">test_agent</b>(AgentFactory, steps, envs):
+    <i><font color="green">"Return the mean score of running an agent in each of the envs, for steps"</font></i>
+    total = 0
+    for env in envs:
+        agent = AgentFactory()
+        env.add_object(agent)
+        env.run(steps)
+        total += agent.performance
+    return float(total)/len(envs)
+
+<hr>
+_docex = <i><font color="green">""</font></i><i><font color="green">"
+a = ReflexVacuumAgent()
+a.program
+a.program((loc_A, 'Clean')) ==&gt; 'Right'
+a.program((loc_B, 'Clean')) ==&gt; 'Left'
+a.program((loc_A, 'Dirty')) ==&gt; 'Suck'
+a.program((loc_A, 'Dirty')) ==&gt; 'Suck'
+
+e = TrivialVacuumEnvironment()
+e.add_object(TraceAgent(ModelBasedVacuumAgent()))
+e.run(5)
+
+<font color="cc33cc">## Environments, and some agents, are randomized, so the best we can</font>
+<font color="cc33cc">## give is a range of expected scores.  If this test fails, it does</font>
+<font color="cc33cc">## not necessarily mean something is wrong.</font>
+<b style="background-color:ffff00"><a name="envs">envs</b> = [TrivialVacuumEnvironment() for i in range(100)]
+<b>def </b><b style="background-color:ffff00"><a name="testv">testv</b>(A): return test_agent(A, 4, copy.deepcopy(envs))
+testv(ModelBasedVacuumAgent)
+(7 &lt; _ &lt; 11) ==&gt; True
+testv(ReflexVacuumAgent)
+(5 &lt; _ &lt; 9) ==&gt; True
+testv(TableDrivenVacuumAgent)
+(2 &lt; _ &lt; 6) ==&gt; True
+testv(RandomVacuumAgent)
+(0.5 &lt; _ &lt; 3) ==&gt; True
+"</font></i><i><font color="green">""</font></i>
+
+<hr><font color="cc33cc"># GUI - Graphical User Interface for Environments</font>
+<font color="cc33cc"># If you do not have Tkinter installed, either get a new installation of Python</font>
+<font color="cc33cc"># (Tkinter is standard in all new releases), or delete the rest of this file</font>
+<font color="cc33cc"># and muddle through without a GUI.</font>
+
+<i><font color="green">''</font></i><i><font color="green">'
+import Tkinter as tk
+
+<b>class </b><b style="background-color:ffff00"><a name="EnvFrame">EnvFrame</b>(tk.Frame):
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, env, title='</font></i>AIMA GUI<i><font color="green">', cellwidth=50, n=10):
+        update(self, cellwidth = cellwidth, running=False, delay=1.0)
+        self.n = n
+        self.running = 0
+        self.delay = 1.0
+        self.env = env
+        tk.Frame.__init__(self, None, width=(cellwidth+2)*n, height=(cellwidth+2)*n)
+        <font color="cc33cc">#self.title(title)</font>
+        <font color="cc33cc"># Toolbar</font>
+        toolbar = tk.Frame(self, relief='</font></i>raised<i><font color="green">', bd=2)
+        toolbar.pack(side='</font></i>top<i><font color="green">', fill='</font></i>x<i><font color="green">')
+        for txt, cmd in [('</font></i>Step &gt;<i><font color="green">', self.env.step), ('</font></i>Run &gt;&gt;<i><font color="green">', self.run),
+                         ('</font></i>Stop [ ]<i><font color="green">', self.stop)]:
+            tk.Button(toolbar, text=txt, command=cmd).pack(side='</font></i>left<i><font color="green">')
+        tk.Label(toolbar, text='</font></i>Delay<i><font color="green">').pack(side='</font></i>left<i><font color="green">')
+        scale = tk.Scale(toolbar, orient='</font></i>h<i><font color="green">', from_=0.0, to=10, resolution=0.5,
+                         command=lambda d: setattr(self, '</font></i>delay<i><font color="green">', d))
+        scale.set(self.delay)
+        scale.pack(side='</font></i>left<i><font color="green">')
+        <font color="cc33cc"># Canvas for drawing on</font>
+        self.canvas = tk.Canvas(self, width=(cellwidth+1)*n,
+                                height=(cellwidth+1)*n, background="white")
+        self.canvas.bind('</font></i>&lt;Button-1&gt;<i><font color="green">', self.left) <font color="cc33cc">## What should this do?</font>
+        self.canvas.bind('</font></i>&lt;Button-2&gt;<i><font color="green">', self.edit_objects)
+        self.canvas.bind('</font></i>&lt;Button-3&gt;<i><font color="green">', self.add_object)
+        if cellwidth:
+            c = self.canvas
+            for i in range(1, n+1):
+                c.create_line(0, i*cellwidth, n*cellwidth, i*cellwidth)
+                c.create_line(i*cellwidth, 0, i*cellwidth, n*cellwidth)
+                c.pack(expand=1, fill='</font></i>both<i><font color="green">')
+        self.pack()
+
+
+    <b>def </b><b style="background-color:ffff00"><a name="background_run">background_run</b>(self):
+        if self.running:
+            self.env.step()
+            ms = int(1000 * max(float(self.delay), 0.5))
+            self.after(ms, self.background_run)
+
+    <b>def </b><b style="background-color:ffff00"><a name="run">run</b>(self):
+        print '</font></i>run<i><font color="green">'
+        self.running = 1
+        self.background_run()
+
+    <b>def </b><b style="background-color:ffff00"><a name="stop">stop</b>(self):
+        print '</font></i>stop<i><font color="green">'
+        self.running = 0
+
+    <b>def </b><b style="background-color:ffff00"><a name="left">left</b>(self, event):
+        print '</font></i>left at <i><font color="green">', event.x/50, event.y/50
+
+    <b>def </b><b style="background-color:ffff00"><a name="edit_objects">edit_objects</b>(self, event):
+        <i><font color="green">"""Choose an object within radius and edit its fields."""</font></i>
+        pass
+
+    <b>def </b><b style="background-color:ffff00"><a name="add_object">add_object</b>(self, event):
+        <font color="cc33cc">## This is supposed to pop up a menu of Object classes; you choose the one</font>
+        <font color="cc33cc">## You want to put in this square.  Not working yet.</font>
+        menu = tk.Menu(self, title='</font></i>Edit (%d, %d)<i><font color="green">' % (event.x/50, event.y/50))
+        for (txt, cmd) in [('</font></i>Wumpus<i><font color="green">', self.run), ('</font></i>Pit<i><font color="green">', self.run)]:
+            menu.add_command(label=txt, command=cmd)
+        menu.tk_popup(event.x + self.winfo_rootx(),
+                      event.y + self.winfo_rooty())
+
+        <font color="cc33cc">#image=PhotoImage(file=r"C:\Documents and Settings\pnorvig\Desktop\wumpus.gif")</font>
+        <font color="cc33cc">#self.images = []</font>
+        <font color="cc33cc">#self.images.append(image)</font>
+        <font color="cc33cc">#c.create_image(200,200,anchor=NW,image=image)</font>
+
+<font color="cc33cc">#v = VacuumEnvironment(); w = EnvFrame(v);</font>
+'</font></i><i><font color="green">''</font></i></pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

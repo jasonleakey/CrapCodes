@@ -1,0 +1,209 @@
+<html><head><title>AIMA Python Code Guidelines</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python Code Guidelines</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+<h1>Rationale for the AIMA Python Project</h1>
+
+We already have a body of <a
+href="http://www.cs.berkeley.edu/~russell/code/doc/overview.html">existing
+Lisp code</a>; why do we need a Python version (especially when the
+Lisp version is not yet complete)?  Several reasons:
+<ul>
+<li> Python has a cross-platform GUI toolkit; Lisp does not.
+
+<li> Python has standard libraries for http, html, xml, regexs,
+database integration, persistent storage, interfacing to C, threads,
+etc.  Lisp has most of these things in particular implementations, but
+they are not standard.  (The Lisp standard was a marvel in 1992, but
+it froze then, and other languages have leaped ahead.)
+
+<li> Python is easier to support cross-platform; there is one
+standard, free Python implementation that runs on Windows, MacOS,
+Linux, and most other Unix versions.  With Lisp, you need to support
+several different implementations to hit all the platforms. This has
+proven to be a (minor) maintainence problem. (Example: I have a
+version of Kyoto Common Lisp from 1983 running on a NeXt cube; how do
+I ...)
+
+<li> Of all the established languages in the world, Python is closest
+to the pseudo-code that we developed (independently) for the book.
+
+<li> Some people are parenphobic and just don't like Lisp. Some people
+find it easier to learn Python than Lisp, and some instructors don't
+want to spend the time to introduce a new language to students
+(admittedly, this is partly the fault of the authors of AIMA for
+producing a 1000 page book). For these people, and for the sake of
+variety in general, it's good to have a choice of languages.
+
+<li> See my <a href="http://www.norvig.com/python-lisp.html">Lisp vs. Python comparison</a> for more rationale on using Python.
+</ul>
+
+<h1>AIMA Python Project Goals</h1>
+
+Goals in order of
+importance:
+
+<ol>
+<li> Identify errors in the book before it is published.
+(So need key algorithms coded and tested before August 2002.)
+<li> Show how the pseudo-code in the book can be implemented.
+   (So be faithful to code in the book.)
+<li> Give reader/programmers a playground to experiment with and extend.
+   (So add scaffolding and examples and documentation for them to use.)
+<li> Give reader/non-programmers informative graphical demos they can 
+run and observe.
+   (So make nice GUIs and demos that show how algorithms work.) 
+</ol>
+
+<h1>Not goals</h1>
+
+Don't worry about the following:
+
+<ul>
+<li> Efficient code for solving practical AI problems. If they want
+efficiency, they'll recode the algorithms in C or whatever.  The goal
+is to give them the basic algorithms to start from if they want to
+code something more efficient.  However, sometimes the boundary
+between "more efficient" and "different algorithm" is fuzzy.  For
+example, I implement the search algorithms with a Priority Queue,
+(with O(log n) insert time) because a linear list (with O(n) time)
+would be <i>too</i> inefficient.  
+
+<li> Compatibility with the <a
+href="http://www.cs.berkeley.edu/~russell/code/doc/overview.html">existing
+Lisp code</a>.  Most students will look at one language only, so
+compatibility is irrelevent.  By all means, look at the Lisp code to
+get ideas, but don't worry about naming, coding, or other conventions.
+Also, I now believe that the Lisp code is too dense and abstract;
+experienced Lispers appreciate it, but novices are confused.  Keep it
+simple!
+</ul>
+
+<h1>Coding and Style Conventions</h1>
+
+It will probably be summer 2002 when this is released, so it is
+safe (and encouraged) to use Python 2.2 features like nested scope,
+list comprehensions, generators and iterators (including "x in
+dictionary").
+
+I want the file structure to be not-too-confusing, so I'm leaning
+towards a single flat directory, with most files around 300 lines, but
+some 600 or even 1000 (much like the Python libraries).  There will be
+at most one file per Chapter, and sometimes one file for several
+chapters: agents.py (Chapter 2), search.py (Chapters 3-4),
+etc. Possibly the GUI components will be in separate files
+(agents-gui.py, search-gui.py, etc.).
+
+<p>In general, follow <a
+href="http://www.python.org/doc/essays/styleguide.html">Guido's style
+conventions</a>.  I released a version that deviated from the
+guidelines (I had 2 spaces per indent, and <tt>_</tt> instead of
+<tt>self</tt> in methods), and was <strike>quickly shot down</strike>
+politely asked to change by <a
+href="http://mail.python.org/pipermail/python-dev/2002-January/019634.html">python-dev</a>. I agreed with their suggestions, so now we're left with:
+
+<ul>
+<li> Use <tt>#___________</tt> (out to 79 spaces) to delimit code sections.
+This gets changed to <tt>"&lt;hr&gt;"</tt> by my <a href="py2html.html">py2html</a> module.
+<li>Don't bother with the blank line after the first line of a multi-line 
+docstring, except for module docstrings.
+<li> Use executable examples in doc strings and in the <tt>_docex</tt>
+module variable, as defined in my <a href="docex.html">docex</a> module.
+(I know that docex is very similar to Tim Peters' 
+<a href="http://www.python.org/doc/current/lib/module-doctest.html">doctest</a>;
+for some reason I missed noticing his module (which appeared in Python 2.1) 
+until I had finished mine.  His does much more, but I like mine fine
+for my very limited purposes so I haven't switched.)
+<li>Naming conventions:
+  <ul>
+        <li>modulenames: lowercase
+        <li>ClassNames: CapWords
+        <li>ExceptionNames: CapWords
+        <li>function_names: lower_underscores, except FactoryFunctions
+        <li>global_variable_names: lower_underscores
+        <li>method_names: lower_underscores
+        <li>local_variable_names: lower_underscores
+</ul></ul>
+
+<h1>Scope</h1>
+
+What programs do we need?  
+
+<ul>
+<li> All the algorithms from the figures (except some that are
+<i>really</i> vague pseudo-code).  Each such class/function should
+have "[Fig. <i>nn.nn</i>]" at the end of the doc string. A good thing
+to do is go through page by page and try to transliterate, and when
+there are issues that are not automatically translatable, stop and
+think.
+
+<li> Some algorithms that are not in the book as figures, but are
+alluded to (such as a FOPC theorem prover).  See the <a
+href="http://www.cs.berkeley.edu/~russell/code/doc/overview.html">existing
+Lisp code</a> for examples of this.
+
+
+<li>A GUI framework.  Probably in Tkinter.  In order of importance, 
+the following types of windows should be considered:
+<ul>
+<li> A 2-d discrete grid environment window, with a simple way to edit the
+environment (maybe click on a square brings up a menu of objects that
+can be placed there or deleted from there), and buttons for "run
+single step", "run n steps", and "stop", and output for the agents'
+scores.
+
+<li> A graph drawing window that can be hooked up to the search code.
+There most be existing modules for this.  The idea is to let the user
+see the search tree/graph for a problem as an animation, and see how
+it varies for different search algorithms.  
+
+<li> A statistics window for monitoring experiments.  The idea is you
+attach a statistics monitoring tool to a variable of some kind (the
+score of an agent, the number of iterations an algorithm needs, etc.) 
+and graph values of the variables in real time as the experiment(s) run.
+
+<li> A 2-d continuous environment where objects and agents are
+displayed as shapes that can move around. Similar to the grid
+environment.
+
+<li> A master window that lists all the modules, and allows the reader
+to load them and run their interactive testing/example suites.  
+
+<li> Various other windows for various applications.
+</ul>
+</ul>
+
+The trickiest part about this is that we want a way to attach GUIs to
+code without making the code ugly.  So the code should be able to run
+stand-alone, and use some kind of notification protocol to a GUI 
+that may or may not be running.  You gotta love <a
+href="http://www.vpython.org">VPython</a>, an environment for doing 3D
+physics simulations.  There, all you do is create objects like "ball =
+Sphere()", and modify them like "ball.pos = ball.pos + ball.velocity *
+dt".  The way it works is that a separate thread runs the display
+window, and when any VPython object is created it gets registered with
+the latest display window (a compromise: makes it harder to do
+multiple windows, but the resulting simplisity is worth it), and the
+display window's thread monitors all its objects for change in
+position, color, size, etc.  I don't think we want to use VPython per
+se, but we should steal their approach.  For 2D grid environments, its
+easy: we launch a separate thread that monitors all the objects in the
+enviornment (which we keep track of), and updates the display as
+necessary.  So really there's only one line of code in the Environment
+class that has to know about the possibility of displays.
+<p>
+Let's also look at DDD, GVD, TiX, IDE Studio, PyDoc, and surely other projects.
+<p>
+
+<p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: May 21, 2003</table></body></html>

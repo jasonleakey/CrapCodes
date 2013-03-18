@@ -1,0 +1,169 @@
+\documentclass[a4paper,10pt]{article}
+
+%A Few Useful Packages
+%\usepackage{marvosym}
+\usepackage{url,parskip} 	%other packages for formatting
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+%\usepackage[big]{layaureo} 				%better formatting of the A4 page
+% an alternative to Layaureo can be ** \usepackage{fullpage} **
+\usepackage{fullpage}
+\usepackage{supertabular} 				%for Grades
+\usepackage{titlesec}					%custom \section
+%\usepackage{zhfontcfg}
+
+%Setup hyperref package, and colours for links
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{
+  colorlinks = true,
+  breaklinks = true,
+  urlcolor = linkcolour,
+  linkcolor = linkcolour,
+  pdfauthor = {Yetian Huang},
+  pdfkeywords = {economics, statistics, mathematics},
+  pdftitle = {Yetian Huang: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+
+%CV Sections inspired by: 
+%http://stefano.italians.nl/archives/26
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{3pt}{3pt}
+%Tweak a bit the top margin
+%\addtolength{\voffset}{-1.3cm}
+
+\usepackage[absolute]{textpos}
+
+\setlength{\TPHorizModule}{30mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{2mm}{0.65\paperheight}
+\setlength{\parindent}{0pt}
+
+%--------------------BEGIN DOCUMENT----------------------
+\begin{document}
+
+\pagestyle{empty} % non-numbered pages
+
+%\font\fb=''[cmr10]'' %for use with \LaTeX command
+
+%--------------------TITLE-------------
+\par{\centering
+		{\Huge Yetian Huang}
+	\bigskip\par}
+
+%--------------------SECTIONS-----------------------------------
+%Section: Personal Data
+\section{PERSONAL DATA}
+
+\begin{tabular}{rl}
+    \textsc{Address:}   & Room C204,
+    \href{http://www.hitsz.edu.cn}{Harbin Institute of Technology
+    Shenzhen Graduate School}\\
+    & Xili University Town, Nanshan District \\
+    & Shenzhen, Guangdong Province, China \\
+    \textsc{Phone:}     & (+86) 15019290513\\
+    \textsc{Email:}     & \href{mailto:
+    jasonleakey@gmail.com}{jasonleakey@gmail.com}
+\end{tabular}
+
+%Section: Education
+\section{EDUCATION}
+\begin{tabular}{rl}	
+    \textsf{Sep. 2009-Now} & Master of Computer Science (Biometrics) \\
+    & \textbf{Harbin Institute of Technology Shenzhen Grad School}, Shenzhen\\
+    & Thesis: ``\textit{Study of Feature Extraction Method for Wrist
+    Pulse}'' \\
+    & \small Advisor: \href{mailto: luguangm@gmail.com}{Prof.  Guangming Lu}\\
+    &\normalsize \textsc{GPA}: 2.57/4 \\&\\
+    \textsf{Sep. 2005-July 2009} & Bachelor Degree in Electronic
+    Science and Technology (Optic Engineering) \\
+    & \textbf{Harbin Institute of Technology}, Harbin \\
+    & Thesis: ``\textit{Study on Measuring and Modelling Method of} \\
+    & \textit{Bidirectional Reflectance Distribution Function}'' \\
+    & \small Advisor: \href{maillto: fountainhy@163.com}{Hongyuan Wang}\\
+    &\normalsize \textsc{GPA}: 75.57/100
+\end{tabular}
+
+\section{RESEARCH EXPERIENCE}
+\begin{tabular}{rp{12cm}}
+    \textsf{Nov. 2010-Now} & \textit{Study of Feature Extraction
+    Method for Wrist Pulse}\\
+    & \setlength{\parindent}{2em} The subject aims to analyze the
+    characteristics of people's wrist pulse 
+    information with different health conditions. 
+    
+    I have spent around one and a half months collecting thousands of
+    wrist pulse signals of the healthy, the sub-healthy, diabetic, cardiac and
+    patients of other diseases using our independently designed device. 
+    Then a database was established on these pulse signals along with
+    their verified quantified health reports provided by Guangdong
+    hospital of Traditional Chinese Medicine (TCM).
+    
+    Afterwards, preprocessing techniques were applied to enhance signals. According
+    to the observation to these human wrist pulse waveforms, several
+    features were selected for further recognition. So far, a
+    preliminary result of 67\% correctness has been reached and more
+    features are desired for better classification. \\[2mm] 
+    \textsf{June 2010} & Attendance in \textit{The International
+    Conference on Medical Biometrics}, HongKong PolyTechnic
+    University \\ [2mm]
+    \textsf{Jan. 2010} & Attendance in \textit{The Third International
+    Conference on Ethics and Policy of Biometrics and International
+    Data Sharing}, HongKong PolyTechnic University \\ [2mm] 
+    \textsf{Jan. 2009-July. 2009} & \textit{
+    Study on Measuring and Modelling Method of Bidirectional
+    Reflectance Distribution Function} \\
+    & \setlength{\parindent}{2em} The purpose of this topic is to
+    measure certain features of two surface materials in satellites.
+    First, I setup an experiment platform to measure the reflected
+    light intensity by materials in each angle. Then experimental data
+    were fitted by a multinomial model by programming. Finally, the
+    accuracy of the obtained model was tested by comparing with the
+    factual experiment data. 
+\end{tabular}
+
+%Section: Languages
+\section{LANGUAGES}
+\begin{tabular}{rl}
+ \textsc{Chinese:}&Mother Tongue\\
+ \textsc{English:}&Proficient Reading and Writing Skill\\
+ & Favorable Listening and Speaking Skill\\
+\end{tabular}
+
+\section{COMPUTER SKILLS}
+\begin{tabular}{rl}
+ Program Language: & C/C++, Python, Shell, Matlab \\
+ Operating System: & Linux Administration and Development Skill\\
+ Applications: & VIM, \LaTeX, Squid,
+    SVN, VPN, GCC, Wireshark, GTK+, Qt\\
+ Projects: & Network Sniffer Designing\\
+ & Artificial Intelligence - Pacman Searching Strategy \\
+ & Face Recognition - Back Propagation Artificial Neural Network \\
+ & Image Processing - histogram equalization and noise reduction etc.
+\end{tabular}
+
+\section{MAIN COURSE}
+\begin{tabular}{rl}
+    Undergraduate: & \bf{Electronic Science and Technology} \\
+    & Quantum mechanics \textbar{} Electrodynamics \textbar{} Atomic Physics \\
+    & Photoelectronic Signal Detection Technology \textbar{} Optical design\\
+    & Optical Fiber Technology \textbar{} Infra-red Technique \\ & \\
+    & \bf{Computer Science basic courses learned by myself} \\
+    & Data Structure \textbar{} Operating System \textbar{} Computer Network \\
+    & The Principle of Computer Organization \textbar{} Computer Architecture
+    \\ & \\
+    Postgraduate: & \bf{Computer Science - Biometrics}\\ 
+    & Pattern Recognition \textbar{} Machine Learning \textbar{} Image Processing \\
+    & Artificial Intelligence \textbar{} Artificial Neuron Network \\
+\end{tabular}
+
+
+\section{INTERESTS AND ACTIVITIES}
+Technology, Open-Source, Programming\\
+Table tennis, Badminton, Travelling, Cooking, Climbing
+
+
+\end{document}

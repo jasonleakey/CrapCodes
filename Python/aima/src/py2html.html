@@ -1,0 +1,123 @@
+<html><head><title>AIMA Python file: py2html.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: py2html.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Pretty-print Python code to colorized, hyperlinked html.
+
+In python, do:
+    py2html.convert_files(['file1.py', 'file2.py', ...])
+From the shell, do:
+    python py2html.py *.py"</font></i><i><font color="green">""</font></i>
+
+import <a href="http://www.python.org/doc/current/lib/module-re.html">re</a>, <a href="http://www.python.org/doc/current/lib/module-string.html">string</a>, <a href="http://www.python.org/doc/current/lib/module-time.html">time</a>, <a href="http://www.python.org/doc/current/lib/module-os.html">os</a>
+
+
+<b style="background-color:ffff00"><a name="id">id</b> = r<i><font color="green">'[a-zA-Z_][a-zA-Z_0-9]*'</font></i> <font color="cc33cc">## RE for a Python identifier</font>
+<b style="background-color:ffff00"><a name="g1, g2, g3, g4">g1, g2, g3, g4</b> = r<i><font color="green">'\1 \2 \3 \4'</font></i>.split() <font color="cc33cc">## groups for re.matches</font>
+<b>def </b><b style="background-color:ffff00"><a name="b">b</b>(text): return <i><font color="green">'&lt;b&gt;%s&lt;/b&gt;'</font></i> % text
+<b>def </b><b style="background-color:ffff00"><a name="i">i</b>(text): return <i><font color="green">'&lt;i&gt;%s&lt;/i&gt;'</font></i> % text
+<b>def </b><b style="background-color:ffff00"><a name="color">color</b>(rgb, text): return <i><font color="green">'&lt;font color="%s"&gt;%s&lt;/font&gt;'</font></i> % (rgb, text)
+<b>def </b><b style="background-color:ffff00"><a name="link">link</b>(url, anchor): return <i><font color="green">'&lt;a href="%s"&gt;%s&lt;/a&gt;'</font></i> % (url, anchor)
+<b>def </b><b style="background-color:ffff00"><a name="hilite">hilite</b>(text, bg=<i><font color="green">"ffff00"</font></i>):
+    return <i><font color="green">'&lt;b style="background-color:%s"&gt;&lt;a name="%s"&gt;%s&lt;/b&gt;'</font></i> % (
+        bg, text, text)
+
+<b>def </b><b style="background-color:ffff00"><a name="modulelink">modulelink</b>(module, baseurl=<i><font color="green">''</font></i>):
+    <i><font color="green">""</font></i><i><font color="green">"Hyperlink to a module, either locally or on python.org"</font></i><i><font color="green">""</font></i>
+    if module+<i><font color="green">'.py'</font></i> not in local_files:
+        baseurl = <i><font color="green">'http://www.python.org/doc/current/lib/module-'</font></i>
+    return link(baseurl+module+<i><font color="green">'.html'</font></i>, module)
+
+<b>def </b><b style="background-color:ffff00"><a name="importer">importer</b>(m):
+    <i><font color="green">"Turn text such as 'utils, math, re' into a string of HTML links."</font></i>
+    modules = [modulelink(mod.strip()) for mod in m.group(2).split(<i><font color="green">','</font></i>)]
+    return (m.group(1) + <i><font color="green">', '</font></i>.join(modules) + m.group(3))
+
+<b>def </b><b style="background-color:ffff00"><a name="find1">find1</b>(regex, str):
+    return (re.findall(regex, str) or [<i><font color="green">'&amp;nbsp;'</font></i>])[0]
+
+<b>def </b><b style="background-color:ffff00"><a name="convert_files">convert_files</b>(filenames, local_filenames=None, tblfile=<i><font color="green">'readme.htm'</font></i>):
+    <i><font color="green">"Convert files of python code to colorized HTML."</font></i>
+    global local_files
+    local_files = local_filenames or filenames
+    summary_table = {}
+    for f in filenames:
+        fulltext = <i><font color="green">'\n'</font></i>.join(map(string.rstrip, open(f).readlines()))
+        text = fulltext
+        for (pattern, repl) in replacements:
+            text = re.sub(pattern, repl, text)
+        text = <i><font color="green">'&lt;&lt;header("AIMA Python file: %s")&gt;&gt;&lt;pre&gt;%s&lt;/pre&gt;&lt;&lt;footer&gt;&gt;'</font></i> % (
+            f, text)
+        open(f[:-3]+<i><font color="green">'.htm'</font></i>, <i><font color="green">'w'</font></i>).write(text)
+        if tblfile:
+            ch = find1(r<i><font color="green">'Chapters?\s+([^ \)"]*)'</font></i>, fulltext)
+            module = f.replace(<i><font color="green">'.py'</font></i>,<i><font color="green">''</font></i>)
+            lines = fulltext.count(<i><font color="green">'\n'</font></i>)
+            desc = find1(r<i><font color="green">'<i><font color="green">"""(.*)\n'</font></i>, fulltext).replace(<i><font color="green">'"""</font></i>'</font></i>, <i><font color="green">''</font></i>)
+            summary_table.setdefault(ch,[]).append((module, lines, desc))
+    if tblfile:
+        totallines = 0
+        tbl = [<i><font color="green">"&lt;tr&gt;&lt;th&gt;Chapter&lt;th&gt;Module&lt;th&gt;Files&lt;th&gt;Lines&lt;th&gt;Description"</font></i>]
+        fmt = <i><font color="green">"&lt;tr&gt;&lt;td align=right&gt;%s&lt;th&gt;%s&lt;td&gt;%s&lt;td align=right&gt;%s&lt;td&gt;%s"</font></i>
+        items = summary_table.items(); items.sort(num_cmp)
+        for (ch, entries) in items:
+            for (module, lines, desc) in entries:
+                totallines += lines
+                files = link(module+<i><font color="green">'.py'</font></i>, <i><font color="green">'.py'</font></i>)
+                if os.path.exists(module+<i><font color="green">'.txt'</font></i>):
+                    files += <i><font color="green">' '</font></i> + link(module+<i><font color="green">'.txt'</font></i>, <i><font color="green">'.txt'</font></i>)
+                tbl += [fmt % (ch, link(module+<i><font color="green">'.html'</font></i>, module),
+                               files, lines, desc)]
+        tbl += [fmt % (<i><font color="green">''</font></i>, <i><font color="green">''</font></i>, <i><font color="green">''</font></i>, totallines, <i><font color="green">''</font></i>), <i><font color="green">"&lt;/table&gt;"</font></i>]
+        <font color="cc33cc">## Now read the tblfile, and replace the first table with tbl</font>
+        old = open(tblfile).read()
+        new = re.sub(<i><font color="green">"(?s)(&lt;table border=1&gt;)(.*)(&lt;/table&gt;)"</font></i>,
+                     r<i><font color="green">'\1'</font></i> + <i><font color="green">'\n'</font></i>.join(tbl) + r<i><font color="green">'\3'</font></i>, old, 1)
+        open(tblfile, <i><font color="green">'w'</font></i>).write(new)
+
+<b>def </b><b style="background-color:ffff00"><a name="num_cmp">num_cmp</b>(x, y):
+    <b>def </b><b style="background-color:ffff00"><a name="num">num</b>(x):
+        nums = re.findall(<i><font color="green">'[0-9]+'</font></i>, x or <i><font color="green">''</font></i>)
+        if nums: return int(nums[0])
+        return x
+    return cmp(num(x[0]), num(y[0]))
+
+<font color="cc33cc">### Above is general (more or less); below is specific to my files.</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="comment">comment</b>(text): return i(color(<i><font color="green">"green"</font></i>, text))
+
+<b style="background-color:ffff00"><a name="replacements">replacements</b> = [
+    (r<i><font color="green">'&amp;'</font></i>, <i><font color="green">'&amp;amp;'</font></i>),
+    (r<i><font color="green">'&lt;'</font></i>, <i><font color="green">'&amp;lt;'</font></i>),
+    (r<i><font color="green">'&gt;'</font></i>, <i><font color="green">'&amp;gt;'</font></i>),
+    (r<i><font color="green">'(?ms)^<font color="cc33cc">#+[#_]{10,} *\n'</font></i>, <i><font color="green">'&lt;hr&gt;'</font></i>),</font>
+    (r<i><font color="green">""</font></i><i><font color="green">"('[^']*?'|"</font></i>[^<i><font color="green">"]*?"</font></i>)<i><font color="green">""</font></i><i><font color="green">", comment(g1)),
+    (r'(?s)("</font></i><i><font color="green">""</font></i>.*?<i><font color="green">""</font></i><i><font color="green">"|' + r"</font></i><i><font color="green">''</font></i><i><font color="green">'.*?'</font></i><i><font color="green">''</font></i>)<i><font color="green">", comment(g1)),
+    (r'(<font color="cc33cc">#.*)', color("</font></i>cc33cc<i><font color="green">", g1)),</font>
+    (r'(?m)(^[a-zA-Z][a-zA-Z_0-9, ]+)(\s+=\s+)', hilite(g1) + g2),
+    (r'(?m)(^\s*)(def\s+)(%s)' % id, g1 + b(g2) + hilite(g3)),
+    (r'(?m)(^\s*)(class\s+)(%s)' % id, g1 + b(g2) + hilite(g3)),
+    (r'(from\s+)([a-z]+)(\s+import)', importer),
+    (r'(import\s+)([a-z, ]+)(\s|\n|$|,)', importer),
+    ]
+
+if __name__ == '__main__':
+    import <a href="http://www.python.org/doc/current/lib/module-sys.html">sys</a>, <a href="http://www.python.org/doc/current/lib/module-glob.html">glob</a>
+    files = []
+    for arg in sys.argv[1:]:
+        files.extend(glob.glob(arg))
+    convert_files(files)
+
+<font color="cc33cc">## ENHANCEMENTS:</font>
+<font color="cc33cc">## Can get confused with "</font></i><i><font color="green">""</font></i> and <i><font color="green">''</font></i>'; not a problem in practice.</font>
+<font color="cc33cc">## Maybe we should create an index</font>
+<font color="cc33cc">## Probably should switch to Doxygen</font></pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

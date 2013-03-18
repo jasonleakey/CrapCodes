@@ -1,0 +1,295 @@
+<html><head><title>AIMA Python file: games.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: games.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Games, or Adversarial Search. (Chapters 6)
+
+"</font></i><i><font color="green">""</font></i>
+
+from <a href="utils.html">utils</a> import *
+import <a href="http://www.python.org/doc/current/lib/module-random.html">random</a>
+
+<hr><font color="cc33cc"># Minimax Search</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="minimax_decision">minimax_decision</b>(state, game):
+    <i><font color="green">""</font></i><i><font color="green">"Given a state in a game, calculate the best move by searching
+    forward all the way to the terminal states. [Fig. 6.4]"</font></i><i><font color="green">""</font></i>
+
+    player = game.to_move(state)
+
+    <b>def </b><b style="background-color:ffff00"><a name="max_value">max_value</b>(state):
+        if game.terminal_test(state):
+            return game.utility(state, player)
+        v = -infinity
+        for (a, s) in game.successors(state):
+            v = max(v, min_value(s))
+        return v
+
+    <b>def </b><b style="background-color:ffff00"><a name="min_value">min_value</b>(state):
+        if game.terminal_test(state):
+            return game.utility(state, player)
+        v = infinity
+        for (a, s) in game.successors(state):
+            v = min(v, max_value(s))
+        return v
+
+    <font color="cc33cc"># Body of minimax_decision starts here:</font>
+    action, state = argmax(game.successors(state),
+                           lambda ((a, s)): min_value(s))
+    return action
+
+
+<hr>
+<b>def </b><b style="background-color:ffff00"><a name="alphabeta_full_search">alphabeta_full_search</b>(state, game):
+    <i><font color="green">""</font></i><i><font color="green">"Search game to determine best action; use alpha-beta pruning.
+    As in [Fig. 6.7], this version searches all the way to the leaves."</font></i><i><font color="green">""</font></i>
+
+    player = game.to_move(state)
+
+    <b>def </b><b style="background-color:ffff00"><a name="max_value">max_value</b>(state, alpha, beta):
+        if game.terminal_test(state):
+            return game.utility(state, player)
+        v = -infinity
+        for (a, s) in game.successors(state):
+            v = max(v, min_value(s, alpha, beta))
+            if v &gt;= beta:
+                return v
+            alpha = max(alpha, v)
+        return v
+
+    <b>def </b><b style="background-color:ffff00"><a name="min_value">min_value</b>(state, alpha, beta):
+        if game.terminal_test(state):
+            return game.utility(state, player)
+        v = infinity
+        for (a, s) in game.successors(state):
+            v = min(v, max_value(s, alpha, beta))
+            if v &lt;= alpha:
+                return v
+            beta = min(beta, v)
+        return v
+
+    <font color="cc33cc"># Body of alphabeta_search starts here:</font>
+    action, state = argmax(game.successors(state),
+                           lambda ((a, s)): min_value(s, -infinity, infinity))
+    return action
+
+<b>def </b><b style="background-color:ffff00"><a name="alphabeta_search">alphabeta_search</b>(state, game, d=4, cutoff_test=None, eval_fn=None):
+    <i><font color="green">""</font></i><i><font color="green">"Search game to determine best action; use alpha-beta pruning.
+    This version cuts off search and uses an evaluation function."</font></i><i><font color="green">""</font></i>
+
+    player = game.to_move(state)
+
+    <b>def </b><b style="background-color:ffff00"><a name="max_value">max_value</b>(state, alpha, beta, depth):
+        if cutoff_test(state, depth):
+            return eval_fn(state)
+        v = -infinity
+        for (a, s) in game.successors(state):
+            v = max(v, min_value(s, alpha, beta, depth+1))
+            if v &gt;= beta:
+                return v
+            alpha = max(alpha, v)
+        return v
+
+    <b>def </b><b style="background-color:ffff00"><a name="min_value">min_value</b>(state, alpha, beta, depth):
+        if cutoff_test(state, depth):
+            return eval_fn(state)
+        v = infinity
+        for (a, s) in game.successors(state):
+            v = min(v, max_value(s, alpha, beta, depth+1))
+            if v &lt;= alpha:
+                return v
+            beta = min(beta, v)
+        return v
+
+    <font color="cc33cc"># Body of alphabeta_search starts here:</font>
+    <font color="cc33cc"># The default test cuts off at depth d or at a terminal state</font>
+    cutoff_test = (cutoff_test or
+                   (lambda state,depth: depth&gt;d or game.terminal_test(state)))
+    eval_fn = eval_fn or (lambda state: game.utility(state, player))
+    action, state = argmax(game.successors(state),
+                           lambda ((a, s)): min_value(s, -infinity, infinity, 0))
+    return action
+
+<hr><font color="cc33cc"># Players for Games</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="query_player">query_player</b>(game, state):
+    <i><font color="green">"Make a move by querying standard input."</font></i>
+    game.display(state)
+    return num_or_str(raw_input(<i><font color="green">'Your move? '</font></i>))
+
+<b>def </b><b style="background-color:ffff00"><a name="random_player">random_player</b>(game, state):
+    <i><font color="green">"A player that chooses a legal move at random."</font></i>
+    return random.choice(game.legal_moves())
+
+<b>def </b><b style="background-color:ffff00"><a name="alphabeta_player">alphabeta_player</b>(game, state):
+    return alphabeta_search(state, game)
+
+<b>def </b><b style="background-color:ffff00"><a name="play_game">play_game</b>(game, *players):
+    <i><font color="green">"Play an n-person, move-alternating game."</font></i>
+    state = game.initial
+    while True:
+        for player in players:
+            move = player(game, state)
+            state = game.make_move(move, state)
+            if game.terminal_test(state):
+                return game.utility(state, players[0])
+
+<hr><font color="cc33cc"># Some Sample Games</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="Game">Game</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A game is similar to a problem, but it has a utility for each
+    state and a terminal test instead of a path cost and a goal
+    test. To create a game, subclass this class and implement
+    legal_moves, make_move, utility, and terminal_test. You may
+    override display and successors or you can inherit their default
+    methods. You will also need to set the .initial attribute to the
+    initial state; this can be done in the constructor."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="legal_moves">legal_moves</b>(self, state):
+        <i><font color="green">"Return a list of the allowable moves at this point."</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="make_move">make_move</b>(self, move, state):
+        <i><font color="green">"Return the state that results from making a move from a state."</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="utility">utility</b>(self, state, player):
+        <i><font color="green">"Return the value of this final state to player."</font></i>
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="terminal_test">terminal_test</b>(self, state):
+        <i><font color="green">"Return True if this is a final state for the game."</font></i>
+        return not self.legal_moves(state)
+
+    <b>def </b><b style="background-color:ffff00"><a name="to_move">to_move</b>(self, state):
+        <i><font color="green">"Return the player whose move it is in this state."</font></i>
+        return state.to_move
+
+    <b>def </b><b style="background-color:ffff00"><a name="display">display</b>(self, state):
+        <i><font color="green">"Print or otherwise display the state."</font></i>
+        print state
+
+    <b>def </b><b style="background-color:ffff00"><a name="successors">successors</b>(self, state):
+        <i><font color="green">"Return a list of legal (move, state) pairs."</font></i>
+        return [(move, self.make_move(move, state))
+                for move in self.legal_moves(state)]
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        return <i><font color="green">'&lt;%s&gt;'</font></i> % self.__class__.__name__
+
+<b>class </b><b style="background-color:ffff00"><a name="Fig62Game">Fig62Game</b>(Game):
+    <i><font color="green">""</font></i><i><font color="green">"The game represented in [Fig. 6.2]. Serves as a simple test case.
+    &gt;&gt;&gt; g = Fig62Game()
+    &gt;&gt;&gt; minimax_decision('A', g)
+    'a1'
+    &gt;&gt;&gt; alphabeta_full_search('A', g)
+    'a1'
+    &gt;&gt;&gt; alphabeta_search('A', g)
+    'a1'
+    "</font></i><i><font color="green">""</font></i>
+    succs = {<i><font color="green">'A'</font></i>: [(<i><font color="green">'a1'</font></i>, <i><font color="green">'B'</font></i>), (<i><font color="green">'a2'</font></i>, <i><font color="green">'C'</font></i>), (<i><font color="green">'a3'</font></i>, <i><font color="green">'D'</font></i>)],
+             <i><font color="green">'B'</font></i>: [(<i><font color="green">'b1'</font></i>, <i><font color="green">'B1'</font></i>), (<i><font color="green">'b2'</font></i>, <i><font color="green">'B2'</font></i>), (<i><font color="green">'b3'</font></i>, <i><font color="green">'B3'</font></i>)],
+             <i><font color="green">'C'</font></i>: [(<i><font color="green">'c1'</font></i>, <i><font color="green">'C1'</font></i>), (<i><font color="green">'c2'</font></i>, <i><font color="green">'C2'</font></i>), (<i><font color="green">'c3'</font></i>, <i><font color="green">'C3'</font></i>)],
+             <i><font color="green">'D'</font></i>: [(<i><font color="green">'d1'</font></i>, <i><font color="green">'D1'</font></i>), (<i><font color="green">'d2'</font></i>, <i><font color="green">'D2'</font></i>), (<i><font color="green">'d3'</font></i>, <i><font color="green">'D3'</font></i>)]}
+    utils = Dict(B1=3, B2=12, B3=8, C1=2, C2=4, C3=6, D1=14, D2=5, D3=2)
+    initial = <i><font color="green">'A'</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="successors">successors</b>(self, state):
+        return self.succs.get(state, [])
+
+    <b>def </b><b style="background-color:ffff00"><a name="utility">utility</b>(self, state, player):
+        if player == <i><font color="green">'MAX'</font></i>:
+            return self.utils[state]
+        else:
+            return -self.utils[state]
+
+    <b>def </b><b style="background-color:ffff00"><a name="terminal_test">terminal_test</b>(self, state):
+        return state not in (<i><font color="green">'A'</font></i>, <i><font color="green">'B'</font></i>, <i><font color="green">'C'</font></i>, <i><font color="green">'D'</font></i>)
+
+    <b>def </b><b style="background-color:ffff00"><a name="to_move">to_move</b>(self, state):
+        return if_(state in <i><font color="green">'BCD'</font></i>, <i><font color="green">'MIN'</font></i>, <i><font color="green">'MAX'</font></i>)
+
+<b>class </b><b style="background-color:ffff00"><a name="TicTacToe">TicTacToe</b>(Game):
+    <i><font color="green">""</font></i><i><font color="green">"Play TicTacToe on an h x v board, with Max (first player) playing 'X'.
+    A state has the player to move, a cached utility, a list of moves in
+    the form of a list of (x, y) positions, and a board, in the form of
+    a dict of {(x, y): Player} entries, where Player is 'X' or 'O'."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, h=3, v=3, k=3):
+        update(self, h=h, v=v, k=k)
+        moves = [(x, y) for x in range(1, h+1)
+                 for y in range(1, v+1)]
+        self.initial = Struct(to_move=<i><font color="green">'X'</font></i>, utility=0, board={}, moves=moves)
+
+    <b>def </b><b style="background-color:ffff00"><a name="legal_moves">legal_moves</b>(self, state):
+        <i><font color="green">"Legal moves are any square not yet taken."</font></i>
+        return state.moves
+
+    <b>def </b><b style="background-color:ffff00"><a name="make_move">make_move</b>(self, move, state):
+        if move not in state.moves:
+            return state <font color="cc33cc"># Illegal move has no effect</font>
+        board = state.board.copy(); board[move] = state.to_move
+        moves = list(state.moves); moves.remove(move)
+        return Struct(to_move=if_(state.to_move == <i><font color="green">'X'</font></i>, <i><font color="green">'O'</font></i>, <i><font color="green">'X'</font></i>),
+                      utility=self.compute_utility(board, move, state.to_move),
+                      board=board, moves=moves)
+
+    <b>def </b><b style="background-color:ffff00"><a name="utility">utility</b>(self, state):
+        <i><font color="green">"Return the value to X; 1 for win, -1 for loss, 0 otherwise."</font></i>
+        return state.utility
+
+    <b>def </b><b style="background-color:ffff00"><a name="terminal_test">terminal_test</b>(self, state):
+        <i><font color="green">"A state is terminal if it is won or there are no empty squares."</font></i>
+        return state.utility != 0 or len(state.moves) == 0
+
+    <b>def </b><b style="background-color:ffff00"><a name="display">display</b>(self, state):
+        board = state.board
+        for x in range(1, self.h+1):
+            for y in range(1, self.v+1):
+                print board.get((x, y), <i><font color="green">'.'</font></i>),
+            print
+
+    <b>def </b><b style="background-color:ffff00"><a name="compute_utility">compute_utility</b>(self, board, move, player):
+        <i><font color="green">"If X wins with this move, return 1; if O return -1; else return 0."</font></i>
+        if (self.k_in_row(board, move, player, (0, 1)) or
+            self.k_in_row(board, move, player, (1, 0)) or
+            self.k_in_row(board, move, player, (1, -1)) or
+            self.k_in_row(board, move, player, (1, 1))):
+            return if_(player == <i><font color="green">'X'</font></i>, +1, -1)
+        else:
+            return 0
+
+    <b>def </b><b style="background-color:ffff00"><a name="k_in_row">k_in_row</b>(self, board, move, player, (delta_x, delta_y)):
+        <i><font color="green">"Return true if there is a line through move on board for player."</font></i>
+        x, y = move
+        n = 0 <font color="cc33cc"># n is number of moves in row</font>
+        while board.get((x, y)) == player:
+            n += 1
+            x, y = x + delta_x, y + delta_y
+        x, y = move
+        while board.get((x, y)) == player:
+            n += 1
+            x, y = x - delta_x, y - delta_y
+        n -= 1 <font color="cc33cc"># Because we counted move itself twice</font>
+        return n &gt;= self.k
+
+<b>class </b><b style="background-color:ffff00"><a name="ConnectFour">ConnectFour</b>(TicTacToe):
+    <i><font color="green">""</font></i><i><font color="green">"A TicTacToe-like game in which you can only make a move on the bottom
+    row, or in a square directly above an occupied square.  Traditionally
+    played on a 7x6 board and requiring 4 in a row."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, h=7, v=6, k=4):
+        TicTacToe.__init__(self, h, v, k)
+
+    <b>def </b><b style="background-color:ffff00"><a name="legal_moves">legal_moves</b>(self, state):
+        <i><font color="green">"Legal moves are any square not yet taken."</font></i>
+        return [(x, y) for (x, y) in state.moves
+                if y == 0 or (x, y-1) in state.board]</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

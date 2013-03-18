@@ -1,0 +1,143 @@
+% LaTeX file for resume 
+% This file uses the resume document class (res.cls)
+
+\documentclass[margin]{res} 
+% the margin option causes section titles to appear to the left of body text 
+\textwidth=5.2in % increase textwidth to get smaller right margin
+%\sectionwidth=7pt
+%\usepackage{helvetica} % uses helvetica postscript font (download helvetica.sty)
+%\usepackage{newcent}   % uses new century schoolbook postscript font 
+\usepackage{graphicx}
+\usepackage{zhfontcfg}
+
+\newcommand\formatdata[1]{\textsl{\textsf{#1}}}
+
+\begin{document} 
+
+\clearpage
+% Center the name over the entire width of resume:
+\moveleft.5\hoffset\centerline{\large\bf Yetian Huang}
+% Draw a horizontal line the whole width of resume:
+\moveleft\hoffset\vbox{\hrule width\resumewidth height 1pt}\smallskip
+% address begins here
+% Again, the address lines must be centered over entire width of resume:
+\moveleft.5\hoffset\centerline{Room C204, Harbin Institute of
+Technology}
+\moveleft.5\hoffset\centerline{Xili University Town, Shenzhen}
+%\moveleft.5\hoffset\centerline{Shenzhen, Guangdong Province, China}
+\moveleft.5\hoffset\centerline{\textsf{E-Mail: }jasonleakey@gmail.com}
+\moveleft.5\hoffset\centerline{\textsf{Phone: }15019290513}
+\vspace{-17pt} 
+
+\begin{resume} 
+ 
+\section{Objective} 
+To obtain a position as software engineer where I can utilize my
+knowledge and programming skill to improve products for the company.
+
+\section{Education} 
+M.S. in \textbf{Computer Science} \hfill \formatdata{2009.09 - Present} 
+\begin{itemize} \itemsep -2pt
+    \item Harbin Institute of Technology Shenzhen Graduate School
+    \item Concentrations in Biometrics - Human wrist pulse diagnosis
+    \item Major postgraduate scholarship 
+\end{itemize} 
+\vspace{-8pt}
+B.S. in \textbf{Electronic Science and Technology} \hfill
+\formatdata{2005.09 - 2009.07} 
+\begin{itemize} \itemsep -2pt
+    \item Harbin Institute of Technology (HIT)
+    \item Major Courses: {\sf \em Optical Design, Optical Fiber, Electrodynamics, \\
+        Physical Optics, Photoelectronic Signal Detecting} etc.
+    \item Courses learned by myself:  {\sf \em Data Structure, Operating System, \\
+        Computer Network, Database} etc.
+\end{itemize}
+%\vspace{-5pt}
+
+\section{Research Experience}
+\hangafter 1
+\hangindent 1.5em
+Postgraduate Thesis \hfill \formatdata{Nov. 2010 - Present} \\
+\textsf{\emph{A Study of Feature Extraction Method for Wrist
+Diagnosis}}
+\vspace{-8pt}
+
+\hangafter 1
+\hangindent 1.5em
+Conference Attendance - HongKong PolyTechnic University 
+\begin{itemize} \itemsep -2pt
+    \item \textsf{\textit{The International Conference on Medical
+        Biometrics}} \hfill \formatdata{June 2010}
+    \item \textsf{\emph{The Third International Conference on Ethics and \\
+        Policy of Biometrics and International Data Sharing}}
+\hfill \formatdata{Jan. 2010} 
+\end{itemize}
+
+%\hangafter 1
+%\hangindent 1.5em
+%Undergraduate Thesis \hfill \formatdata{Jan. 2009 - July 2009} \\
+%\emph{Study on Measuring and Modelling Method of Bidirectional\\
+%Reflectance Distribution Function}
+
+\section{Technical \\ Skills}
+\begin{tabular}{ll}
+    \textsf{Languages:} & C, C++, Python, Matlab, Shell, Makefile\\
+    \textsf{Platform:} & Ubuntu Linux \\
+    \textsf{Applications:} & VIM, \LaTeX, Squid,
+    SVN, VPN, GCC, Wireshark, GTK+, Qt\\
+    \textsf{Projects:} & Network Sniffer Designing\\
+    & Pacman Searching Algorithms \\
+    & Face Recognition based on Back 
+    Propagation Artificial Neuron Network \\
+    & Image denoising and enhancement 
+\end{tabular}
+%\vspace{-5pt}
+
+\section{Activities}
+%\textbf{Practitioner,} Guangdong Hospital of Traditional Chinese
+%Medicine \hfill \formatdata{Nov. 2010} 
+%\begin{itemize} \itemsep -2pt
+%    \item Collect human wrist pulse data of different health condition
+%        \hfill \formatdata{\& Aug. 2011}
+%\end{itemize}  
+%\vspace{-6pt}
+
+\textbf{Member,} Peking University English Association
+\hfill \formatdata{Sep. 2010}
+\begin{itemize} \itemsep -2pt
+    \item Communication with oversea student and practiced English
+    \item Organized several events and lectures
+\end{itemize}
+\vspace{-8pt}
+\textbf{Leader,} Tours to HongKong, Macao, Wutong Mountain etc. 
+\hfill \formatdata{2010} 
+\begin{itemize} \itemsep -2pt
+    \item Planned the agenda and coordinated the group
+    \item Coped with unexpected event
+\end{itemize}
+\vspace{-8pt}
+\textbf{Member,} HIT Microsoft Technology Club
+\hfill \formatdata{Sep. 2007}
+\begin{itemize} \itemsep -2pt
+    \item Learned Programming Skill
+\end{itemize}
+%\vspace{-5pt}
+
+\section{Language}
+\begin{tabular}{rl}
+    \textbf{Chinese:} & Mother tongue \\
+    \textbf{English:} & TOEFL 78, GRE 1270 \\
+    & Proficient reading and writing skill\\
+    & Good listening and oral skill\\
+\end{tabular}
+\vspace{-5pt}
+
+\section{Interests}
+Open Source, Network, Operating System \\
+Table tennis, Tourism, Cooking
+
+\end{resume} 
+\end{document} 
+
+
+

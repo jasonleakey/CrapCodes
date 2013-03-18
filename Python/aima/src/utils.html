@@ -1,0 +1,720 @@
+<html><head><title>AIMA Python file: utils.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: utils.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"Provide some widely useful utilities. Safe for "</font></i>from <a href="utils.html">utils</a> import *<i><font color="green">".
+
+"</font></i><i><font color="green">""</font></i>
+
+from __future__ import <a href="http://www.python.org/doc/current/lib/module-generators.html">generators</a>
+import <a href="http://www.python.org/doc/current/lib/module-operator.html">operator</a>, <a href="http://www.python.org/doc/current/lib/module-math.html">math</a>, <a href="http://www.python.org/doc/current/lib/module-random.html">random</a>, <a href="http://www.python.org/doc/current/lib/module-copy.html">copy</a>, <a href="http://www.python.org/doc/current/lib/module-sys.html">sys</a>, <a href="http://www.python.org/doc/current/lib/module-.html"></a> os.path, bisect
+
+<hr><font color="cc33cc"># Compatibility with Python 2.2 and 2.3</font>
+
+<font color="cc33cc"># The AIMA code is designed to run in Python 2.2 and up (at some point,</font>
+<font color="cc33cc"># support for 2.2 may go away; 2.2 was released in 2001, and so is over</font>
+<font color="cc33cc"># 3 years old). The first part of this file brings you up to 2.4</font>
+<font color="cc33cc"># compatibility if you are running in Python 2.2 or 2.3:</font>
+
+try: bool, True, False <font color="cc33cc">## Introduced in 2.3</font>
+except NameError:
+    <b>class </b><b style="background-color:ffff00"><a name="bool">bool</b>(int):
+        <i><font color="green">"Simple implementation of Booleans, as in PEP 285"</font></i>
+        <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, val): self.val = val
+        <b>def </b><b style="background-color:ffff00"><a name="__int__">__int__</b>(self): return self.val
+        <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self): return (<i><font color="green">'False'</font></i>, <i><font color="green">'True'</font></i>)[self.val]
+
+    True, False = bool(1), bool(0)
+
+try: sum <font color="cc33cc">## Introduced in 2.3</font>
+except NameError:
+    <b>def </b><b style="background-color:ffff00"><a name="sum">sum</b>(seq, start=0):
+        <i><font color="green">""</font></i><i><font color="green">"Sum the elements of seq.
+        &gt;&gt;&gt; sum([1, 2, 3])
+        6
+        "</font></i><i><font color="green">""</font></i>
+        return reduce(operator.add, seq, start)
+
+try: enumerate  <font color="cc33cc">## Introduced in 2.3</font>
+except NameError:
+    <b>def </b><b style="background-color:ffff00"><a name="enumerate">enumerate</b>(collection):
+        <i><font color="green">""</font></i><i><font color="green">"Return an iterator that enumerates pairs of (i, c[i]). PEP 279.
+        &gt;&gt;&gt; list(enumerate('abc'))
+        [(0, 'a'), (1, 'b'), (2, 'c')]
+        "</font></i><i><font color="green">""</font></i>
+        <font color="cc33cc">## Copied from PEP 279</font>
+        i = 0
+        it = iter(collection)
+        while 1:
+            yield (i, it.next())
+            i += 1
+
+
+try: reversed <font color="cc33cc">## Introduced in 2.4</font>
+except NameError:
+    <b>def </b><b style="background-color:ffff00"><a name="reversed">reversed</b>(seq):
+        <i><font color="green">""</font></i><i><font color="green">"Iterate over x in reverse order.
+        &gt;&gt;&gt; list(reversed([1,2,3]))
+        [3, 2, 1]
+        "</font></i><i><font color="green">""</font></i>
+        if hasattr(seq, <i><font color="green">'keys'</font></i>):
+            raise ValueError(<i><font color="green">"mappings do not support reverse iteration"</font></i>)
+        i = len(seq)
+        while i &gt; 0:
+            i -= 1
+            yield seq[i]
+
+
+try: sorted <font color="cc33cc">## Introduced in 2.4</font>
+except NameError:
+    <b>def </b><b style="background-color:ffff00"><a name="sorted">sorted</b>(seq, cmp=None, key=None, reverse=False):
+        <i><font color="green">""</font></i><i><font color="green">"Copy seq and sort and return it.
+        &gt;&gt;&gt; sorted([3, 1, 2])
+        [1, 2, 3]
+        "</font></i><i><font color="green">""</font></i>
+        seq2 = copy.copy(seq)
+        if key:
+            if cmp == None:
+                cmp = __builtins__.cmp
+            seq2.sort(lambda x,y: cmp(key(x), key(y)))
+        else:
+            if cmp == None:
+                seq2.sort()
+            else:
+                seq2.sort(cmp)
+        if reverse:
+            seq2.reverse()
+        return seq2
+
+try:
+    set, frozenset <font color="cc33cc">## set builtin introduced in 2.4</font>
+except NameError:
+    try:
+        import <a href="http://www.python.org/doc/current/lib/module-sets.html">sets</a> <font color="cc33cc">## sets module introduced in 2.3</font>
+        set, frozenset = sets.Set, sets.ImmutableSet
+    except (NameError, ImportError):
+        <b>class </b><b style="background-color:ffff00"><a name="BaseSet">BaseSet</b>:
+            <i><font color="green">"set type (see http://docs.python.org/lib/types-set.html)"</font></i>
+
+
+            <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, elements=[]):
+                self.dict = {}
+                for e in elements:
+                    self.dict[e] = 1
+
+            <b>def </b><b style="background-color:ffff00"><a name="__len__">__len__</b>(self):
+                return len(self.dict)
+
+            <b>def </b><b style="background-color:ffff00"><a name="__iter__">__iter__</b>(self):
+                for e in self.dict:
+                    yield e
+
+            <b>def </b><b style="background-color:ffff00"><a name="__contains__">__contains__</b>(self, element):
+                return element in self.dict
+
+            <b>def </b><b style="background-color:ffff00"><a name="issubset">issubset</b>(self, other):
+                for e in self.dict.keys():
+                    if e not in other:
+                        return False
+                return True
+
+            <b>def </b><b style="background-color:ffff00"><a name="issuperset">issuperset</b>(self, other):
+                for e in other:
+                    if e not in self:
+                        return False
+                return True
+
+
+            <b>def </b><b style="background-color:ffff00"><a name="union">union</b>(self, other):
+                return type(self)(list(self) + list(other))
+
+            <b>def </b><b style="background-color:ffff00"><a name="intersection">intersection</b>(self, other):
+                return type(self)([e for e in self.dict if e in other])
+
+            <b>def </b><b style="background-color:ffff00"><a name="difference">difference</b>(self, other):
+                return type(self)([e for e in self.dict if e not in other])
+
+            <b>def </b><b style="background-color:ffff00"><a name="symmetric_difference">symmetric_difference</b>(self, other):
+                return type(self)([e for e in self.dict if e not in other] +
+                                  [e for e in other if e not in self.dict])
+
+            <b>def </b><b style="background-color:ffff00"><a name="copy">copy</b>(self):
+                return type(self)(self.dict)
+
+            <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+                elements = <i><font color="green">", "</font></i>.join(map(str, self.dict))
+                return <i><font color="green">"%s([%s])"</font></i> % (type(self).__name__, elements)
+
+            __le__ = issubset
+            __ge__ = issuperset
+            __or__ = union
+            __and__ = intersection
+            __sub__ = difference
+            __xor__ = symmetric_difference
+
+        <b>class </b><b style="background-color:ffff00"><a name="frozenset">frozenset</b>(BaseSet):
+            <i><font color="green">"A frozenset is a BaseSet that has a hash value and is immutable."</font></i>
+
+            <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, elements=[]):
+                BaseSet.__init__(elements)
+                self.hash = 0
+                for e in self:
+                    self.hash |= hash(e)
+
+            <b>def </b><b style="background-color:ffff00"><a name="__hash__">__hash__</b>(self):
+                return self.hash
+
+        <b>class </b><b style="background-color:ffff00"><a name="set">set</b>(BaseSet):
+            <i><font color="green">"A set is a BaseSet that does not have a hash, but is mutable."</font></i>
+
+            <b>def </b><b style="background-color:ffff00"><a name="update">update</b>(self, other):
+                for e in other:
+                    self.add(e)
+                return self
+
+            <b>def </b><b style="background-color:ffff00"><a name="intersection_update">intersection_update</b>(self, other):
+                for e in self.dict.keys():
+                    if e not in other:
+                        self.remove(e)
+                return self
+
+            <b>def </b><b style="background-color:ffff00"><a name="difference_update">difference_update</b>(self, other):
+                for e in self.dict.keys():
+                    if e in other:
+                        self.remove(e)
+                return self
+
+            <b>def </b><b style="background-color:ffff00"><a name="symmetric_difference_update">symmetric_difference_update</b>(self, other):
+                to_remove1 = [e for e in self.dict if e in other]
+                to_remove2 = [e for e in other if e in self.dict]
+                self.difference_update(to_remove1)
+                self.difference_update(to_remove2)
+                return self
+
+            <b>def </b><b style="background-color:ffff00"><a name="add">add</b>(self, element):
+                self.dict[element] = 1
+
+            <b>def </b><b style="background-color:ffff00"><a name="remove">remove</b>(self, element):
+                del self.dict[element]
+
+            <b>def </b><b style="background-color:ffff00"><a name="discard">discard</b>(self, element):
+                if element in self.dict:
+                    del self.dict[element]
+
+            <b>def </b><b style="background-color:ffff00"><a name="pop">pop</b>(self):
+                key, val = self.dict.popitem()
+                return key
+
+            <b>def </b><b style="background-color:ffff00"><a name="clear">clear</b>(self):
+                self.dict.clear()
+
+            __ior__ = update
+            __iand__ = intersection_update
+            __isub__ = difference_update
+            __ixor__ = symmetric_difference_update
+
+
+
+
+<hr><font color="cc33cc"># Simple Data Structures: infinity, Dict, Struct</font>
+
+<b style="background-color:ffff00"><a name="infinity">infinity</b> = 1.0e400
+
+<b>def </b><b style="background-color:ffff00"><a name="Dict">Dict</b>(**entries):
+    <i><font color="green">""</font></i><i><font color="green">"Create a dict out of the argument=value arguments.
+    &gt;&gt;&gt; Dict(a=1, b=2, c=3)
+    {'a': 1, 'c': 3, 'b': 2}
+    "</font></i><i><font color="green">""</font></i>
+    return entries
+
+<b>class </b><b style="background-color:ffff00"><a name="DefaultDict">DefaultDict</b>(dict):
+    <i><font color="green">""</font></i><i><font color="green">"Dictionary with a default value for unknown keys."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, default):
+        self.default = default
+
+    <b>def </b><b style="background-color:ffff00"><a name="__getitem__">__getitem__</b>(self, key):
+        if key in self: return self.get(key)
+        return self.setdefault(key, copy.deepcopy(self.default))
+
+    <b>def </b><b style="background-color:ffff00"><a name="__copy__">__copy__</b>(self):
+        copy = DefaultDict(self.default)
+        copy.update(self)
+        return copy
+
+<b>class </b><b style="background-color:ffff00"><a name="Struct">Struct</b>:
+    <i><font color="green">""</font></i><i><font color="green">"Create an instance with argument=value slots.
+    This is for making a lightweight object whose class doesn't matter."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, **entries):
+        self.__dict__.update(entries)
+
+    <b>def </b><b style="background-color:ffff00"><a name="__cmp__">__cmp__</b>(self, other):
+        if isinstance(other, Struct):
+            return cmp(self.__dict__, other.__dict__)
+        else:
+            return cmp(self.__dict__, other)
+
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self):
+        args = [<i><font color="green">'%s=%s'</font></i> % (k, repr(v)) for (k, v) in vars(self).items()]
+        return <i><font color="green">'Struct(%s)'</font></i> % <i><font color="green">', '</font></i>.join(args)
+
+<b>def </b><b style="background-color:ffff00"><a name="update">update</b>(x, **entries):
+    <i><font color="green">""</font></i><i><font color="green">"Update a dict; or an object with slots; according to entries.
+    &gt;&gt;&gt; update({'a': 1}, a=10, b=20)
+    {'a': 10, 'b': 20}
+    &gt;&gt;&gt; update(Struct(a=1), a=10, b=20)
+    Struct(a=10, b=20)
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(x, dict):
+        x.update(entries)
+    else:
+        x.__dict__.update(entries)
+    return x
+
+<hr><font color="cc33cc"># Functions on Sequences (mostly inspired by Common Lisp)</font>
+<font color="cc33cc"># NOTE: Sequence functions (count_if, find_if, every, some) take function</font>
+<font color="cc33cc"># argument first (like reduce, filter, and map).</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="removeall">removeall</b>(item, seq):
+    <i><font color="green">""</font></i><i><font color="green">"Return a copy of seq (or string) with all occurences of item removed.
+    &gt;&gt;&gt; removeall(3, [1, 2, 3, 3, 2, 1, 3])
+    [1, 2, 2, 1]
+    &gt;&gt;&gt; removeall(4, [1, 2, 3])
+    [1, 2, 3]
+    "</font></i><i><font color="green">""</font></i>
+    if isinstance(seq, str):
+      return seq.replace(item, <i><font color="green">''</font></i>)
+    else:
+      return [x for x in seq if x != item]
+
+<b>def </b><b style="background-color:ffff00"><a name="unique">unique</b>(seq):
+    <i><font color="green">""</font></i><i><font color="green">"Remove duplicate elements from seq. Assumes hashable elements.
+    &gt;&gt;&gt; unique([1, 2, 3, 2, 1])
+    [1, 2, 3]
+    "</font></i><i><font color="green">""</font></i>
+    return list(set(seq))
+
+<b>def </b><b style="background-color:ffff00"><a name="product">product</b>(numbers):
+    <i><font color="green">""</font></i><i><font color="green">"Return the product of the numbers.
+    &gt;&gt;&gt; product([1,2,3,4])
+    24
+    "</font></i><i><font color="green">""</font></i>
+    return reduce(operator.mul, numbers, 1)
+
+<b>def </b><b style="background-color:ffff00"><a name="count_if">count_if</b>(predicate, seq):
+    <i><font color="green">""</font></i><i><font color="green">"Count the number of elements of seq for which the predicate is true.
+    &gt;&gt;&gt; count_if(callable, [42, None, max, min])
+    2
+    "</font></i><i><font color="green">""</font></i>
+    f = lambda count, x: count + (not not predicate(x))
+    return reduce(f, seq, 0)
+
+<b>def </b><b style="background-color:ffff00"><a name="find_if">find_if</b>(predicate, seq):
+    <i><font color="green">""</font></i><i><font color="green">"If there is an element of seq that satisfies predicate; return it.
+    &gt;&gt;&gt; find_if(callable, [3, min, max])
+    &lt;built-in function min&gt;
+    &gt;&gt;&gt; find_if(callable, [1, 2, 3])
+    "</font></i><i><font color="green">""</font></i>
+    for x in seq:
+        if predicate(x): return x
+    return None
+
+<b>def </b><b style="background-color:ffff00"><a name="every">every</b>(predicate, seq):
+    <i><font color="green">""</font></i><i><font color="green">"True if every element of seq satisfies predicate.
+    &gt;&gt;&gt; every(callable, [min, max])
+    1
+    &gt;&gt;&gt; every(callable, [min, 3])
+    0
+    "</font></i><i><font color="green">""</font></i>
+    for x in seq:
+        if not predicate(x): return False
+    return True
+
+<b>def </b><b style="background-color:ffff00"><a name="some">some</b>(predicate, seq):
+    <i><font color="green">""</font></i><i><font color="green">"If some element x of seq satisfies predicate(x), return predicate(x).
+    &gt;&gt;&gt; some(callable, [min, 3])
+    1
+    &gt;&gt;&gt; some(callable, [2, 3])
+    0
+    "</font></i><i><font color="green">""</font></i>
+    for x in seq:
+        px = predicate(x)
+        if  px: return px
+    return False
+
+<b>def </b><b style="background-color:ffff00"><a name="isin">isin</b>(elt, seq):
+    <i><font color="green">""</font></i><i><font color="green">"Like (elt in seq), but compares with is, not ==.
+    &gt;&gt;&gt; e = []; isin(e, [1, e, 3])
+    True
+    &gt;&gt;&gt; isin(e, [1, [], 3])
+    False
+    "</font></i><i><font color="green">""</font></i>
+    for x in seq:
+        if elt is x: return True
+    return False
+
+<hr><font color="cc33cc"># Functions on sequences of numbers</font>
+<font color="cc33cc"># NOTE: these take the sequence argument first, like min and max,</font>
+<font color="cc33cc"># and like standard math notation: \sigma (i = 1..n) fn(i)</font>
+<font color="cc33cc"># A lot of programing is finding the best value that satisfies some condition;</font>
+<font color="cc33cc"># so there are three versions of argmin/argmax, depending on what you want to</font>
+<font color="cc33cc"># do with ties: return the first one, return them all, or pick at random.</font>
+
+
+<b>def </b><b style="background-color:ffff00"><a name="argmin">argmin</b>(seq, fn):
+    <i><font color="green">""</font></i><i><font color="green">"Return an element with lowest fn(seq[i]) score; tie goes to first one.
+    &gt;&gt;&gt; argmin(['one', 'to', 'three'], len)
+    'to'
+    "</font></i><i><font color="green">""</font></i>
+    best = seq[0]; best_score = fn(best)
+    for x in seq:
+        x_score = fn(x)
+        if x_score &lt; best_score:
+            best, best_score = x, x_score
+    return best
+
+<b>def </b><b style="background-color:ffff00"><a name="argmin_list">argmin_list</b>(seq, fn):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of elements of seq[i] with the lowest fn(seq[i]) scores.
+    &gt;&gt;&gt; argmin_list(['one', 'to', 'three', 'or'], len)
+    ['to', 'or']
+    "</font></i><i><font color="green">""</font></i>
+    best_score, best = fn(seq[0]), []
+    for x in seq:
+        x_score = fn(x)
+        if x_score &lt; best_score:
+            best, best_score = [x], x_score
+        elif x_score == best_score:
+            best.append(x)
+    return best
+
+<b>def </b><b style="background-color:ffff00"><a name="argmin_random_tie">argmin_random_tie</b>(seq, fn):
+    <i><font color="green">""</font></i><i><font color="green">"Return an element with lowest fn(seq[i]) score; break ties at random.
+    Thus, for all s,f: argmin_random_tie(s, f) in argmin_list(s, f)"</font></i><i><font color="green">""</font></i>
+    best_score = fn(seq[0]); n = 0
+    for x in seq:
+        x_score = fn(x)
+        if x_score &lt; best_score:
+            best, best_score = x, x_score; n = 1
+        elif x_score == best_score:
+            n += 1
+            if random.randrange(n) == 0:
+                    best = x
+    return best
+
+<b>def </b><b style="background-color:ffff00"><a name="argmax">argmax</b>(seq, fn):
+    <i><font color="green">""</font></i><i><font color="green">"Return an element with highest fn(seq[i]) score; tie goes to first one.
+    &gt;&gt;&gt; argmax(['one', 'to', 'three'], len)
+    'three'
+    "</font></i><i><font color="green">""</font></i>
+    return argmin(seq, lambda x: -fn(x))
+
+<b>def </b><b style="background-color:ffff00"><a name="argmax_list">argmax_list</b>(seq, fn):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of elements of seq[i] with the highest fn(seq[i]) scores.
+    &gt;&gt;&gt; argmax_list(['one', 'three', 'seven'], len)
+    ['three', 'seven']
+    "</font></i><i><font color="green">""</font></i>
+    return argmin_list(seq, lambda x: -fn(x))
+
+<b>def </b><b style="background-color:ffff00"><a name="argmax_random_tie">argmax_random_tie</b>(seq, fn):
+    <i><font color="green">"Return an element with highest fn(seq[i]) score; break ties at random."</font></i>
+    return argmin_random_tie(seq, lambda x: -fn(x))
+<hr><font color="cc33cc"># Statistical and mathematical functions</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="histogram">histogram</b>(values, mode=0, bin_function=None):
+    <i><font color="green">""</font></i><i><font color="green">"Return a list of (value, count) pairs, summarizing the input values.
+    Sorted by increasing value, or if mode=1, by decreasing count.
+    If bin_function is given, map it over values first."</font></i><i><font color="green">""</font></i>
+    if bin_function: values = map(bin_function, values)
+    bins = {}
+    for val in values:
+        bins[val] = bins.get(val, 0) + 1
+    if mode:
+        return sorted(bins.items(), key=lambda v: v[1], reverse=True)
+    else:
+        return sorted(bins.items())
+
+<b>def </b><b style="background-color:ffff00"><a name="log2">log2</b>(x):
+    <i><font color="green">""</font></i><i><font color="green">"Base 2 logarithm.
+    &gt;&gt;&gt; log2(1024)
+    10.0
+    "</font></i><i><font color="green">""</font></i>
+    return math.log10(x) / math.log10(2)
+
+<b>def </b><b style="background-color:ffff00"><a name="mode">mode</b>(values):
+    <i><font color="green">""</font></i><i><font color="green">"Return the most common value in the list of values.
+    &gt;&gt;&gt; mode([1, 2, 3, 2])
+    2
+    "</font></i><i><font color="green">""</font></i>
+    return histogram(values, mode=1)[0][0]
+
+<b>def </b><b style="background-color:ffff00"><a name="median">median</b>(values):
+    <i><font color="green">""</font></i><i><font color="green">"Return the middle value, when the values are sorted.
+    If there are an odd number of elements, try to average the middle two.
+    If they can't be averaged (e.g. they are strings), choose one at random.
+    &gt;&gt;&gt; median([10, 100, 11])
+    11
+    &gt;&gt;&gt; median([1, 2, 3, 4])
+    2.5
+    "</font></i><i><font color="green">""</font></i>
+    n = len(values)
+    values = sorted(values)
+    if n % 2 == 1:
+        return values[n/2]
+    else:
+        middle2 = values[(n/2)-1:(n/2)+1]
+        try:
+            return mean(middle2)
+        except TypeError:
+            return random.choice(middle2)
+
+<b>def </b><b style="background-color:ffff00"><a name="mean">mean</b>(values):
+    <i><font color="green">""</font></i><i><font color="green">"Return the arithmetic average of the values."</font></i><i><font color="green">""</font></i>
+    return sum(values) / float(len(values))
+
+<b>def </b><b style="background-color:ffff00"><a name="stddev">stddev</b>(values, meanval=None):
+    <i><font color="green">""</font></i><i><font color="green">"The standard deviation of a set of values.
+    Pass in the mean if you already know it."</font></i><i><font color="green">""</font></i>
+    if meanval == None: meanval = mean(values)
+    return math.sqrt(sum([(x - meanval)**2 for x in values]) / (len(values)-1))
+
+<b>def </b><b style="background-color:ffff00"><a name="dotproduct">dotproduct</b>(X, Y):
+    <i><font color="green">""</font></i><i><font color="green">"Return the sum of the element-wise product of vectors x and y.
+    &gt;&gt;&gt; dotproduct([1, 2, 3], [1000, 100, 10])
+    1230
+    "</font></i><i><font color="green">""</font></i>
+    return sum([x * y for x, y in zip(X, Y)])
+
+<b>def </b><b style="background-color:ffff00"><a name="vector_add">vector_add</b>(a, b):
+    <i><font color="green">""</font></i><i><font color="green">"Component-wise addition of two vectors.
+    &gt;&gt;&gt; vector_add((0, 1), (8, 9))
+    (8, 10)
+    "</font></i><i><font color="green">""</font></i>
+    return tuple(map(operator.add, a, b))
+
+<b>def </b><b style="background-color:ffff00"><a name="probability">probability</b>(p):
+    <i><font color="green">"Return true with probability p."</font></i>
+    return p &gt; random.uniform(0.0, 1.0)
+
+<b>def </b><b style="background-color:ffff00"><a name="num_or_str">num_or_str</b>(x):
+    <i><font color="green">""</font></i><i><font color="green">"The argument is a string; convert to a number if possible, or strip it.
+    &gt;&gt;&gt; num_or_str('42')
+    42
+    &gt;&gt;&gt; num_or_str(' 42x ')
+    '42x'
+    "</font></i><i><font color="green">""</font></i>
+    if isnumber(x): return x
+    try:
+        return int(x)
+    except ValueError:
+        try:
+            return float(x)
+        except ValueError:
+                return str(x).strip()
+
+<b>def </b><b style="background-color:ffff00"><a name="normalize">normalize</b>(numbers, total=1.0):
+    <i><font color="green">""</font></i><i><font color="green">"Multiply each number by a constant such that the sum is 1.0 (or total).
+    &gt;&gt;&gt; normalize([1,2,1])
+    [0.25, 0.5, 0.25]
+    "</font></i><i><font color="green">""</font></i>
+    k = total / sum(numbers)
+    return [k * n for n in numbers]
+
+<font color="cc33cc">## OK, the following are not as widely useful utilities as some of the other</font>
+<font color="cc33cc">## functions here, but they do show up wherever we have 2D grids: Wumpus and</font>
+<font color="cc33cc">## Vacuum worlds, TicTacToe and Checkers, and markov decision Processes.</font>
+
+<b style="background-color:ffff00"><a name="orientations">orientations</b> = [(1,0), (0, 1), (-1, 0), (0, -1)]
+
+<b>def </b><b style="background-color:ffff00"><a name="turn_right">turn_right</b>(orientation):
+    return orientations[orientations.index(orientation)-1]
+
+<b>def </b><b style="background-color:ffff00"><a name="turn_left">turn_left</b>(orientation):
+    return orientations[(orientations.index(orientation)+1) % len(orientations)]
+
+<b>def </b><b style="background-color:ffff00"><a name="distance">distance</b>((ax, ay), (bx, by)):
+    <i><font color="green">"The distance between two (x, y) points."</font></i>
+    return math.hypot((ax - bx), (ay - by))
+
+<b>def </b><b style="background-color:ffff00"><a name="distance2">distance2</b>((ax, ay), (bx, by)):
+    <i><font color="green">"The square of the distance between two (x, y) points."</font></i>
+    return (ax - bx)**2 + (ay - by)**2
+
+<b>def </b><b style="background-color:ffff00"><a name="clip">clip</b>(vector, lowest, highest):
+    <i><font color="green">""</font></i><i><font color="green">"Return vector, except if any element is less than the corresponding
+    value of lowest or more than the corresponding value of highest, clip to
+    those values.
+    &gt;&gt;&gt; clip((-1, 10), (0, 0), (9, 9))
+    (0, 9)
+    "</font></i><i><font color="green">""</font></i>
+    return type(vector)(map(min, map(max, vector, lowest), highest))
+<hr><font color="cc33cc"># Misc Functions</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="printf">printf</b>(format, *args):
+    <i><font color="green">""</font></i><i><font color="green">"Format args with the first argument as format string, and write.
+    Return the last arg, or format itself if there are no args."</font></i><i><font color="green">""</font></i>
+    sys.stdout.write(str(format) % args)
+    return if_(args, args[-1], format)
+
+<b>def </b><b style="background-color:ffff00"><a name="caller">caller</b>(n=1):
+    <i><font color="green">""</font></i><i><font color="green">"Return the name of the calling function n levels up in the frame stack.
+    &gt;&gt;&gt; caller(0)
+    'caller'
+    &gt;&gt;&gt; def f():
+    ...     return caller()
+    &gt;&gt;&gt; f()
+    'f'
+    "</font></i><i><font color="green">""</font></i>
+    import <a href="http://www.python.org/doc/current/lib/module-inspect.html">inspect</a>
+    return  inspect.getouterframes(inspect.currentframe())[n][3]
+
+<b>def </b><b style="background-color:ffff00"><a name="memoize">memoize</b>(fn, slot=None):
+    <i><font color="green">""</font></i><i><font color="green">"Memoize fn: make it remember the computed value for any argument list.
+    If slot is specified, store result in that slot of first argument.
+    If slot is false, store results in a dictionary."</font></i><i><font color="green">""</font></i>
+    if slot:
+        <b>def </b><b style="background-color:ffff00"><a name="memoized_fn">memoized_fn</b>(obj, *args):
+            if hasattr(obj, slot):
+                return getattr(obj, slot)
+            else:
+                val = fn(obj, *args)
+                setattr(obj, slot, val)
+                return val
+    else:
+        <b>def </b><b style="background-color:ffff00"><a name="memoized_fn">memoized_fn</b>(*args):
+            if not memoized_fn.cache.has_key(args):
+                memoized_fn.cache[args] = fn(*args)
+            return memoized_fn.cache[args]
+        memoized_fn.cache = {}
+    return memoized_fn
+
+<b>def </b><b style="background-color:ffff00"><a name="if_">if_</b>(test, result, alternative):
+    <i><font color="green">""</font></i><i><font color="green">"Like C++ and Java's (test ? result : alternative), except
+    both result and alternative are always evaluated. However, if
+    either evaluates to a function, it is applied to the empty arglist,
+    so you can delay execution by putting it in a lambda.
+    &gt;&gt;&gt; if_(2 + 2 == 4, 'ok', lambda: expensive_computation())
+    'ok'
+    "</font></i><i><font color="green">""</font></i>
+    if test:
+        if callable(result): return result()
+        return result
+    else:
+        if callable(alternative): return alternative()
+        return alternative
+
+<b>def </b><b style="background-color:ffff00"><a name="name">name</b>(object):
+    <i><font color="green">"Try to find some reasonable name for the object."</font></i>
+    return (getattr(object, <i><font color="green">'name'</font></i>, 0) or getattr(object, <i><font color="green">'__name__'</font></i>, 0)
+            or getattr(getattr(object, <i><font color="green">'__class__'</font></i>, 0), <i><font color="green">'__name__'</font></i>, 0)
+            or str(object))
+
+<b>def </b><b style="background-color:ffff00"><a name="isnumber">isnumber</b>(x):
+    <i><font color="green">"Is x a number? We say it is if it has a __int__ method."</font></i>
+    return hasattr(x, <i><font color="green">'__int__'</font></i>)
+
+<b>def </b><b style="background-color:ffff00"><a name="issequence">issequence</b>(x):
+    <i><font color="green">"Is x a sequence? We say it is if it has a __getitem__ method."</font></i>
+    return hasattr(x, <i><font color="green">'__getitem__'</font></i>)
+
+<b>def </b><b style="background-color:ffff00"><a name="print_table">print_table</b>(table, header=None, sep=<i><font color="green">' '</font></i>, numfmt=<i><font color="green">'%g'</font></i>):
+    <i><font color="green">""</font></i><i><font color="green">"Print a list of lists as a table, so that columns line up nicely.
+    header, if specified, will be printed as the first row.
+    numfmt is the format for all numbers; you might want e.g. '%6.2f'.
+    (If you want different formats in differnt columns, don't use print_table.)
+    sep is the separator between columns."</font></i><i><font color="green">""</font></i>
+    justs = [if_(isnumber(x), <i><font color="green">'rjust'</font></i>, <i><font color="green">'ljust'</font></i>) for x in table[0]]
+    if header:
+        table = [header] + table
+    table = [[if_(isnumber(x), lambda: numfmt % x, x)  for x in row]
+             for row in table]
+    maxlen = lambda seq: max(map(len, seq))
+    sizes = map(maxlen, zip(*[map(str, row) for row in table]))
+    for row in table:
+        for (j, size, x) in zip(justs, sizes, row):
+            print getattr(str(x), j)(size), sep,
+        print
+
+<b>def </b><b style="background-color:ffff00"><a name="AIMAFile">AIMAFile</b>(components, mode=<i><font color="green">'r'</font></i>):
+    <i><font color="green">"Open a file based at the AIMA root directory."</font></i>
+    import <a href="utils.html">utils</a>
+    dir = os.path.dirname(utils.__file__)
+    return open(apply(os.path.join, [dir] + components), mode)
+
+<b>def </b><b style="background-color:ffff00"><a name="DataFile">DataFile</b>(name, mode=<i><font color="green">'r'</font></i>):
+    <i><font color="green">"Return a file in the AIMA /data directory."</font></i>
+    return AIMAFile([<i><font color="green">'..'</font></i>, <i><font color="green">'data'</font></i>, name], mode)
+
+
+<hr><font color="cc33cc"># Queues: Stack, FIFOQueue, PriorityQueue</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="Queue">Queue</b>:
+    <i><font color="green">""</font></i><i><font color="green">"Queue is an abstract class/interface. There are three types:
+        Stack(): A Last In First Out Queue.
+        FIFOQueue(): A First In First Out Queue.
+        PriorityQueue(lt): Queue where items are sorted by lt, (default &lt;).
+    Each type supports the following methods and functions:
+        q.append(item)  -- add an item to the queue
+        q.extend(items) -- equivalent to: for item in items: q.append(item)
+        q.pop()         -- return the top item from the queue
+        len(q)          -- number of items in q (also q.__len())
+    Note that isinstance(Stack(), Queue) is false, because we implement stacks
+    as lists.  If Python ever gets interfaces, Queue will be an interface."</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        abstract
+
+    <b>def </b><b style="background-color:ffff00"><a name="extend">extend</b>(self, items):
+        for item in items: self.append(item)
+
+<b>def </b><b style="background-color:ffff00"><a name="Stack">Stack</b>():
+    <i><font color="green">""</font></i><i><font color="green">"Return an empty list, suitable as a Last-In-First-Out Queue."</font></i><i><font color="green">""</font></i>
+    return []
+
+<b>class </b><b style="background-color:ffff00"><a name="FIFOQueue">FIFOQueue</b>(Queue):
+    <i><font color="green">""</font></i><i><font color="green">"A First-In-First-Out Queue."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self):
+        self.A = []; self.start = 0
+    <b>def </b><b style="background-color:ffff00"><a name="append">append</b>(self, item):
+        self.A.append(item)
+    <b>def </b><b style="background-color:ffff00"><a name="__len__">__len__</b>(self):
+        return len(self.A) - self.start
+    <b>def </b><b style="background-color:ffff00"><a name="extend">extend</b>(self, items):
+        self.A.extend(items)
+    <b>def </b><b style="background-color:ffff00"><a name="pop">pop</b>(self):
+        e = self.A[self.start]
+        self.start += 1
+        if self.start &gt; 5 and self.start &gt; len(self.A)/2:
+            self.A = self.A[self.start:]
+            self.start = 0
+        return e
+
+<b>class </b><b style="background-color:ffff00"><a name="PriorityQueue">PriorityQueue</b>(Queue):
+    <i><font color="green">""</font></i><i><font color="green">"A queue in which the minimum (or maximum) element (as determined by f and
+    order) is returned first. If order is min, the item with minimum f(x) is
+    returned first; if order is max, then it is the item with maximum f(x)."</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, order=min, f=lambda x: x):
+        update(self, A=[], order=order, f=f)
+    <b>def </b><b style="background-color:ffff00"><a name="append">append</b>(self, item):
+        bisect.insort(self.A, (self.f(item), item))
+    <b>def </b><b style="background-color:ffff00"><a name="__len__">__len__</b>(self):
+        return len(self.A)
+    <b>def </b><b style="background-color:ffff00"><a name="pop">pop</b>(self):
+        if self.order == min:
+            return self.A.pop(0)[1]
+        else:
+            return self.A.pop()[1]
+
+<font color="cc33cc">## Fig: The idea is we can define things like Fig[3,10] later.</font>
+<font color="cc33cc">## Alas, it is Fig[3,10] not Fig[3.10], because that would be the same as Fig[3.1]</font>
+<b style="background-color:ffff00"><a name="Fig">Fig</b> = {}
+
+
+</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

@@ -1,0 +1,52 @@
+\contentsline {chapter}{Abstract (In Chinese)}{I}{section*.1}
+\contentsline {chapter}{Abstract}{II}{section*.3}
+\contentsline {chapter}{Dedication}{III}{section*.5}
+\contentsline {chapter}{Acknowledgement}{IV}{section*.7}
+\contentsline {chapter}{List of Tables}{VI}{section*.10}
+\contentsline {chapter}{List of Figures}{VII}{section*.12}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Background}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}Research objectives}{3}{section.1.2}
+\contentsline {section}{\numberline {1.3}Research status}{4}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}The designing of pulse collecting system}{5}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}The analysis and diagnosis objectified digital features}{6}{subsection.1.3.2}
+\contentsline {section}{\numberline {1.4}Thesis organization}{8}{section.1.4}
+\contentsline {chapter}{\numberline {2}Pulse collecting device and pulse database}{10}{chapter.2}
+\contentsline {section}{\numberline {2.1}Pulse collecting system}{10}{section.2.1}
+\contentsline {section}{\numberline {2.2}The collection of wrist pulse}{14}{section.2.2}
+\contentsline {section}{\numberline {2.3}Pulse database}{18}{section.2.3}
+\contentsline {section}{\numberline {2.4}Summary}{18}{section.2.4}
+\contentsline {chapter}{\numberline {3}Pulse signal preprocessing}{19}{chapter.3}
+\contentsline {section}{\numberline {3.1}Burring}{19}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Wavelet-based denoising}{21}{subsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.1.1}Wavelet selection}{22}{subsubsection.3.1.1.1}
+\contentsline {subsubsection}{\numberline {3.1.1.2}Level of decomposition}{23}{subsubsection.3.1.1.2}
+\contentsline {subsubsection}{\numberline {3.1.1.3}Threshold limits and denoised result}{24}{subsubsection.3.1.1.3}
+\contentsline {subsection}{\numberline {3.1.2}Removal of electric power noise}{26}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}Removal of pulse waveform baseline wander}{26}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Starting point detecting technique}{29}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Cubic spline interpolation}{30}{subsection.3.2.2}
+\contentsline {section}{\numberline {3.3}Period segmentation of pulse waveform}{31}{section.3.3}
+\contentsline {section}{\numberline {3.4}Normalization of pulse waveform }{32}{section.3.4}
+\contentsline {section}{\numberline {3.5}Summary}{33}{section.3.5}
+\contentsline {chapter}{\numberline {4}Pulse feature extraction}{34}{chapter.4}
+\contentsline {section}{\numberline {4.1}Time-domain features}{34}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Time-domain features and its physiological significance}{34}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}其他特征}{39}{subsection.4.1.2}
+\contentsline {chapter}{\numberline {5}Pulse pattern classification}{41}{chapter.5}
+\contentsline {section}{\numberline {5.1}Support vector machine classifier}{41}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Principle of SVM}{41}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Experimental design}{41}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}SVM classification result}{41}{subsection.5.1.3}
+\contentsline {section}{\numberline {5.2}Linear discriminant analysis classifier}{42}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Principle of LDA}{42}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Experimental design}{42}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}LDA classification result}{42}{subsection.5.2.3}
+\contentsline {section}{\numberline {5.3}K-nearest neighbor classifier}{42}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Principle of KNN}{42}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Experimental design}{42}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}KNN classification result}{42}{subsection.5.3.3}
+\contentsline {section}{\numberline {5.4}}{42}{section.5.4}
+\contentsline {section}{\numberline {5.5}Summary}{42}{section.5.5}
+\contentsline {chapter}{\numberline {6}Conclusion}{43}{chapter.6}
+\contentsline {chapter}{\bfseries References}{44}{chapter.6}

@@ -1,0 +1,60 @@
+This is BibTeX, Version 0.99d (TeX Live 2011)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: body/chapter1.aux
+A level-1 auxiliary file: body/chapter2.aux
+A level-1 auxiliary file: body/chapter3.aux
+A level-1 auxiliary file: body/chapter4.aux
+A level-1 auxiliary file: body/chapter5.aux
+A level-1 auxiliary file: body/conclusion.aux
+A level-1 auxiliary file: reference/refer.aux
+The style file: unsrt.bst
+Database file #1: reference/reference.bib
+Warning--empty journal in liapplication
+Warning--empty year in liapplication
+Warning--empty year in rauchberger1998analysis
+Warning--empty year in polikarwavelet
+Warning--there's a number but no volume in wei1985frequency
+Warning--can't use both volume and number fields in allen2000variability
+You've used 38 entries,
+            1791 wiz_defined-function locations,
+            680 strings with 9809 characters,
+and the built_in function-call counts, 8582 in all, are:
+= -- 784
+> -- 341
+< -- 11
++ -- 131
+- -- 93
+* -- 554
+:= -- 1331
+add.period$ -- 115
+call.type$ -- 38
+change.case$ -- 33
+chr.to.int$ -- 0
+cite$ -- 44
+duplicate$ -- 405
+empty$ -- 852
+format.name$ -- 93
+if$ -- 1932
+int.to.chr$ -- 0
+int.to.str$ -- 38
+missing$ -- 38
+newline$ -- 190
+num.names$ -- 38
+pop$ -- 116
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 202
+stack$ -- 0
+substring$ -- 541
+swap$ -- 108
+text.length$ -- 11
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 6
+while$ -- 86
+width$ -- 40
+write$ -- 410
+(There were 6 warnings)

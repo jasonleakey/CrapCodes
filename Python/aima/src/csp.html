@@ -1,0 +1,457 @@
+<html><head><title>AIMA Python file: csp.py</title>
+    <link rel=stylesheet href="http://aima.cs.berkeley.edu/CSS.html" TYPE="text/css"></head> 
+    <body bgcolor=#ffffff><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">Artificial Intelligence: A Modern Approach</a><td align=right><FORM method=GET action=http://www.google.com/custom>
+<INPUT TYPE=text name=q size=26 maxlength=255 value="">
+<INPUT type=submit name=sa VALUE="Search AIMA">
+<INPUT type=hidden name=cof VALUE="AH:center;GL:0;S:http://www.norvig.com;AWFID:cc0d900f8bd5a41f;">
+<input type=hidden name=domains value="www.norvig.com;aima.cs.berkeley.edu">
+<input type=hidden name=sitesearch value="aima.cs.berkeley.edu" checked> 
+<td align=right>
+</FORM></table>
+<h1>AIMA Python file: csp.py</h1>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><pre><i><font color="green">""</font></i><i><font color="green">"CSP (Constraint Satisfaction Problems) problems and solvers. (Chapter 5)."</font></i><i><font color="green">""</font></i>
+
+from __future__ import <a href="http://www.python.org/doc/current/lib/module-generators.html">generators</a>
+from <a href="utils.html">utils</a> import *
+import <a href="search.html">search</a>
+import <a href="http://www.python.org/doc/current/lib/module-types.html">types</a>
+
+<b>class </b><b style="background-color:ffff00"><a name="CSP">CSP</b>(search.Problem):
+    <i><font color="green">""</font></i><i><font color="green">"This class describes finite-domain Constraint Satisfaction Problems.
+    A CSP is specified by the following three inputs:
+        vars        A list of variables; each is atomic (e.g. int or string).
+        domains     A dict of {var:[possible_value, ...]} entries.
+        neighbors   A dict of {var:[var,...]} that for each variable lists
+                    the other variables that participate in constraints.
+        constraints A function f(A, a, B, b) that returns true if neighbors
+                    A, B satisfy the constraint when they have values A=a, B=b
+    In the textbook and in most mathematical definitions, the
+    constraints are specified as explicit pairs of allowable values,
+    but the formulation here is easier to express and more compact for
+    most cases. (For example, the n-Queens problem can be represented
+    in O(n) space using this notation, instead of O(N^4) for the
+    explicit representation.) In terms of describing the CSP as a
+    problem, that's all there is.
+
+    However, the class also supports data structures and methods that help you
+    solve CSPs by calling a search function on the CSP.  Methods and slots are
+    as follows, where the argument 'a' represents an assignment, which is a
+    dict of {var:val} entries:
+        assign(var, val, a)     Assign a[var] = val; do other bookkeeping
+        unassign(var, a)        Do del a[var], plus other bookkeeping
+        nconflicts(var, val, a) Return the number of other variables that
+                                conflict with var=val
+        curr_domains[var]       Slot: remaining consistent values for var
+                                Used by constraint propagation routines.
+    The following methods are used only by graph_search and tree_search:
+        succ()                  Return a list of (action, state) pairs
+        goal_test(a)            Return true if all constraints satisfied
+    The following are just for debugging purposes:
+        nassigns                Slot: tracks the number of assignments made
+        display(a)              Print a human-readable representation
+        "</font></i><i><font color="green">""</font></i>
+
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, vars, domains, neighbors, constraints):
+        <i><font color="green">"Construct a CSP problem. If vars is empty, it becomes domains.keys()."</font></i>
+        vars = vars or domains.keys()
+        update(self, vars=vars, domains=domains,
+               neighbors=neighbors, constraints=constraints,
+               initial={}, curr_domains=None, pruned=None, nassigns=0)
+
+    <b>def </b><b style="background-color:ffff00"><a name="assign">assign</b>(self, var, val, assignment):
+        <i><font color="green">""</font></i><i><font color="green">"Add {var: val} to assignment; Discard the old value if any.
+        Do bookkeeping for curr_domains and nassigns."</font></i><i><font color="green">""</font></i>
+        self.nassigns += 1
+        assignment[var] = val
+        if self.curr_domains:
+            if self.fc:
+                self.forward_check(var, val, assignment)
+            if self.mac:
+                AC3(self, [(Xk, var) for Xk in self.neighbors[var]])
+
+    <b>def </b><b style="background-color:ffff00"><a name="unassign">unassign</b>(self, var, assignment):
+        <i><font color="green">""</font></i><i><font color="green">"Remove {var: val} from assignment; that is backtrack.
+        DO NOT call this if you are changing a variable to a new value;
+        just call assign for that."</font></i><i><font color="green">""</font></i>
+        if var in assignment:
+            <font color="cc33cc"># Reset the curr_domain to be the full original domain</font>
+            if self.curr_domains:
+                self.curr_domains[var] = self.domains[var][:]
+            del assignment[var]
+
+    <b>def </b><b style="background-color:ffff00"><a name="nconflicts">nconflicts</b>(self, var, val, assignment):
+        <i><font color="green">"Return the number of conflicts var=val has with other variables."</font></i>
+        <font color="cc33cc"># Subclasses may implement this more efficiently</font>
+        <b>def </b><b style="background-color:ffff00"><a name="conflict">conflict</b>(var2):
+            val2 = assignment.get(var2, None)
+            return val2 != None and not self.constraints(var, val, var2, val2)
+        return count_if(conflict, self.neighbors[var])
+
+    <b>def </b><b style="background-color:ffff00"><a name="forward_check">forward_check</b>(self, var, val, assignment):
+        <i><font color="green">"Do forward checking (current domain reduction) for this assignment."</font></i>
+        if self.curr_domains:
+            <font color="cc33cc"># Restore prunings from previous value of var</font>
+            for (B, b) in self.pruned[var]:
+                self.curr_domains[B].append(b)
+            self.pruned[var] = []
+            <font color="cc33cc"># Prune any other B=b assignement that conflict with var=val</font>
+            for B in self.neighbors[var]:
+                if B not in assignment:
+                    for b in self.curr_domains[B][:]:
+                        if not self.constraints(var, val, B, b):
+                            self.curr_domains[B].remove(b)
+                            self.pruned[var].append((B, b))
+
+    <b>def </b><b style="background-color:ffff00"><a name="display">display</b>(self, assignment):
+        <i><font color="green">"Show a human-readable representation of the CSP."</font></i>
+        <font color="cc33cc"># Subclasses can print in a prettier way, or display with a GUI</font>
+        print <i><font color="green">'CSP:'</font></i>, self, <i><font color="green">'with assignment:'</font></i>, assignment
+
+    <font color="cc33cc">## These methods are for the tree and graph search interface:</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="succ">succ</b>(self, assignment):
+        <i><font color="green">"Return a list of (action, state) pairs."</font></i>
+        if len(assignment) == len(self.vars):
+            return []
+        else:
+            var = find_if(lambda v: v not in assignment, self.vars)
+            result = []
+            for val in self.domains[var]:
+                if self.nconflicts(self, var, val, assignment) == 0:
+                    a = assignment.copy; a[var] = val
+                    result.append(((var, val), a))
+            return result
+
+    <b>def </b><b style="background-color:ffff00"><a name="goal_test">goal_test</b>(self, assignment):
+        <i><font color="green">"The goal is to assign all vars, with all constraints satisfied."</font></i>
+        return (len(assignment) == len(self.vars) and
+                every(lambda var: self.nconflicts(var, assignment[var],
+                                                  assignment) == 0,
+                      self.vars))
+
+    <font color="cc33cc">## This is for min_conflicts search</font>
+
+    <b>def </b><b style="background-color:ffff00"><a name="conflicted_vars">conflicted_vars</b>(self, current):
+        <i><font color="green">"Return a list of variables in current assignment that are in conflict"</font></i>
+        return [var for var in self.vars
+                if self.nconflicts(var, current[var], current) &gt; 0]
+
+<hr><font color="cc33cc"># CSP Backtracking Search</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="backtracking_search">backtracking_search</b>(csp, mcv=False, lcv=False, fc=False, mac=False):
+    <i><font color="green">""</font></i><i><font color="green">"Set up to do recursive backtracking search. Allow the following options:
+    mcv - If true, use Most Constrained Variable Heuristic
+    lcv - If true, use Least Constraining Value Heuristic
+    fc  - If true, use Forward Checking
+    mac - If true, use Maintaining Arc Consistency.              [Fig. 5.3]
+    &gt;&gt;&gt; backtracking_search(australia)
+    {'WA': 'B', 'Q': 'B', 'T': 'B', 'V': 'B', 'SA': 'G', 'NT': 'R', 'NSW': 'R'}
+    "</font></i><i><font color="green">""</font></i>
+    if fc or mac:
+        csp.curr_domains, csp.pruned = {}, {}
+        for v in csp.vars:
+            csp.curr_domains[v] = csp.domains[v][:]
+            csp.pruned[v] = []
+    update(csp, mcv=mcv, lcv=lcv, fc=fc, mac=mac)
+    return recursive_backtracking({}, csp)
+
+<b>def </b><b style="background-color:ffff00"><a name="recursive_backtracking">recursive_backtracking</b>(assignment, csp):
+    <i><font color="green">""</font></i><i><font color="green">"Search for a consistent assignment for the csp.
+    Each recursive call chooses a variable, and considers values for it."</font></i><i><font color="green">""</font></i>
+    if len(assignment) == len(csp.vars):
+        return assignment
+    var = select_unassigned_variable(assignment, csp)
+    for val in order_domain_values(var, assignment, csp):
+        if csp.fc or csp.nconflicts(var, val, assignment) == 0:
+            csp.assign(var, val, assignment)
+            result = recursive_backtracking(assignment, csp)
+            if result is not None:
+                return result
+        csp.unassign(var, assignment)
+    return None
+
+<b>def </b><b style="background-color:ffff00"><a name="select_unassigned_variable">select_unassigned_variable</b>(assignment, csp):
+    <i><font color="green">"Select the variable to work on next.  Find"</font></i>
+    if csp.mcv: <font color="cc33cc"># Most Constrained Variable</font>
+        unassigned = [v for v in csp.vars if v not in assignment]
+        return argmin_random_tie(unassigned,
+                     lambda var: -num_legal_values(csp, var, assignment))
+    else: <font color="cc33cc"># First unassigned variable</font>
+        for v in csp.vars:
+            if v not in assignment:
+                return v
+
+<b>def </b><b style="background-color:ffff00"><a name="order_domain_values">order_domain_values</b>(var, assignment, csp):
+    <i><font color="green">"Decide what order to consider the domain variables."</font></i>
+    if csp.curr_domains:
+        domain = csp.curr_domains[var]
+    else:
+        domain = csp.domains[var][:]
+    if csp.lcv:
+        <font color="cc33cc"># If LCV is specified, consider values with fewer conflicts first</font>
+        key = lambda val: csp.nconflicts(var, val, assignment)
+        domain.sort(lambda(x,y): cmp(key(x), key(y)))
+    while domain:
+        yield domain.pop()
+
+<b>def </b><b style="background-color:ffff00"><a name="num_legal_values">num_legal_values</b>(csp, var, assignment):
+    if csp.curr_domains:
+        return len(csp.curr_domains[var])
+    else:
+        return count_if(lambda val: csp.nconflicts(var, val, assignment) == 0,
+                        csp.domains[var])
+
+<hr><font color="cc33cc"># Constraint Propagation with AC-3</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="AC3">AC3</b>(csp, queue=None):
+    <i><font color="green">""</font></i><i><font color="green">"[Fig. 5.7]"</font></i><i><font color="green">""</font></i>
+    if queue == None:
+        queue = [(Xi, Xk) for Xi in csp.vars for Xk in csp.neighbors[Xi]]
+    while queue:
+        (Xi, Xj) = queue.pop()
+        if remove_inconsistent_values(csp, Xi, Xj):
+            for Xk in csp.neighbors[Xi]:
+                queue.append((Xk, Xi))
+
+<b>def </b><b style="background-color:ffff00"><a name="remove_inconsistent_values">remove_inconsistent_values</b>(csp, Xi, Xj):
+    <i><font color="green">"Return true if we remove a value."</font></i>
+    removed = False
+    for x in csp.curr_domains[Xi][:]:
+        <font color="cc33cc"># If Xi=x conflicts with Xj=y for every possible y, eliminate Xi=x</font>
+        if every(lambda y: not csp.constraints(Xi, x, Xj, y),
+                csp.curr_domains[Xj]):
+            csp.curr_domains[Xi].remove(x)
+            removed = True
+    return removed
+
+<hr><font color="cc33cc"># Min-conflicts hillclimbing search for CSPs</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="min_conflicts">min_conflicts</b>(csp, max_steps=1000000):
+    <i><font color="green">""</font></i><i><font color="green">"Solve a CSP by stochastic hillclimbing on the number of conflicts."</font></i><i><font color="green">""</font></i>
+    <font color="cc33cc"># Generate a complete assignement for all vars (probably with conflicts)</font>
+    current = {}; csp.current = current
+    for var in csp.vars:
+        val = min_conflicts_value(csp, var, current)
+        csp.assign(var, val, current)
+    <font color="cc33cc"># Now repeapedly choose a random conflicted variable and change it</font>
+    for i in range(max_steps):
+        conflicted = csp.conflicted_vars(current)
+        if not conflicted:
+            return current
+        var = random.choice(conflicted)
+        val = min_conflicts_value(csp, var, current)
+        csp.assign(var, val, current)
+    return None
+
+<b>def </b><b style="background-color:ffff00"><a name="min_conflicts_value">min_conflicts_value</b>(csp, var, current):
+    <i><font color="green">""</font></i><i><font color="green">"Return the value that will give var the least number of conflicts.
+    If there is a tie, choose at random."</font></i><i><font color="green">""</font></i>
+    return argmin_random_tie(csp.domains[var],
+                             lambda val: csp.nconflicts(var, val, current))
+
+<hr><font color="cc33cc"># Map-Coloring Problems</font>
+
+<b>class </b><b style="background-color:ffff00"><a name="UniversalDict">UniversalDict</b>:
+    <i><font color="green">""</font></i><i><font color="green">"A universal dict maps any key to the same value. We use it here
+    as the domains dict for CSPs in which all vars have the same domain.
+    &gt;&gt;&gt; d = UniversalDict(42)
+    &gt;&gt;&gt; d['life']
+    42
+    "</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, value): self.value = value
+    <b>def </b><b style="background-color:ffff00"><a name="__getitem__">__getitem__</b>(self, key): return self.value
+    <b>def </b><b style="background-color:ffff00"><a name="__repr__">__repr__</b>(self): return <i><font color="green">'{Any: %r}'</font></i> % self.value
+
+<b>def </b><b style="background-color:ffff00"><a name="different_values_constraint">different_values_constraint</b>(A, a, B, b):
+    <i><font color="green">"A constraint saying two neighboring variables must differ in value."</font></i>
+    return a != b
+
+<b>def </b><b style="background-color:ffff00"><a name="MapColoringCSP">MapColoringCSP</b>(colors, neighbors):
+    <i><font color="green">""</font></i><i><font color="green">"Make a CSP for the problem of coloring a map with different colors
+    for any two adjacent regions.  Arguments are a list of colors, and a
+    dict of {region: [neighbor,...]} entries.  This dict may also be
+    specified as a string of the form defined by parse_neighbors"</font></i><i><font color="green">""</font></i>
+
+    if isinstance(neighbors, str):
+        neighbors = parse_neighbors(neighbors)
+    return CSP(neighbors.keys(), UniversalDict(colors), neighbors,
+               different_values_constraint)
+
+<b>def </b><b style="background-color:ffff00"><a name="parse_neighbors">parse_neighbors</b>(neighbors, vars=[]):
+    <i><font color="green">""</font></i><i><font color="green">"Convert a string of the form 'X: Y Z; Y: Z' into a dict mapping
+    regions to neighbors.  The syntax is a region name followed by a ':'
+    followed by zero or more region names, followed by ';', repeated for
+    each region name.  If you say 'X: Y' you don't need 'Y: X'.
+    &gt;&gt;&gt; parse_neighbors('X: Y Z; Y: Z')
+    {'Y': ['X', 'Z'], 'X': ['Y', 'Z'], 'Z': ['X', 'Y']}
+    "</font></i><i><font color="green">""</font></i>
+    dict = DefaultDict([])
+    for var in vars:
+        dict[var] = []
+    specs = [spec.split(<i><font color="green">':'</font></i>) for spec in neighbors.split(<i><font color="green">';'</font></i>)]
+    for (A, Aneighbors) in specs:
+        A = A.strip();
+        dict.setdefault(A, [])
+        for B in Aneighbors.split():
+            dict[A].append(B)
+            dict[B].append(A)
+    return dict
+
+<b style="background-color:ffff00"><a name="australia">australia</b> = MapColoringCSP(list(<i><font color="green">'RGB'</font></i>),
+                           <i><font color="green">'SA: WA NT Q NSW V; NT: WA Q; NSW: Q V; T: '</font></i>)
+
+<b style="background-color:ffff00"><a name="usa">usa</b> = MapColoringCSP(list(<i><font color="green">'RGBY'</font></i>),
+        <i><font color="green">""</font></i><i><font color="green">"WA: OR ID; OR: ID NV CA; CA: NV AZ; NV: ID UT AZ; ID: MT WY UT;
+        UT: WY CO AZ; MT: ND SD WY; WY: SD NE CO; CO: NE KA OK NM; NM: OK TX;
+        ND: MN SD; SD: MN IA NE; NE: IA MO KA; KA: MO OK; OK: MO AR TX;
+        TX: AR LA; MN: WI IA; IA: WI IL MO; MO: IL KY TN AR; AR: MS TN LA;
+        LA: MS; WI: MI IL; IL: IN; IN: KY; MS: TN AL; AL: TN GA FL; MI: OH;
+        OH: PA WV KY; KY: WV VA TN; TN: VA NC GA; GA: NC SC FL;
+        PA: NY NJ DE MD WV; WV: MD VA; VA: MD DC NC; NC: SC; NY: VT MA CA NJ;
+        NJ: DE; DE: MD; MD: DC; VT: NH MA; MA: NH RI CT; CT: RI; ME: NH;
+        HI: ; AK: "</font></i><i><font color="green">""</font></i>)
+<hr><font color="cc33cc"># n-Queens Problem</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="queen_constraint">queen_constraint</b>(A, a, B, b):
+    <i><font color="green">""</font></i><i><font color="green">"Constraint is satisfied (true) if A, B are really the same variable,
+    or if they are not in the same row, down diagonal, or up diagonal."</font></i><i><font color="green">""</font></i>
+    return A == B or (a != b and A + a != B + b and A - a != B - b)
+
+<b>class </b><b style="background-color:ffff00"><a name="NQueensCSP">NQueensCSP</b>(CSP):
+    <i><font color="green">""</font></i><i><font color="green">"Make a CSP for the nQueens problem for search with min_conflicts.
+    Suitable for large n, it uses only data structures of size O(n).
+    Think of placing queens one per column, from left to right.
+    That means position (x, y) represents (var, val) in the CSP.
+    The main structures are three arrays to count queens that could conflict:
+        rows[i]      Number of queens in the ith row (i.e val == i)
+        downs[i]     Number of queens in the \ diagonal
+                     such that their (x, y) coordinates sum to i
+        ups[i]       Number of queens in the / diagonal
+                     such that their (x, y) coordinates have x-y+n-1 = i
+    We increment/decrement these counts each time a queen is placed/moved from
+    a row/diagonal. So moving is O(1), as is nconflicts.  But choosing
+    a variable, and a best value for the variable, are each O(n).
+    If you want, you can keep track of conflicted vars, then variable
+    selection will also be O(1).
+    &gt;&gt;&gt; len(backtracking_search(NQueensCSP(8)))
+    8
+    &gt;&gt;&gt; len(min_conflicts(NQueensCSP(8)))
+    8
+    "</font></i><i><font color="green">""</font></i>
+    <b>def </b><b style="background-color:ffff00"><a name="__init__">__init__</b>(self, n):
+        <i><font color="green">""</font></i><i><font color="green">"Initialize data structures for n Queens."</font></i><i><font color="green">""</font></i>
+        CSP.__init__(self, range(n), UniversalDict(range(n)),
+                     UniversalDict(range(n)), queen_constraint)
+        update(self, rows=[0]*n, ups=[0]*(2*n - 1), downs=[0]*(2*n - 1))
+
+    <b>def </b><b style="background-color:ffff00"><a name="nconflicts">nconflicts</b>(self, var, val, assignment):
+        <i><font color="green">""</font></i><i><font color="green">"The number of conflicts, as recorded with each assignment.
+        Count conflicts in row and in up, down diagonals. If there
+        is a queen there, it can't conflict with itself, so subtract 3."</font></i><i><font color="green">""</font></i>
+        n = len(self.vars)
+        c = self.rows[val] + self.downs[var+val] + self.ups[var-val+n-1]
+        if assignment.get(var, None) == val:
+            c -= 3
+        return c
+
+    <b>def </b><b style="background-color:ffff00"><a name="assign">assign</b>(self, var, val, assignment):
+        <i><font color="green">"Assign var, and keep track of conflicts."</font></i>
+        oldval = assignment.get(var, None)
+        if val != oldval:
+            if oldval is not None: <font color="cc33cc"># Remove old val if there was one</font>
+                self.record_conflict(assignment, var, oldval, -1)
+            self.record_conflict(assignment, var, val, +1)
+            CSP.assign(self, var, val, assignment)
+
+    <b>def </b><b style="background-color:ffff00"><a name="unassign">unassign</b>(self, var, assignment):
+        <i><font color="green">"Remove var from assignment (if it is there) and track conflicts."</font></i>
+        if var in assignment:
+            self.record_conflict(assignment, var, assignment[var], -1)
+        CSP.unassign(self, var, assignment)
+
+    <b>def </b><b style="background-color:ffff00"><a name="record_conflict">record_conflict</b>(self, assignment, var, val, delta):
+        <i><font color="green">"Record conflicts caused by addition or deletion of a Queen."</font></i>
+        n = len(self.vars)
+        self.rows[val] += delta
+        self.downs[var + val] += delta
+        self.ups[var - val + n - 1] += delta
+
+    <b>def </b><b style="background-color:ffff00"><a name="display">display</b>(self, assignment):
+        <i><font color="green">"Print the queens and the nconflicts values (for debugging)."</font></i>
+        n = len(self.vars)
+        for val in range(n):
+            for var in range(n):
+                if assignment.get(var,<i><font color="green">''</font></i>) == val: ch =<i><font color="green">'Q'</font></i>
+                elif (var+val) % 2 == 0: ch = <i><font color="green">'.'</font></i>
+                else: ch = <i><font color="green">'-'</font></i>
+                print ch,
+            print <i><font color="green">'    '</font></i>,
+            for var in range(n):
+                if assignment.get(var,<i><font color="green">''</font></i>) == val: ch =<i><font color="green">'*'</font></i>
+                else: ch = <i><font color="green">' '</font></i>
+                print str(self.nconflicts(var, val, assignment))+ch,
+            print
+
+<hr><font color="cc33cc"># The Zebra Puzzle</font>
+
+<b>def </b><b style="background-color:ffff00"><a name="Zebra">Zebra</b>():
+    <i><font color="green">"Return an instance of the Zebra Puzzle."</font></i>
+    Colors = <i><font color="green">'Red Yellow Blue Green Ivory'</font></i>.split()
+    Pets = <i><font color="green">'Dog Fox Snails Horse Zebra'</font></i>.split()
+    Drinks = <i><font color="green">'OJ Tea Coffee Milk Water'</font></i>.split()
+    Countries = <i><font color="green">'Englishman Spaniard Norwegian Ukranian Japanese'</font></i>.split()
+    Smokes = <i><font color="green">'Kools Chesterfields Winston LuckyStrike Parliaments'</font></i>.split()
+    vars = Colors + Pets + Drinks + Countries + Smokes
+    domains = {}
+    for var in vars:
+        domains[var] = range(1, 6)
+    domains[<i><font color="green">'Norwegian'</font></i>] = [1]
+    domains[<i><font color="green">'Milk'</font></i>] = [3]
+    neighbors = parse_neighbors(<i><font color="green">""</font></i><i><font color="green">"Englishman: Red;
+                Spaniard: Dog; Kools: Yellow; Chesterfields: Fox;
+                Norwegian: Blue; Winston: Snails; LuckyStrike: OJ;
+                Ukranian: Tea; Japanese: Parliaments; Kools: Horse;
+                Coffee: Green; Green: Ivory"</font></i><i><font color="green">""</font></i>, vars)
+    for type in [Colors, Pets, Drinks, Countries, Smokes]:
+        for A in type:
+            for B in type:
+                if A != B:
+                    if B not in neighbors[A]: neighbors[A].append(B)
+                    if A not in neighbors[B]: neighbors[B].append(A)
+    <b>def </b><b style="background-color:ffff00"><a name="zebra_constraint">zebra_constraint</b>(A, a, B, b, recurse=0):
+        same = (a == b)
+        next_to = abs(a - b) == 1
+        if A == <i><font color="green">'Englishman'</font></i> and B == <i><font color="green">'Red'</font></i>: return same
+        if A == <i><font color="green">'Spaniard'</font></i> and B == <i><font color="green">'Dog'</font></i>: return same
+        if A == <i><font color="green">'Chesterfields'</font></i> and B == <i><font color="green">'Fox'</font></i>: return next_to
+        if A == <i><font color="green">'Norwegian'</font></i> and B == <i><font color="green">'Blue'</font></i>: return next_to
+        if A == <i><font color="green">'Kools'</font></i> and B == <i><font color="green">'Yellow'</font></i>: return same
+        if A == <i><font color="green">'Winston'</font></i> and B == <i><font color="green">'Snails'</font></i>: return same
+        if A == <i><font color="green">'LuckyStrike'</font></i> and B == <i><font color="green">'OJ'</font></i>: return same
+        if A == <i><font color="green">'Ukranian'</font></i> and B == <i><font color="green">'Tea'</font></i>: return same
+        if A == <i><font color="green">'Japanese'</font></i> and B == <i><font color="green">'Parliaments'</font></i>: return same
+        if A == <i><font color="green">'Kools'</font></i> and B == <i><font color="green">'Horse'</font></i>: return next_to
+        if A == <i><font color="green">'Coffee'</font></i> and B == <i><font color="green">'Green'</font></i>: return same
+        if A == <i><font color="green">'Green'</font></i> and B == <i><font color="green">'Ivory'</font></i>: return (a - 1) == b
+        if recurse == 0: return zebra_constraint(B, b, A, a, 1)
+        if ((A in Colors and B in Colors) or
+            (A in Pets and B in Pets) or
+            (A in Drinks and B in Drinks) or
+            (A in Countries and B in Countries) or
+            (A in Smokes and B in Smokes)): return not same
+        raise <i><font color="green">'error'</font></i>
+    return CSP(vars, domains, neighbors, zebra_constraint)
+
+<b>def </b><b style="background-color:ffff00"><a name="solve_zebra">solve_zebra</b>(algorithm=min_conflicts, **args):
+    z = Zebra()
+    ans = algorithm(z, **args)
+    for h in range(1, 6):
+        print <i><font color="green">'House'</font></i>, h,
+        for (var, val) in ans.items():
+            if val == h: print var,
+        print
+    return ans[<i><font color="green">'Zebra'</font></i>], ans[<i><font color="green">'Water'</font></i>], z.nassigns, ans,
+
+</pre><p><table width="100%" class="greenbar"><tr><td><a href="http://aima.cs.berkeley.edu">AI: A Modern Approach</a> by <a href="http://www.cs.berkeley.edu/~russell">Stuart Russell</a> and <a href="http://norvig.com">Peter Norvig</a><td align=right>Modified: Jul 18, 2005</table></body></html>

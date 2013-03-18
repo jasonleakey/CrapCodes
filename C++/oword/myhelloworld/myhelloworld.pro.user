@@ -1,0 +1,248 @@
+<!DOCTYPE QtCreatorProject>
+<qtcreator>
+ <data>
+  <variable>RunConfiguration0-CommandLineArguments</variable>
+  <valuelist type="QVariantList" />
+ </data>
+ <data>
+  <variable>RunConfiguration0-ProFile</variable>
+  <value type="QString" >myhelloworld.pro</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-RunConfiguration.name</variable>
+  <value type="QString" >myhelloworld</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UseDyldImageSuffix</variable>
+  <value type="bool" >false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UseTerminal</variable>
+  <value type="bool" >false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserEnvironmentChanges</variable>
+  <valuelist type="QVariantList" />
+ </data>
+ <data>
+  <variable>RunConfiguration0-UserSetName</variable>
+  <value type="bool" >false</value>
+ </data>
+ <data>
+  <variable>RunConfiguration0-type</variable>
+  <value type="QString" >Qt4ProjectManager.Qt4RunConfiguration</value>
+ </data>
+ <data>
+  <variable>activeRunConfiguration</variable>
+  <value type="int" >0</value>
+ </data>
+ <data>
+  <variable>activebuildconfiguration</variable>
+  <value type="QString" >Debug</value>
+ </data>
+ <data>
+  <variable>buildConfiguration-Debug</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <value key="QtVersionId" type="int" >0</value>
+   <value key="addQDumper" type="" ></value>
+   <value key="buildDirectory" type="QString" >/home/jasonleakey/project/helloword/myhelloworld</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildConfiguration-Release</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <value key="QtVersionId" type="int" >0</value>
+   <value key="addQDumper" type="" ></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-buildstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-SFyeTEuqTS,guid=0ea594dd2a2267b0a052c0284abf216d</value>
+    <value type="QString" >DESKTOP_SESSION=kde</value>
+    <value type="QString" >DESKTOP_STARTUP_ID=</value>
+    <value type="QString" >DISPLAY=:0.0</value>
+    <value type="QString" >GDMSESSION=kde</value>
+    <value type="QString" >GDM_LANG=en_US.UTF-8</value>
+    <value type="QString" >GDM_XSERVER_LOCATION=local</value>
+    <value type="QString" >GNOME_KEYRING_PID=3362</value>
+    <value type="QString" >GNOME_KEYRING_SOCKET=/tmp/keyring-PPjW12/socket</value>
+    <value type="QString" >GPG_AGENT_INFO=/tmp/gpg-E3dlb3/S.gpg-agent:3516:1</value>
+    <value type="QString" >GS_LIB=/home/jasonleakey/.fonts</value>
+    <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/jasonleakey/.gtkrc-2.0:/home/jasonleakey/.gtkrc-2.0-kde4:/home/jasonleakey/.kde/share/config/gtkrc-2.0</value>
+    <value type="QString" >GTK_IM_MODULE=xim</value>
+    <value type="QString" >GTK_MODULES=canberra-gtk-module</value>
+    <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/jasonleakey/.gtkrc::/home/jasonleakey/.kde/share/config/gtkrc</value>
+    <value type="QString" >HOME=/home/jasonleakey</value>
+    <value type="QString" >KDE_FULL_SESSION=true</value>
+    <value type="QString" >KDE_MULTIHEAD=false</value>
+    <value type="QString" >KDE_SESSION_UID=</value>
+    <value type="QString" >KDE_SESSION_VERSION=4</value>
+    <value type="QString" >LANG=en_US.UTF-8</value>
+    <value type="QString" >LD_LIBRARY_PATH=/home/jasonleakey/software/qt/lib/qtcreator:</value>
+    <value type="QString" >LOGNAME=jasonleakey</value>
+    <value type="QString" >ORBIT_SOCKETDIR=/tmp/orbit-jasonleakey</value>
+    <value type="QString" >PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
+    <value type="QString" >PWD=/home/jasonleakey/Documents</value>
+    <value type="QString" >QTDIR=/usr</value>
+    <value type="QString" >QT_IM_MODULE=xim</value>
+    <value type="QString" >QT_PLUGIN_PATH=/home/jasonleakey/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
+    <value type="QString" >SESSION_MANAGER=local/uKi:/tmp/.ICE-unix/3628</value>
+    <value type="QString" >SHELL=/bin/bash</value>
+    <value type="QString" >SSH_AGENT_PID=3515</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-BIUDvX3375/agent.3375</value>
+    <value type="QString" >USER=jasonleakey</value>
+    <value type="QString" >USERNAME=jasonleakey</value>
+    <value type="QString" >WINDOWPATH=7</value>
+    <value type="QString" >XAUTHORITY=/home/jasonleakey/.Xauthority</value>
+    <value type="QString" >XCURSOR_THEME=oxy-white</value>
+    <value type="QString" >XDG_DATA_DIRS=/usr/local/share/:/usr/share/:/usr/share/gdm/</value>
+    <value type="QString" >XDG_SESSION_COOKIE=4fac77c001b9a5b1416a8b8e4a5c5ad1-1254039915.979395-1647410526</value>
+    <value type="QString" >XMODIFIERS=@im=fcitx</value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >/home/jasonleakey/project/helloword/myhelloworld/myhelloworld.pro</value>
+    <value type="QString" >-spec</value>
+    <value type="QString" >/usr/share/qt4/mkspecs/linux-g++</value>
+    <value type="QString" >-r</value>
+    <value type="QString" >CONFIG+=debug</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >/usr/bin/qmake-qt4</value>
+   <value key="abstractProcess.enabled" type="bool" >false</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >/home/jasonleakey/project/helloword/myhelloworld</value>
+   <value key="buildConfiguration" type="int" >2</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-buildstep1</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList" >
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-SFyeTEuqTS,guid=0ea594dd2a2267b0a052c0284abf216d</value>
+    <value type="QString" >DESKTOP_SESSION=kde</value>
+    <value type="QString" >DESKTOP_STARTUP_ID=</value>
+    <value type="QString" >DISPLAY=:0.0</value>
+    <value type="QString" >GDMSESSION=kde</value>
+    <value type="QString" >GDM_LANG=en_US.UTF-8</value>
+    <value type="QString" >GDM_XSERVER_LOCATION=local</value>
+    <value type="QString" >GNOME_KEYRING_PID=3362</value>
+    <value type="QString" >GNOME_KEYRING_SOCKET=/tmp/keyring-PPjW12/socket</value>
+    <value type="QString" >GPG_AGENT_INFO=/tmp/gpg-E3dlb3/S.gpg-agent:3516:1</value>
+    <value type="QString" >GS_LIB=/home/jasonleakey/.fonts</value>
+    <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/jasonleakey/.gtkrc-2.0:/home/jasonleakey/.gtkrc-2.0-kde4:/home/jasonleakey/.kde/share/config/gtkrc-2.0</value>
+    <value type="QString" >GTK_IM_MODULE=xim</value>
+    <value type="QString" >GTK_MODULES=canberra-gtk-module</value>
+    <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/jasonleakey/.gtkrc::/home/jasonleakey/.kde/share/config/gtkrc</value>
+    <value type="QString" >HOME=/home/jasonleakey</value>
+    <value type="QString" >KDE_FULL_SESSION=true</value>
+    <value type="QString" >KDE_MULTIHEAD=false</value>
+    <value type="QString" >KDE_SESSION_UID=</value>
+    <value type="QString" >KDE_SESSION_VERSION=4</value>
+    <value type="QString" >LANG=en_US.UTF-8</value>
+    <value type="QString" >LD_LIBRARY_PATH=/home/jasonleakey/software/qt/lib/qtcreator:</value>
+    <value type="QString" >LOGNAME=jasonleakey</value>
+    <value type="QString" >ORBIT_SOCKETDIR=/tmp/orbit-jasonleakey</value>
+    <value type="QString" >PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
+    <value type="QString" >PWD=/home/jasonleakey/Documents</value>
+    <value type="QString" >QTDIR=/usr</value>
+    <value type="QString" >QT_IM_MODULE=xim</value>
+    <value type="QString" >QT_PLUGIN_PATH=/home/jasonleakey/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
+    <value type="QString" >SESSION_MANAGER=local/uKi:/tmp/.ICE-unix/3628</value>
+    <value type="QString" >SHELL=/bin/bash</value>
+    <value type="QString" >SSH_AGENT_PID=3515</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-BIUDvX3375/agent.3375</value>
+    <value type="QString" >USER=jasonleakey</value>
+    <value type="QString" >USERNAME=jasonleakey</value>
+    <value type="QString" >WINDOWPATH=7</value>
+    <value type="QString" >XAUTHORITY=/home/jasonleakey/.Xauthority</value>
+    <value type="QString" >XCURSOR_THEME=oxy-white</value>
+    <value type="QString" >XDG_DATA_DIRS=/usr/local/share/:/usr/share/:/usr/share/gdm/</value>
+    <value type="QString" >XDG_SESSION_COOKIE=4fac77c001b9a5b1416a8b8e4a5c5ad1-1254039915.979395-1647410526</value>
+    <value type="QString" >XMODIFIERS=@im=fcitx</value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList" >
+    <value type="QString" >-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString" >/usr/bin/make</value>
+   <value key="abstractProcess.enabled" type="bool" >true</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >/home/jasonleakey/project/helloword/myhelloworld</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Debug-cleanstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Release-buildstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <value key="buildConfiguration" type="int" >0</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Release-buildstep1</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-Release-cleanstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfigurations</variable>
+  <valuelist type="QVariantList" >
+   <value type="QString" >Debug</value>
+   <value type="QString" >Release</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>buildstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" ></value>
+   <value key="mkspec" type="QString" ></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildstep1</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" ></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildsteps</variable>
+  <valuelist type="QVariantList" >
+   <value type="QString" >trolltech.qt4projectmanager.qmake</value>
+   <value type="QString" >trolltech.qt4projectmanager.make</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>cleanstep0</variable>
+  <valuemap type="QVariantMap" >
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" ></value>
+   <value key="clean" type="bool" >true</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>cleansteps</variable>
+  <valuelist type="QVariantList" >
+   <value type="QString" >trolltech.qt4projectmanager.make</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>defaultFileEncoding</variable>
+  <value type="QByteArray" >System</value>
+ </data>
+ <data>
+  <variable>project</variable>
+  <valuemap type="QVariantMap" />
+ </data>
+</qtcreator>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../C_basic_operation_BiTree/BiTree.h" open="1" top="0" tabpos="5">
+		<Cursor position="0" topLine="52" />
+	</File>
+	<File name="../C_basic_operation_BiTree/basic_operation_BiTree.c" open="1" top="0" tabpos="4">
+		<Cursor position="3798" topLine="213" />
+	</File>
+	<File name="../C_basic_operation_BiTree/basic_operation_LinkQueue.c" open="1" top="0" tabpos="3">
+		<Cursor position="1216" topLine="3" />
+	</File>
+	<File name="../C_basic_operation_BiTree/basic_operation_SqStack.c" open="1" top="0" tabpos="2">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="../C_basic_operation_BiTree/main.c" open="1" top="1" tabpos="1">
+		<Cursor position="1717" topLine="54" />
+	</File>
+</CodeBlocks_layout_file>

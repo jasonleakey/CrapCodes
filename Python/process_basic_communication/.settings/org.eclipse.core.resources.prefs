@@ -1,0 +1,15 @@
+#Sat Feb 21 14:31:18 CST 2009
+eclipse.preferences.version=1
+encoding//src/FIFO_by_mkfifo.py=UTF-8
+encoding//src/alarm.py=UTF-8
+encoding//src/mutex_by_fcntl.py=UTF-8
+encoding//src/mutex_by_file.py=UTF-8
+encoding//src/mutex_by_flock.py=UTF-8
+encoding//src/mutex_by_lockf.py=UTF-8
+encoding//src/pipe_duplexing.py=UTF-8
+encoding//src/pipe_singlex.py=UTF-8
+encoding//src/redirect_by_pipe.py=UTF-8
+encoding//src/redirect_by_popen.py=UTF-8
+encoding//src/signal_handle.py=UTF-8
+encoding//src/test_fcntl.py=UTF-8
+encoding//src/test_popen_pclose.py=UTF-8

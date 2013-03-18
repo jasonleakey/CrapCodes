@@ -1,0 +1,12 @@
+This test the learning program
+for the case of single sequence
+The model which produced die*
+is theoreticalModel.mod
+the final and intial models are: finaldie_labelled.mod and initdie.mod 
+Classical sequence training
+CYC 0
+log(Prob_old)  -10000.0 log(Prob_new)  -598.234423539 Diff  0.940176557646
+CYC 1
+log(Prob_old)  -598.234423539 log(Prob_new)  -534.862918068 Diff  0.105930890931
+CYC 2
+log(Prob_old)  -534.862918068 log(Prob_new)  -534.853047079 Diff  1.84551750302e-05
